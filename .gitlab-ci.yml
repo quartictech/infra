@@ -7,10 +7,10 @@ stages:
   - build
 
 before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
 variables:
-    IMAGE_NAME: registry.gitlab.com/quartic/docker-build-image
+    IMAGE_NAME: quartic/docker-build-image
 
 build:
     stage: build
