@@ -5,7 +5,6 @@ services:
 
 stages:
   - build
-  - release
 
 variables:
     IMAGE_NAME: registry.gitlab.com/quartic/weyl-build
@@ -14,10 +13,4 @@ build:
     stage: build
     script:
         - docker build -t $IMAGE_NAME .
-
-release:
-    stage: release
-    script:
         - docker push $IMAGE_NAME
-    only:
-        - develop
