@@ -10,7 +10,7 @@ before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
 variables:
-    IMAGE_NAME: registry.gitlab.com/quartic/weyl-build
+    IMAGE_NAME: registry.gitlab.com/quartic/docker-build-image
 
 build:
     stage: build
