@@ -12,3 +12,6 @@ service docker start
 # Docker-Compose
 easy_install -U pip
 pip install docker-compose
+
+# Git
+apt-get install git
