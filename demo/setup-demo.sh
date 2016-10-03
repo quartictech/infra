@@ -8,3 +8,7 @@ echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sour
 apt-get update
 apt-get install -y docker-engine
 service docker start
+
+# Docker-Compose
+easy_install -U pip
+pip install docker-compose
