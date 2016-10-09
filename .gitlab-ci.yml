@@ -10,7 +10,7 @@ before_script:
   - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
 variables:
-    IMAGE_NAME: quartic/npm-jdk
+    IMAGE_NAME: quartic/uber-builder
 
 build:
     stage: build

@@ -1,10 +1,16 @@
-FROM openjdk:8u92-jdk-alpine
+FROM node:6.6.0
 
-RUN apk add --no-cache bash git automake autoconf gcc nodejs
+# Install Java
+RUN echo deb http://http.debian.net/debian jessie-backports main >> /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install -y openjdk-8-jdk
 
-# Workaround taken from https://github.com/npm/npm/issues/9863#issuecomment-248276058
-RUN cd $(npm root -g)/npm \
-  && npm install fs-extra \
-  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs\.rename/fs.move/ ./lib/utils/rename.js
+# Install Docker
+RUN apt-get install -y apt-transport-https ca-certificates \
+    && apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D \
+    && echo "deb https://apt.dockerproject.org/repo debian-jessie main" > /etc/apt/sources.list.d/docker.list \
+    && apt-get update \
+    && apt-get install -y docker-engine
 
-RUN npm update -g npm
+# Gradle doesn't like TERM=dumb
+ENV TERM xterm-256color
