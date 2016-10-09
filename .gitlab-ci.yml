@@ -1,0 +1,19 @@
+image: docker:git
+
+services:
+  - docker:dind
+
+stages:
+  - build
+
+before_script:
+  - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+
+variables:
+  IMAGE_NAME: quartic/uber-builder
+
+build:
+  stage: build
+  script:
+    - docker build -t $IMAGE_NAME images/uber-builder
+    - docker push $IMAGE_NAME
