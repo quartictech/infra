@@ -9,5 +9,15 @@
   user: >
     name=quartic
     group=quartic
+    shell=/bin/bash
     state=present
+  become: true
+
+- name: Create /opt/quartic directory
+  file: >
+    path=/opt/quartic
+    state=directory
+    owner=quartic
+    group=quartic
+    mode=0755
   become: true

@@ -1,0 +1,25 @@
+---
+- name: Install various utils
+  apt: >
+    name={{ item }}
+    state=present
+  with_items:
+    - git
+    - python-pip
+    - python-virtualenv
+  become: true
+
+- name: Install Docker-Compose
+  pip: >
+    name=docker-compose
+    state=present
+    virtualenv=/opt/quartic/.env
+  become: true
+  become_user: quartic
+
+- name: Add Quartic user to Docker group
+  user: >
+    name=quartic
+    groups=docker
+    append=yes
+  become: true
