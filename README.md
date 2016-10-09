@@ -8,7 +8,8 @@ configuration for hosts, etc.
 These are **non-sensitive** (i.e. non-product) images that we publish to Docker
 Hub as public repositories.  This is done by Gitlab CI.
 
-- `uber-builder` - Defines the environment that Gitlab CI uses to build Weyl.
+- `uber-builder` - Defines environment that Gitlab CI uses to build Weyl.
+- `data-worker` - Defines environment for processing raw datasets.
 
 ## Ansible
 

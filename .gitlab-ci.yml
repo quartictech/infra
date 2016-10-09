@@ -9,11 +9,18 @@ stages:
 before_script:
   - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
-variables:
-  IMAGE_NAME: quartic/uber-builder
-
-build:
+build:uber-builder:
   stage: build
   script:
     - docker build -t $IMAGE_NAME images/uber-builder
     - docker push $IMAGE_NAME
+variables:
+  IMAGE_NAME: quartic/uber-builder
+
+build:data-worker:
+  stage: build
+  script:
+    - docker build -t $IMAGE_NAME images/data-worker
+    - docker push $IMAGE_NAME
+variables:
+  IMAGE_NAME: quartic/data-worker
