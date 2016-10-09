@@ -1,6 +1,4 @@
 ---
-# See https://docs.docker.com/engine/installation/linux/debian/
-
 - hosts: all
   roles:
     - { role: common, tags: "common" }
