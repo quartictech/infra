@@ -1,0 +1,13 @@
+---
+- name: Create Quartic group
+  group: >
+    name=quartic
+    state=present
+  become: true
+
+- name: Create Quartic user
+  user: >
+    name=quartic
+    group=quartic
+    state=present
+  become: true
