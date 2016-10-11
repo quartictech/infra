@@ -35,8 +35,15 @@
     update_cache=yes
   become: true
 
+- name: Create Docker group
+  group: >
+    name=docker
+    state=present
+  become: true
+
 - name: Start Docker service
   service: >
     name=docker
     state=started
     enabled=yes
+  become: true

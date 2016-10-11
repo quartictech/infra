@@ -3,4 +3,4 @@
   roles:
     - { role: common, tags: "common" }
     - { role: docker, tags: "docker" }
-    - { role: gitlab-runner, tags: "gitlab-runner" }
+    - { role: demo, tags: "demo" }
