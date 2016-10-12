@@ -1,9 +1,16 @@
 image: quartic/uber-builder
 
+cache:
+  key: "$CI_BUILD_NAME"
+  paths:
+     - .gradle/wrapper
+     - .gradle/caches
+
 stages:
   - build
 
 before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
   - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
 build:
