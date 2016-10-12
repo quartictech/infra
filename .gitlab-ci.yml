@@ -26,3 +26,4 @@ build_and_push:
     - ./gradlew dockerPush --parallel
   only:
     - develop
+    - tags
