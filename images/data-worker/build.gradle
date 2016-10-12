@@ -1,0 +1,7 @@
+plugins {
+    id "com.palantir.docker" version "0.9.1"
+}
+
+docker {
+    name    "quartic/${project.name}:${version}"
+}

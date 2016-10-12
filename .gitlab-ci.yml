@@ -1,26 +1,28 @@
-image: docker:git
+image: quartic/uber-builder
 
-services:
-  - docker:dind
+cache:
+  key: "$CI_BUILD_NAME"
+  paths:
+     - .gradle/wrapper
+     - .gradle/caches
 
 stages:
   - build
 
 before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
   - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
-build:uber-builder:
+build:
   stage: build
   script:
-    - docker build -t $IMAGE_NAME images/uber-builder
-    - docker push $IMAGE_NAME
-variables:
-  IMAGE_NAME: quartic/uber-builder
+    - ./gradlew docker --parallel
+  except:
+    - develop
 
-build:data-worker:
+build_and_push:
   stage: build
   script:
-    - docker build -t $IMAGE_NAME images/data-worker
-    - docker push $IMAGE_NAME
-variables:
-  IMAGE_NAME: quartic/data-worker
+    - ./gradlew dockerPush --parallel
+  only:
+    - develop
