@@ -27,3 +27,4 @@
     --description "gitlab-runner" \
     --docker-image "docker:latest" \
     --docker-volumes /var/run/docker.sock:/var/run/docker.sock
+  become: true
