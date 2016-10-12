@@ -19,6 +19,7 @@ build:
     - ./gradlew docker --parallel
   except:
     - develop
+    - tags
 
 build_and_push:
   stage: build
