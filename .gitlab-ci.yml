@@ -1,7 +1,4 @@
-image: docker:git
-
-services:
-  - docker:dind
+image: quartic/uber-builder
 
 stages:
   - build
@@ -9,18 +6,7 @@ stages:
 before_script:
   - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
-build:uber-builder:
+build:
   stage: build
   script:
-    - docker build -t $IMAGE_NAME images/uber-builder
-    - docker push $IMAGE_NAME
-variables:
-  IMAGE_NAME: quartic/uber-builder
-
-build:data-worker:
-  stage: build
-  script:
-    - docker build -t $IMAGE_NAME images/data-worker
-    - docker push $IMAGE_NAME
-variables:
-  IMAGE_NAME: quartic/data-worker
+    - ./gradlew dockerPush --parallel
