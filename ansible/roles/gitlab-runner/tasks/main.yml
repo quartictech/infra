@@ -24,6 +24,7 @@
     --url https://gitlab.com/ci \
     --registration-token pX8B2xgx6AKFteBeaRFE \
     --executor docker \
-    --description "gitlab-runner" \
+    --description "{{ ansible_hostname }}" \
     --docker-image "docker:latest" \
     --docker-volumes /var/run/docker.sock:/var/run/docker.sock
+  become: true

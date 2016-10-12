@@ -47,3 +47,11 @@
     state=started
     enabled=yes
   become: true
+
+# TODO: hardcoded to 1.9.0 due to https://github.com/ansible/ansible/issues/17495
+- name: Install docker-py
+  pip: >
+    name=docker-py
+    version=1.9.0
+    state=present
+  become: true
