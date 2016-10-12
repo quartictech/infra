@@ -16,4 +16,13 @@ before_script:
 build:
   stage: build
   script:
+    - ./gradlew docker --parallel
+  except:
+    - develop
+
+build_and_push:
+  stage: build
+  script:
     - ./gradlew dockerPush --parallel
+  only:
+    - develop
