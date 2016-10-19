@@ -7,6 +7,7 @@
     - git
     - python-pip
     - python-virtualenv
+    - libgeos-dev # Needed for shapely until we dockerize
   become: true
 
 - name: Install Docker-Compose
