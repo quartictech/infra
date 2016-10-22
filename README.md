@@ -5,10 +5,8 @@ configuration for hosts, etc.
 
 ## Docker images
 
-These are **non-sensitive** (i.e. non-product) images that we publish to Docker
-Hub as public repositories.  This is done by Gitlab CI.
+These are non-product images that we publish to Google Container Registry via CircleCI.
 
-- `uber-builder` - Defines environment that Gitlab CI uses to build Weyl.
 - `data-worker` - Defines environment for processing raw datasets.
 
 ## Ansible
