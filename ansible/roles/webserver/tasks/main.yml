@@ -25,7 +25,7 @@
   become: true
 
 - name: Deploy cert
-  copy: >
+  synchronize: >
     src=letsencrypt
     dest=/etc/
   become: true
