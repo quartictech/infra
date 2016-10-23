@@ -1,0 +1,44 @@
+---
+- name: Add backports repo
+  apt_repository: >
+    repo='deb http://http.debian.net/debian jessie-backports main'
+    state=present
+  become: true
+
+- name: Install Nginx
+  apt: >
+    name=nginx
+    update_cache=yes
+    state=present
+  become: true
+
+- name: Create Nginx global configuration
+  copy: >
+    src=nginx.conf
+    dest=/etc/nginx/nginx.conf
+  become: true
+
+- name: Create Nginx default site configuration
+  template: >
+    src=default.j2
+    dest=/etc/nginx/sites-available/default
+  become: true
+
+- name: Deploy cert
+  copy: >
+    src=letsencrypt
+    dest=/etc/
+  become: true
+
+- name: Create DH params
+  command: >
+    openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    creates=/etc/ssl/certs/dhparam.pem
+  become: true
+
+- name: Start Nginx service
+  service: >
+    name=nginx
+    state=started
+    enabled=yes
+  become: true

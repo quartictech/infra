@@ -1,3 +1,7 @@
+# See:
+#   - https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
+#   - https://bjornjohansen.no/redirect-to-https-with-nginx
+
 server {
     listen                      443 ssl http2 default_server;
     listen                      [::]:443 ssl http2 default_server;
@@ -15,7 +19,7 @@ server {
     ssl_stapling_verify         on;
     add_header                  Strict-Transport-Security "max-age=31536000" always;
 
-    server_name                 test.quartic.io;
+    server_name                 {{ domain }};
 
     root                        /var/www/html;
     index                       index.html;
@@ -28,7 +32,7 @@ server {
     listen                      80;
     listen                      [::]:80;
 
-    server_name                 test.quartic.io;
+    server_name                 {{ domain }};
 
     return                      301 https://$host$request_uri;
 }
