@@ -1,15 +1,17 @@
 ---
-- name: Add backports repo
-  apt_repository: >
-    repo='deb http://http.debian.net/debian jessie-backports main'
-    state=present
-  become: true
+# See:
+#   - https://geekshare.net/resources/how-to-update-nginx-and-enable-http-2-support-on-debian-8-jessie.16/
+#   - https://certbot.eff.org/#debianjessie-nginx
 
-- name: Install Nginx
+- name: Install packages
   apt: >
-    name=nginx
+    name={{ item }}
     update_cache=yes
+    default_release=jessie-backports
     state=present
+  with_items:
+    - nginx
+    - certbot
   become: true
 
 - name: Create Nginx global configuration
@@ -24,10 +26,28 @@
     dest=/etc/nginx/sites-available/default
   become: true
 
-- name: Deploy cert
-  synchronize: >
-    src=letsencrypt
-    dest=/etc/
+- name: Check if we already have a cert
+  stat: path=/etc/letsencrypt/live/{{ first_domain }}/fullchain.pem
+  register: cert
+  become: true
+
+- name: Obtain cert
+  command: >
+    certbot certonly --webroot
+    -w /var/www/html {{ all_domains_for_certbot }}
+    --email={{ email }}
+    --agree-tos
+  when: cert.stat.exists == False
+  become: true
+
+- name: Add cert-renewal cron job
+  cron: >
+    name="renew cert"
+    cron_file=certbot
+    user=root
+    hour="1,13" minute="24"
+    job="/usr/bin/certbot renew --quiet --no-self-upgrade && /usr/sbin/service nginx reload"
+    state=present
   become: true
 
 - name: Create DH params
@@ -39,6 +59,6 @@
 - name: Start Nginx service
   service: >
     name=nginx
-    state=started
+    state=reloaded
     enabled=yes
   become: true
