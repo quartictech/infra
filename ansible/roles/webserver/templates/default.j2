@@ -21,8 +21,13 @@ server {
 
     server_name                 {{ all_domains }};
 
-    root                        /var/www/html;
+    root                        /opt/quartic/website;
     index                       index.html;
+
+    location ~ /\. {
+       deny all;
+    }
+
     location / {
         try_files $uri $uri/ =404;
     }

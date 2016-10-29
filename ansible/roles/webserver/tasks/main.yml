@@ -12,6 +12,7 @@
   with_items:
     - nginx
     - certbot
+    - git
   become: true
 
 - name: Create Nginx global configuration
