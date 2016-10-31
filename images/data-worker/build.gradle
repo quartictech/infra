@@ -3,5 +3,5 @@ plugins {
 }
 
 docker {
-    name    "quartic/${project.name}:${version}"
+    name    "${System.env.QUARTIC_DOCKER_REPOSITORY}/${project.name}:${version}"
 }
