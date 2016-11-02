@@ -10,17 +10,16 @@
     - libgeos-dev # Needed for shapely until we dockerize
   become: true
 
-- name: Install Docker-Compose
-  pip: >
-    name=docker-compose
-    state=present
-    virtualenv=/opt/quartic/.env
-  become: true
-  become_user: quartic
-
 - name: Add Quartic user to Docker group
   user: >
     name=quartic
     groups=docker
     append=yes
   become: true
+
+- name: Configure Git
+  copy: >
+    src=.gitconfig
+    dest=/home/quartic/.gitconfig
+  become: true
+  become_user: quartic

@@ -25,3 +25,7 @@ You can do something like this:
 You'll need a local installation of Ansible:
 
     brew install ansible
+
+## Docker-Compose
+
+These are the Docker-Compose stack definitions.

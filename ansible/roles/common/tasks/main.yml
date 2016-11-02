@@ -22,8 +22,9 @@
     mode=0755
   become: true
 
+# Installing via APT leads to all sorts of weirdness (http://stackoverflow.com/questions/27341064/)
 - name: Install pip
-  apt: >
-    name=python-pip
+  easy_install: >
+    name=pip
     state=present
   become: true
