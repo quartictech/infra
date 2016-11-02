@@ -16,3 +16,9 @@
     groups=docker
     append=yes
   become: true
+
+- name: Configure Git
+  copy: >
+    src=.gitconfig
+    dest=/home/quartic/.gitconfig
+  become: quartic
