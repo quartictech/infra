@@ -1,0 +1,9 @@
+---
+- name: Create static datasets directory
+  file: >
+    path=/opt/quartic/datasets
+    state=directory
+    owner=quartic
+    group=quartic
+    mode=0755
+  become: true
