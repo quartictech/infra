@@ -16,7 +16,7 @@ services:
     volumes:
       - ./weyl/weyl.yml:/weyl-application/weyl.yml
     environment:
-      - WEYL_APPLICATION_OPTS=-Xms32g -Xmx32g
+      - WEYL_APPLICATION_OPTS=-Xms16g -Xmx16g
     links:
       - catalogue
 
