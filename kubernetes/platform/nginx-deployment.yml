@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: nginx-deployment
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/nginx/conf.d
+            - name: secret-volume
+              mountPath: /etc/secret
+          readinessProbe:
+            # an http probe
+            httpGet:
+              path: /_status
+              port: 80
+            periodSeconds: 1
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 10
+      volumes:
+        - name: config-volume
+          configMap:
+            name: nginx-config
+        - name: secret-volume
+          secret:
+            secretName: basic-auth
