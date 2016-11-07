@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: weyl-deployment
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: weyl
+    spec:
+      containers:
+        - name: weyl
+          image: eu.gcr.io/quartictech/weyl:0.2.0-143-g6db5433
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          env:
+            - name: WEYL_APPLICATION_OPTS
+              value: -Ddw.catalogueUrl=http://catalogue:8090/api

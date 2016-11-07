@@ -1,0 +1,21 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: management-deployment
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: management
+    spec:
+      containers:
+        - name: management
+          image: eu.gcr.io/quartictech/management:0.2.0-143-g6db5433
+          ports:
+            - containerPort: 8100
+            - containerPort: 8101
+          env:
+            - name: MANAGEMENT_APPLICATION_OPTS
+              value: -Ddw.catalogueUrl=http://catalogue:8090/api
