@@ -7,7 +7,7 @@ services:
     volumes:
       - ./catalogue/catalogue.yml:/catalogue-application/catalogue.yml
     environment:
-      - CATALOGUE_SERVICE_OPTS=-Xms64m -Xmx64m
+      - CATALOGUE_APPLICATION_OPTS=-Xms64m -Xmx64m
 
   weyl:
     image: ${QUARTIC_DOCKER_REPOSITORY}/weyl:${PLATFORM_VERSION}
@@ -16,7 +16,7 @@ services:
     volumes:
       - ./weyl/weyl.yml:/weyl-application/weyl.yml
     environment:
-      - WEYL_SERVICE_OPTS=-Xms32g -Xmx32g
+      - WEYL_APPLICATION_OPTS=-Xms16g -Xmx16g
     links:
       - catalogue
 
