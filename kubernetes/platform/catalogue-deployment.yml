@@ -11,7 +11,7 @@ spec:
         component: catalogue
     spec:
       containers:
-        - name: weyl
+        - name: catalogue
           image: eu.gcr.io/quartictech/catalogue:0.2.0-143-g6db5433
           ports:
             - containerPort: 8090
