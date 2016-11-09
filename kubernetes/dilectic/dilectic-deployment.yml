@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: dilectic-deployment
+  namespace: dilectic
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: dilectic
+    spec:
+      containers:
+        - name: data-worker
+          image: eu.gcr.io/quartictech/data-worker:0.2.0-47-g7bd5889
+          command: ["sh", "/setup/install.sh"]
+          volumeMounts:
+            - name: shared-data
+              mountPath: /data
+            - name: config-volume
+              mountPath: /setup
+            - name: deploy-key
+              mountPath: /etc/secret
+        - name: nginx
+          image: nginx
+          volumeMounts:
+            - name: shared-data
+              mountPath: /datasets
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: shared-data
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: data-worker-config
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config
+        - name: deploy-key
+          secret:
+            secretName: deploy-key
