@@ -1,7 +1,7 @@
 version: '2'
 services:
   catalogue:
-    image: eu.gcr.io/quartic-oliver/catalogue:${PLATFORM_VERSION}
+    image: ${QUARTIC_DOCKER_REPOSITORY}/catalogue:${PLATFORM_VERSION}
     ports:
       - "8090:8090"
     volumes:
@@ -10,7 +10,7 @@ services:
       - CATALOGUE_APPLICATION_OPTS=-Xms64m -Xmx64m
 
   weyl:
-    image: eu.gcr.io/quartic-oliver/weyl:${PLATFORM_VERSION}
+    image: ${QUARTIC_DOCKER_REPOSITORY}/weyl:${PLATFORM_VERSION}
     ports:
       - "8080:8080"
     volumes:

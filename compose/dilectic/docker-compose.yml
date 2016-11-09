@@ -10,7 +10,7 @@ services:
       - POSTGRES_PASSWORD=dilectic
 
   tayo:
-    image: eu.gcr.io/quartic-oliver/tayo:0.1.0-1-gb9d1187
+    image: ${QUARTIC_DOCKER_REPOSITORY}/tayo:0.1.0-2-g99e4d5f
 
   nginx:
     image: nginx
