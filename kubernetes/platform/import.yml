@@ -1,0 +1,43 @@
+apiVersion: v1
+data:
+  run.sh: |
+    set -e
+    chmod 400 /etc/secret/id_rsa
+    GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking no" -i /etc/secret/id_rsa' git clone git@github.com:quartictech/dilectic.git
+    pip install -r /dilectic/weyl_imports/requirements.txt
+    python3 /dilectic/weyl_imports/import.py -c http://catalogue:8090/api \
+     -d postgres.dilectic \
+     /dilectic/weyl_imports/configs/static/* 
+kind: ConfigMap
+metadata:
+  name: import-job-config
+  namespace: platform
+---
+kind: Job
+apiVersion: extensions/v1beta1
+metadata:
+  name: import-job
+  namespace: platform
+spec:
+  template:
+    metadata:
+      labels:
+        component: platform
+    spec:
+      containers:
+        - name: data-worker
+          image: eu.gcr.io/quartictech/data-worker:0.2.0-47-g7bd5889
+          command: ["sh", "/setup/run.sh"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /setup
+            - name: deploy-key
+              mountPath: /etc/secret
+      restartPolicy: Never
+      volumes:
+        - name: config-volume
+          configMap:
+            name: import-job-config
+        - name: deploy-key
+          secret:
+            secretName: deploy-key

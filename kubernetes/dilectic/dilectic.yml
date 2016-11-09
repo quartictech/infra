@@ -6,7 +6,7 @@ metadata:
   labels:
     component: dilectic
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - port: 80
     protocol: TCP
@@ -92,6 +92,8 @@ spec:
               mountPath: /datasets
             - name: nginx-config-volume
               mountPath: /etc/nginx/conf.d
+          ports:
+            - containerPort: 80
       volumes:
         - name: shared-data
           emptyDir: {}
