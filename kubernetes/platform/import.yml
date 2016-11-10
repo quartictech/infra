@@ -5,9 +5,6 @@ data:
     #export LC_ALL=C.UTF-8
     chmod 400 /etc/secret/id_rsa
     GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking no" -i /etc/secret/id_rsa' git clone git@github.com:quartictech/dilectic.git
-    cd dilectic
-    git checkout fix/weyl-imports
-    cd ..
     pip install -r /dilectic/weyl_imports/requirements.txt
     python3 -c 'import locale; print(locale.getpreferredencoding(False))'
     python3 /dilectic/weyl_imports/import.py -c http://catalogue:8090/api \
