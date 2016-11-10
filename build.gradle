@@ -1,7 +1,0 @@
-plugins {
-    id "com.palantir.git-version" version "0.5.2"
-}
-
-allprojects {
-    version gitVersion()
-}

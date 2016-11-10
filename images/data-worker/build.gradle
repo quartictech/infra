@@ -1,7 +1,0 @@
-plugins {
-    id "com.palantir.docker" version "0.9.1"
-}
-
-docker {
-    name    "${System.env.QUARTIC_DOCKER_REPOSITORY}/${project.name}:${version}"
-}

@@ -1,13 +1,6 @@
 # Quartic infrastructure
 
-This repo contains our infrastructure stuff - Docker image definitions, Ansible
-configuration for hosts, etc.
-
-## Docker images
-
-These are non-product images that we publish to Google Container Registry via CircleCI.
-
-- `data-worker` - Defines environment for processing raw datasets.
+This repo contains our infrastructure stuff - Ansible configuration for hosts, Docker-Compose files, Kubernetes config.
 
 ## Ansible
 
