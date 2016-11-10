@@ -9,6 +9,7 @@ spec:
     metadata:
       labels:
         component: management
+        namespace: platform
     spec:
       containers:
         - name: management
