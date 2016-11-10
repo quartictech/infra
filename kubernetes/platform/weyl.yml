@@ -9,6 +9,10 @@ spec:
   ports:
   - port: 8080
     protocol: TCP
+    name: default
+  - port: 8081
+    protocol: TCP
+    name: admin
   selector:
     component: weyl
 ---
