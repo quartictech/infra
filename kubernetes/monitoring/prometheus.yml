@@ -4,6 +4,9 @@ data:
     ALERT service_down
       IF up == 0
 
+    ALERT service_unavailable
+      IF probe_success == 0
+
     ALERT high_load
       IF node_load1 > 0.5
       ANNOTATIONS {
@@ -48,9 +51,9 @@ data:
           module: [http_2xx]  # Look for a HTTP 200 response.
         static_configs:
           - targets:
-              - "weyl:8081"
-              - "catalogue:8091"
-              - "my-balls"
+              - weyl:8081
+              - catalogue:8091
+              - my-balls
         relabel_configs:
           - source_labels: [__address__]
             regex: (.*)(:80)?
@@ -81,17 +84,6 @@ data:
         prober: http
         timeout: 5s
         http:
-          valid_status_codes: [] # Defaults to 2xx
-          method: GET
-          headers:
-            Accept-Language: en-US
-          no_follow_redirects: false
-          fail_if_ssl: false
-          fail_if_not_ssl: false
-          fail_if_matches_regexp:
-          - "Could not connect to database"
-          fail_if_not_matches_regexp:
-          - "Download the latest version here"
       http:
         prober: http
         timeout: 15s
@@ -109,9 +101,9 @@ data:
         - name: 'slack'
           slack_configs:
               - send_resolved: true
-                username: '<username>'
-                channel: '#<channel-name>'
-                api_url: '<incomming-webhook-url>'
+                username: prometheus
+                channel: '#infrastructure'
+                api_url: 'https://hooks.slack.com/services/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'
 kind: ConfigMap
 metadata:
   creationTimestamp: null
@@ -150,7 +142,7 @@ spec:
           args:
             - '-config.file=/etc/prometheus/prometheus.yml'
             - '-storage.local.path=/prometheus'
-            - '-alertmanager.url=http://alertmanager:9093'
+            - '-alertmanager.url=http://localhost:9093'
           ports:
             - containerPort: 9090
           volumeMounts:
@@ -167,6 +159,18 @@ spec:
           volumeMounts:
             - name: blackbox-config-volume
               mountPath: /etc/blackbox
+        - name: alertmanager
+          image: prom/alertmanager
+          ports:
+            - containerPort: 9003
+          volumeMounts:
+            - name: alertmanager-config-volume
+              mountPath: /etc/alertmanager/
+            - name: alertmanager-data
+              mountPath: /alertmanager
+          args:
+            - '-config.file=/etc/alertmanager/config.yml'
+            - '-storage.path=/alertmanager'
       volumes:
         - name: prometheus-config-volume
           configMap:
@@ -174,5 +178,10 @@ spec:
         - name: blackbox-config-volume
           configMap:
             name: blackbox-config
+        - name: alertmanager-config-volume
+          configMap:
+            name: alertmanager-config
         - name: data
+          emptyDir: {}
+        - name: alertmanager-data
           emptyDir: {}
