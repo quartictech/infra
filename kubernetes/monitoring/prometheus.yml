@@ -42,15 +42,62 @@ data:
 
         static_configs:
              - targets: ['localhost:9090']
-      - job_name: 'services'
-        scrape_interval: 5s
-        metrics_path: '/healthcheck'
+      - job_name: 'blackbox'
+        metrics_path: /probe
+        params:
+          module: [http_2xx]  # Look for a HTTP 200 response.
         static_configs:
-            - targets: ['weyl:8081', 'catalogue:8091']
+          - targets:
+              - "weyl:8081"
+              - "catalogue:8091"
+              - "my-balls"
+        relabel_configs:
+          - source_labels: [__address__]
+            regex: (.*)(:80)?
+            target_label: __param_target
+            replacement: ${1}
+          - source_labels: [__param_target]
+            regex: (.*)
+            target_label: instance
+            replacement: ${1}
+          - source_labels: []
+            regex: .*
+            target_label: __address__
+            replacement: localhost:9115  # Blackbox exporter.
 kind: ConfigMap
 metadata:
   namespace: platform
   name: prometheus-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: blackbox-config
+data:
+  blackbox.yml: |
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 5s
+        http:
+          valid_status_codes: [] # Defaults to 2xx
+          method: GET
+          headers:
+            Accept-Language: en-US
+          no_follow_redirects: false
+          fail_if_ssl: false
+          fail_if_not_ssl: false
+          fail_if_matches_regexp:
+          - "Could not connect to database"
+          fail_if_not_matches_regexp:
+          - "Download the latest version here"
+      http:
+        prober: http
+        timeout: 15s
+        http:
+          valid_status_codes: []
+          method: GET
 ---
 apiVersion: v1
 data:
@@ -107,13 +154,25 @@ spec:
           ports:
             - containerPort: 9090
           volumeMounts:
-            - name: config-volume
+            - name: prometheus-config-volume
               mountPath: /etc/prometheus
             - name: data
               mountPath: /prometheus
+        - name: blackbox
+          image: prom/blackbox-exporter
+          args:
+            - '-config.file=/etc/blackbox/blackbox.yml'
+          ports:
+            - containerPort: 9115
+          volumeMounts:
+            - name: blackbox-config-volume
+              mountPath: /etc/blackbox
       volumes:
-        - name: config-volume
+        - name: prometheus-config-volume
           configMap:
             name: prometheus-config
+        - name: blackbox-config-volume
+          configMap:
+            name: blackbox-config
         - name: data
           emptyDir: {}
