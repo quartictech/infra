@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: management-deployment
+  name: management
   namespace: platform
 spec:
   replicas: 1
