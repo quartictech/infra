@@ -12,10 +12,19 @@ spec:
     spec:
       containers:
         - name: management
-          image: eu.gcr.io/quartictech/management:0.2.0-143-g6db5433
+          image: eu.gcr.io/quartictech/management:0.2.0-166-g9d10edf
           ports:
             - containerPort: 8100
             - containerPort: 8101
           env:
             - name: MANAGEMENT_APPLICATION_OPTS
               value: -Ddw.catalogueUrl=http://catalogue:8090/api
+            - name: ENABLE_METRICS
+            - name: INFLUX_HOST
+              value: monitoring-influxdb
+            - name: INFLUX_PORT
+              value: "8086"
+            - name: INFLUX_DB
+              value: k8s
+            - name: INFLUX_AUTH
+              value: root:root

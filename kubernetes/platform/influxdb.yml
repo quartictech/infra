@@ -35,7 +35,7 @@ spec:
         emptyDir: {}
       containers:
       - name: influxdb
-        image: tutum/influxdb
+        image: tutum/influxdb:0.13
         volumeMounts:
         - mountPath: /data
           name: influxdb-storage
