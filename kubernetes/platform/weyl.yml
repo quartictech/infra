@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: weyl
-          image: eu.gcr.io/quartictech/weyl:0.2.0-171-g7a5f0cd
+          image: eu.gcr.io/quartictech/weyl:0.2.0-178-g8b530a9
           ports:
             - containerPort: 8080
             - containerPort: 8081
