@@ -4,7 +4,7 @@ metadata:
   labels:
     task: monitoring
     component: influxdb
-  name: monitoring-influxdb
+  name: influxdb
   namespace: platform
 spec:
   ports:
