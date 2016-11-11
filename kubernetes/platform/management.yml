@@ -21,7 +21,7 @@ spec:
               value: -Ddw.catalogueUrl=http://catalogue:8090/api
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
-              value: monitoring-influxdb
+              value: influxdb
             - name: INFLUX_PORT
               value: "8086"
             - name: INFLUX_DB

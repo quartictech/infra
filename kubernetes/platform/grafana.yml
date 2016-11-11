@@ -4,7 +4,7 @@ metadata:
   labels:
     task: monitoring
     component: grafana
-  name: monitoring-grafana
+  name: grafana
   namespace: platform
 spec:
   type: NodePort
@@ -41,7 +41,7 @@ spec:
           name: grafana-storage
         env:
         - name: INFLUXDB_HOST
-          value: monitoring-influxdb
+          value: influxdb
         - name: GRAFANA_PORT
           value: "3000"
           # The following env variables are required to make Grafana accessible via
