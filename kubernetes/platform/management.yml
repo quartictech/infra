@@ -20,3 +20,12 @@ spec:
           env:
             - name: MANAGEMENT_APPLICATION_OPTS
               value: -Ddw.catalogueUrl=http://catalogue:8090/api
+            - name: ENABLE_METRICS
+            - name: INFLUX_HOST
+              value: influxdb
+            - name: INFLUX_PORT
+              value: "8086"
+            - name: INFLUX_DB
+              value: k8s
+            - name: INFLUX_AUTH
+              value: root:root
