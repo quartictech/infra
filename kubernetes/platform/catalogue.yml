@@ -9,6 +9,10 @@ spec:
   ports:
   - port: 8090
     protocol: TCP
+    name: default
+  - port: 8091
+    protocol: TCP
+    name: admin
   selector:
     component: catalogue
 ---
