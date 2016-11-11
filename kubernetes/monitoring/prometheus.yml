@@ -53,7 +53,6 @@ data:
           - targets:
               - weyl:8081
               - catalogue:8091
-              - my-balls
         relabel_configs:
           - source_labels: [__address__]
             regex: (.*)(:80)?
@@ -120,7 +119,13 @@ spec:
   type: NodePort
   ports:
   - port: 9090
+    nodePort: 32220
     protocol: TCP
+    name: prometheus
+  - port: 9093
+    nodePort: 32221
+    protocol: TCP
+    name: alertmanager
   selector:
     component: prometheus
 ---
@@ -162,7 +167,7 @@ spec:
         - name: alertmanager
           image: prom/alertmanager
           ports:
-            - containerPort: 9003
+            - containerPort: 9093
           volumeMounts:
             - name: alertmanager-config-volume
               mountPath: /etc/alertmanager/
