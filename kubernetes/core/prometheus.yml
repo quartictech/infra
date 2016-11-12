@@ -45,14 +45,35 @@ data:
 
         static_configs:
              - targets: ['localhost:9090']
-      - job_name: 'blackbox'
+      - job_name: 'dilectic'
         metrics_path: /probe
         params:
           module: [http_2xx]  # Look for a HTTP 200 response.
         static_configs:
           - targets:
-              - weyl:8081
-              - catalogue:8091
+              - dilectic.dilectic/_status
+              - tayo.dilectic:8080/healthcheck
+        relabel_configs:
+          - source_labels: [__address__]
+            regex: (.*)(:80)?
+            target_label: __param_target
+            replacement: ${1}
+          - source_labels: [__param_target]
+            regex: (.*)
+            target_label: instance
+            replacement: ${1}
+          - source_labels: []
+            regex: .*
+            target_label: __address__
+            replacement: localhost:9115  # Blackbox exporter.
+      - job_name: 'platform'
+        metrics_path: /probe
+        params:
+          module: [http_2xx]  # Look for a HTTP 200 response.
+        static_configs:
+          - targets:
+              - weyl.platform:8081/healthcheck
+              - catalogue.platform:8091/healthcheck
         relabel_configs:
           - source_labels: [__address__]
             regex: (.*)(:80)?
@@ -68,13 +89,13 @@ data:
             replacement: localhost:9115  # Blackbox exporter.
 kind: ConfigMap
 metadata:
-  namespace: platform
+  namespace: core
   name: prometheus-config
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: platform
+  namespace: core
   name: blackbox-config
 data:
   blackbox.yml: |
@@ -107,12 +128,13 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: alertmanager-config
+  namespace: core
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: prometheus
-  namespace: platform
+  namespace: core
   labels:
     component: prometheus
 spec:
@@ -133,7 +155,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: prometheus
-  namespace: platform
+  namespace: core
 spec:
   replicas: 1
   template:
