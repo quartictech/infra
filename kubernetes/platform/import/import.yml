@@ -10,7 +10,8 @@ data:
     python3 /dilectic/weyl_imports/import.py -c http://catalogue:8090/api \
      -p postgres.dilectic \
      -n dilectic.dilectic \
-     /dilectic/weyl_imports/configs/static/*
+     /dilectic/weyl_imports/configs/static/* \
+     /dilectic/weyl_imports/configs/live/*
 kind: ConfigMap
 metadata:
   name: import-job-config

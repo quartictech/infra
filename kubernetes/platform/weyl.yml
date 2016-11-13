@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: weyl
-          image: eu.gcr.io/quartictech/weyl:0.2.0-202-g97aca8d
+          image: eu.gcr.io/quartictech/weyl:0.2.0-206-g119e660
           ports:
             - containerPort: 8080
             - containerPort: 8081
@@ -50,3 +50,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          resources:
+            limits:
+              memory: 20Gi

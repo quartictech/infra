@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontdoor
+  namespace: dilectic
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - secretName: tls-tracker
+      hosts:
+        - tracker.quartic.io
+  rules:
+    - host: tracker.quartic.io
+      http:
+        paths:
+          - path: /upload
+            backend:
+              serviceName: tracker
+              servicePort: 8080
