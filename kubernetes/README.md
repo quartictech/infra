@@ -2,15 +2,15 @@
 # Bootstrap
  1. Create a Container Engine cluster either via the Google Console or on the command line:
 
-    gcloud container clusters create <my-cluster>
+        gcloud container clusters create <my-cluster>
 
  2. Grab the credentials for kubernetes to connected
 
-    gcloud container clusters get-credentials
+        gcloud container clusters get-credentials
 
  3. Login with application default creds for some weird reason:
 
-     gcloud auth application-default login
+        gcloud auth application-default login
 
  4. Should be good to go. Run `kubectl get events` or something to test.
  5. You might need to manually add the postgres disk to the cluster machine?
@@ -18,7 +18,7 @@
  7. Add our external IP to the primary node
  8. Label it with `ingressNode=true`
 
-       kubectl label nodes <node> ingressNode=true
+        kubectl label nodes <node> ingressNode=true
 
 # Starting the Cluster
 
@@ -36,7 +36,7 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
  1. Find out the IP of one of the Kubernetes cluster boxes.
  2. Create ssh tunnels:
 
-      ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
+        ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
 
 # Adding dashboards
 
@@ -48,10 +48,13 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
 
 3. Move to `core/dashboards/` directory.
 
-4. Add `{ "dashboards": XXX, overwrite: false }` surrounding structure.
+4. Add `{ "dashboard": XXX, overwrite: false }` surrounding structure. Set id to null.
 
-5. Run `kubectl -n core create cm grafana-dashboards --from-file=core/dashboards`.
+5. Run:
 
-6. Run `kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml`.
+        kubectl -n core delete cm grafana-dashboards
+        kubectl -n core create cm grafana-dashboards --from-file=core/dashboards
+        kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml
 
+6. Remove guff in metadata except for `name` and `namespace`
 7. Do normal Git stuff.
