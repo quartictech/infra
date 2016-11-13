@@ -30,17 +30,21 @@ spec:
     spec:
       containers:
         - name: catalogue
-          image: eu.gcr.io/quartictech/catalogue:0.2.0-178-g8b530a9
+          image: eu.gcr.io/quartictech/catalogue:0.2.0-202-g97aca8d
           ports:
             - containerPort: 8090
             - containerPort: 8091
           env:
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
-              value: influxdb
+              value: influxdb.core
             - name: INFLUX_PORT
               value: "8086"
             - name: INFLUX_DB
               value: k8s
             - name: INFLUX_AUTH
               value: root:root
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace

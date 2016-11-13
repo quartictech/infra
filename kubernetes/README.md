@@ -32,3 +32,21 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
  2. Create ssh tunnels:
 
       ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
+
+# Adding dashboards
+
+**Note:** This procedure is still pretty ropy.
+
+1. Create dashboard in Grafana UI.
+
+2. Export dashboard (Cog icon -> Export).
+
+3. Move to `core/dashboards/` directory.
+
+4. Add `{ "dashboards": XXX, overwrite: false }` surrounding structure.
+
+5. Run `kubectl -n core create cm grafana-dashboards --from-file=core/dashboards`.
+
+6. Run `kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml`.
+
+7. Do normal Git stuff.

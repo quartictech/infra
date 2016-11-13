@@ -5,7 +5,7 @@ metadata:
     task: monitoring
     component: grafana
   name: grafana
-  namespace: platform
+  namespace: core
 spec:
   type: NodePort
   ports:
@@ -18,7 +18,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: platform
+  namespace: core
 spec:
   replicas: 1
   template:
@@ -30,6 +30,9 @@ spec:
       volumes:
       - name: grafana-storage
         emptyDir: {}
+      - name: grafana-dashboards
+        configMap:
+          name: grafana-dashboards
       containers:
       - name: grafana
         image: kubernetes/heapster_grafana:v2.6.0
@@ -39,6 +42,8 @@ spec:
         volumeMounts:
         - mountPath: /var
           name: grafana-storage
+        - mountPath: /dashboards
+          name: grafana-dashboards
         env:
         - name: INFLUXDB_HOST
           value: influxdb
