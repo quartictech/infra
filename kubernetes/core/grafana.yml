@@ -5,7 +5,7 @@ metadata:
     task: monitoring
     component: grafana
   name: grafana
-  namespace: platform
+  namespace: core
 spec:
   type: NodePort
   ports:
@@ -18,7 +18,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: platform
+  namespace: core
 spec:
   replicas: 1
   template:

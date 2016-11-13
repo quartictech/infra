@@ -5,7 +5,7 @@ metadata:
     task: monitoring
     component: influxdb
   name: influxdb
-  namespace: platform
+  namespace: core
 spec:
   ports:
   - name: http
@@ -21,7 +21,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: influxdb
-  namespace: platform
+  namespace: core
 spec:
   replicas: 1
   template:

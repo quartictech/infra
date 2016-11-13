@@ -3529,9 +3529,5 @@ data:
     }
 kind: ConfigMap
 metadata:
-  creationTimestamp: 2016-11-11T17:59:04Z
   name: grafana-dashboards
-  namespace: platform
-  resourceVersion: "44688"
-  selfLink: /api/v1/namespaces/platform/configmaps/grafana-dashboards
-  uid: 889e3231-a838-11e6-8581-42010af0017c
+  namespace: core
