@@ -14,6 +14,11 @@
 
  4. Should be good to go. Run `kubectl get events` or something to test.
  5. You might need to manually add the postgres disk to the cluster machine?
+ 6. Open HTTP port on the primary node
+ 7. Add our external IP to the primary node
+ 8. Label it with `ingressNode=true`
+
+       kubectl label nodes <node> ingressNode=true
 
 # Starting the Cluster
 

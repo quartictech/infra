@@ -1,32 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tayo
+  name: tracker
   namespace: dilectic
   labels:
-    component: tayo
+    component: tracker
 spec:
   type: ClusterIP
   ports:
   - port: 8080
     protocol: TCP
   selector:
-    component: tayo
+    component: tracker
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: tayo
+  name: tracker
   namespace: dilectic
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: tayo
+        component: tracker
     spec:
       containers:
         - name: tayo
-          image: eu.gcr.io/quartictech/tayo:0.1.0-11-ga0c3507
+          image: eu.gcr.io/quartictech/tracker:0.0.0-11-g99b652e
           ports:
             - containerPort: 8080
