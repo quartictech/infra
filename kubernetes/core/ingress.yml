@@ -17,6 +17,7 @@ spec:
     - host: core.quartic.io
       http:
         paths:
-          - backend:
+          - path: /
+            backend:
               serviceName: grafana
               servicePort: 3000
