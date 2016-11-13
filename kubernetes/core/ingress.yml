@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: platform
+  namespace: core
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
@@ -10,13 +10,13 @@ metadata:
     ingress.kubernetes.io/auth-secret: basic-auth
 spec:
   tls:
-    - secretName: tls-foo
+    - secretName: tls-core
       hosts:
-        - foo.quartic.io
+        - core.quartic.io
   rules:
-    - host: foo.quartic.io
+    - host: core.quartic.io
       http:
         paths:
           - backend:
-              serviceName: weyl
-              servicePort: 8080
+              serviceName: grafana
+              servicePort: 3000
