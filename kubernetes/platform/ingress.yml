@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: tls-foo
       hosts:
-        - foo.quartic.io
+        - alpha.quartic.io
   rules:
-    - host: foo.quartic.io
+    - host: alpha.quartic.io
       http:
         paths:
           - path: /

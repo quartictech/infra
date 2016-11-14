@@ -30,13 +30,13 @@ spec:
     spec:
       containers:
         - name: weyl
-          image: eu.gcr.io/quartictech/weyl:0.2.0-213-g23ff6f3
+          image: eu.gcr.io/quartictech/weyl:0.2.0-217-g9f03ee1
           ports:
             - containerPort: 8080
             - containerPort: 8081
           env:
             - name: WEYL_APPLICATION_OPTS
-              value: -Ddw.catalogueWatchUrl=ws://catalogue:8090/api/datasets/watch -Xms20g -Xmx20g
+              value: -Ddw.catalogueWatchUrl=ws://catalogue:8090/api/datasets/watch -Xms16g -Xmx16g
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
               value: influxdb.core
@@ -52,4 +52,4 @@ spec:
                   fieldPath: metadata.namespace
           resources:
             limits:
-              memory: 20Gi
+              memory: 16Gi

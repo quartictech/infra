@@ -1,0 +1,55 @@
+apiVersion: v1
+data:
+  install.sh: |
+    set -e
+    ls /etc/secret
+    apt-get update && apt-get install -y curl apt-transport-https
+    export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
+    echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee /etc/apt/sources.list.d/google-cloud-sdk.list
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+    apt-get update && apt-get install -y google-cloud-sdk
+    chmod 400 /etc/secret/id_rsa
+    GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking no" -i /etc/secret/id_rsa' git clone git@github.com:quartictech/dilectic.git
+    ln -s /dilectic/integration
+    cp /integration/config.yml.example /integration/config.yml
+    sed -i.bak 's/host: localhost/host: postgres/g' /integration/config.yml
+    mkdir -p /data/derived /data/raw
+    gsutil -m rsync -r gs://quartic-dilectic/raw-data /data/raw
+    /integration/integrations.sh
+    curl -f -XPUT http://pogo:8080/datasets/signkick.geojson -d @/data/derived/signkick.geojson
+kind: ConfigMap
+metadata:
+  name: data-worker-config
+  namespace: dilectic
+---
+kind: Job
+apiVersion: extensions/v1beta1
+metadata:
+  name: stuff
+  namespace: dilectic
+spec:
+  template:
+    metadata:
+      labels:
+        component: dilectic
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: data-worker
+          image: eu.gcr.io/quartictech/data-worker:0.2.0-47-g7bd5889
+          command: ["sh", "/setup/install.sh"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /setup
+            - name: deploy-key
+              mountPath: /etc/secret
+          resources:
+            limits:
+              memory: 6Gi
+      volumes:
+        - name: config-volume
+          configMap:
+            name: data-worker-config
+        - name: deploy-key
+          secret:
+            secretName: deploy-key
