@@ -17,6 +17,7 @@ spec:
     - host: foo.quartic.io
       http:
         paths:
-          - backend:
+          - path: /
+            backend:
               serviceName: weyl
               servicePort: 8080
