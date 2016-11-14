@@ -16,38 +16,37 @@ data:
     mkdir -p /data/derived /data/raw
     gsutil -m rsync -r gs://quartic-dilectic/raw-data /data/raw
     /integration/integrations.sh
-    tail -f /dev/null
+    curl -f -XPUT http://pogo:8080/datasets/signkick.geojson -d @/data/derived/signkick.geojson
 kind: ConfigMap
 metadata:
   name: data-worker-config
   namespace: dilectic
 ---
-kind: Deployment
+kind: Job
 apiVersion: extensions/v1beta1
 metadata:
   name: stuff
   namespace: dilectic
 spec:
-  replicas: 1
   template:
     metadata:
       labels:
         component: dilectic
     spec:
+      restartPolicy: Never
       containers:
         - name: data-worker
           image: eu.gcr.io/quartictech/data-worker:0.2.0-47-g7bd5889
           command: ["sh", "/setup/install.sh"]
           volumeMounts:
-            - name: shared-data
-              mountPath: /data
             - name: config-volume
               mountPath: /setup
             - name: deploy-key
               mountPath: /etc/secret
+          resources:
+            limits:
+              memory: 6Gi
       volumes:
-        - name: shared-data
-          emptyDir: {}
         - name: config-volume
           configMap:
             name: data-worker-config

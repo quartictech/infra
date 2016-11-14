@@ -63,6 +63,9 @@ spec:
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql-data
+          resources:
+            limits:
+              memory: 4Gi
       volumes:
         - name: postgres-data
           persistentVolumeClaim:

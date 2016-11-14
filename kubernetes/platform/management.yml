@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: management
-          image: eu.gcr.io/quartictech/management:0.2.0-213-g23ff6f3
+          image: eu.gcr.io/quartictech/management:0.2.0-217-g9f03ee1
           ports:
             - containerPort: 8100
             - containerPort: 8101
