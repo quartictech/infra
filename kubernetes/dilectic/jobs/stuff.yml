@@ -1,19 +1,4 @@
 apiVersion: v1
-kind: Service
-metadata:
-  name: dilectic
-  namespace: dilectic
-  labels:
-    component: dilectic
-spec:
-  type: ClusterIP
-  ports:
-  - port: 80
-    protocol: TCP
-  selector:
-    component: dilectic
----
-apiVersion: v1
 data:
   install.sh: |
     set -e
@@ -37,58 +22,10 @@ metadata:
   name: data-worker-config
   namespace: dilectic
 ---
-apiVersion: v1
-data:
-  default.conf: |
-    server {
-        listen       80;
-        server_name  localhost;
-
-        location ~ /\. {
-            deny all;
-        }
-
-        # Static files
-        location /datasets {
-            alias /datasets;
-            try_files $uri $uri/ =404;
-        }
-
-        location /tayo {
-            proxy_pass            http://tayo:8080;
-            proxy_http_version    1.1;
-            proxy_set_header      Upgrade $http_upgrade;
-            proxy_set_header      Connection "upgrade";
-
-            proxy_connect_timeout 1h;
-            proxy_send_timeout    1h;
-            proxy_read_timeout    1h;
-        }
-
-        location /tracker {
-            proxy_pass            http://tracker:8080;
-            proxy_http_version    1.1;
-            proxy_set_header      Upgrade $http_upgrade;
-            proxy_set_header      Connection "upgrade";
-
-            proxy_connect_timeout 1h;
-            proxy_send_timeout    1h;
-            proxy_read_timeout    1h;
-        }
-
-        location /_status {
-            return 200 'gangnam style!';
-        }
-    }
-kind: ConfigMap
-metadata:
-  name: nginx-config
-  namespace: dilectic
----
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: dilectic-deployment
+  name: stuff
   namespace: dilectic
 spec:
   replicas: 1
@@ -108,24 +45,12 @@ spec:
               mountPath: /setup
             - name: deploy-key
               mountPath: /etc/secret
-        - name: nginx
-          image: nginx
-          volumeMounts:
-            - name: shared-data
-              mountPath: /datasets
-            - name: nginx-config-volume
-              mountPath: /etc/nginx/conf.d
-          ports:
-            - containerPort: 80
       volumes:
         - name: shared-data
           emptyDir: {}
         - name: config-volume
           configMap:
             name: data-worker-config
-        - name: nginx-config-volume
-          configMap:
-            name: nginx-config
         - name: deploy-key
           secret:
             secretName: deploy-key
