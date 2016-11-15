@@ -27,6 +27,6 @@ spec:
     spec:
       containers:
         - name: tayo
-          image: eu.gcr.io/quartictech/tracker:0.0.0-15-gba44fbb
+          image: eu.gcr.io/quartictech/tracker:0.0.0-19-g1f97091
           ports:
             - containerPort: 8080
