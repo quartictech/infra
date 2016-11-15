@@ -22,13 +22,11 @@
 
 # Starting the Cluster
 
-     kubectl apply -f core
-
-     kubectl apply -f dilectic
-
-     kubectl apply -f platform
-
-     kubectl apply -f platform/import
+    kubectl apply -f namespaces
+    kubectl apply -f core
+    kubectl apply -f dilectic
+    kubectl apply -f platform
+    kubectl apply -f platform/import
 
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:
@@ -56,5 +54,5 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
         kubectl -n core create cm grafana-dashboards --from-file=core/dashboards
         kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml
 
-6. Remove guff in metadata except for `name` and `namespace`
+6. Remove guff in metadata except for `name` and `namespace`.
 7. Do normal Git stuff.
