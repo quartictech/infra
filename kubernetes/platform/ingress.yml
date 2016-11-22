@@ -13,6 +13,9 @@ spec:
     - secretName: tls-foo
       hosts:
         - alpha.quartic.io
+    - secretName: tls-mgmt
+      hosts:
+        - mgmt.quartic.io
   rules:
     - host: alpha.quartic.io
       http:
@@ -21,3 +24,10 @@ spec:
             backend:
               serviceName: weyl
               servicePort: 8080
+    - host: mgmt.quartic.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: management
+              servicePort: 8100
