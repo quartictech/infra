@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: national-grid
+  namespace: dilectic
+  labels:
+    component: national-grid
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    component: national-grid
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: national-grid
+  namespace: dilectic
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: national-grid
+    spec:
+      containers:
+        - name: national-grid
+          image: eu.gcr.io/quartictech/national-grid:0.1.0-2-g581ab98
+          ports:
+            - containerPort: 9000
