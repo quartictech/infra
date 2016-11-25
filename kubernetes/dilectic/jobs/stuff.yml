@@ -19,6 +19,10 @@ data:
     curl -f -XPUT http://pogo:8080/datasets/AADF-data-major-roads.geojson -d @/data/derived/gb-road-traffic-counts/AADF-data-major-roads.geojson
     curl -f -XPUT http://pogo:8080/datasets/disruptions.geojson -d @/data/derived/disruptions.geojson
     curl -f -XPUT http://pogo:8080/datasets/signkick.geojson -d @/data/derived/signkick.geojson
+    curl -f -XPUT http://pogo:8080/datasets/signkick.geojson -d @/data/derived/signkick.geojson
+    for f in /data/derived/nationalgrid/*; do
+      curl -f -XPUT http://pogo:8080/datasets/$(basename ${f}) -d @${f}
+    done
 kind: ConfigMap
 metadata:
   name: data-worker-config
@@ -38,7 +42,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: data-worker
-          image: eu.gcr.io/quartictech/data-worker:0.2.0-47-g7bd5889
+          image: eu.gcr.io/quartictech/data-worker:0.3.0-3-g001356a
           command: ["sh", "/setup/install.sh"]
           volumeMounts:
             - name: config-volume
