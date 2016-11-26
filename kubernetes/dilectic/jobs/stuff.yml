@@ -13,14 +13,10 @@ data:
     ln -s /dilectic/integration
     cp /integration/config.yml.example /integration/config.yml
     sed -i.bak 's/host: localhost/host: postgres/g' /integration/config.yml
-    mkdir -p /data/derived /data/raw
+    mkdir -p /data/final /data/derived /data/raw
     gsutil -m rsync -r gs://quartic-dilectic/raw-data /data/raw
     /integration/integrations.sh
-    curl -f -XPUT http://pogo:8080/datasets/AADF-data-major-roads.geojson -d @/data/derived/gb-road-traffic-counts/AADF-data-major-roads.geojson
-    curl -f -XPUT http://pogo:8080/datasets/disruptions.geojson -d @/data/derived/disruptions.geojson
-    curl -f -XPUT http://pogo:8080/datasets/signkick.geojson -d @/data/derived/signkick.geojson
-    curl -f -XPUT http://pogo:8080/datasets/signkick.geojson -d @/data/derived/signkick.geojson
-    for f in /data/derived/nationalgrid/*; do
+    for f in /data/final/*; do
       curl -f -XPUT http://pogo:8080/datasets/$(basename ${f}) -d @${f}
     done
 kind: ConfigMap
