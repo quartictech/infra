@@ -43,7 +43,7 @@ spec:
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: postgres-deployment
+  name: postgres
   namespace: dilectic
 spec:
   replicas: 1
