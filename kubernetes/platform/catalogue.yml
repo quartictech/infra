@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: catalogue
-          image: eu.gcr.io/quartictech/catalogue:0.2.0-423-gdf90938
+          image: eu.gcr.io/quartictech/catalogue:0.2.0-433-g4040bd9
           ports:
             - containerPort: 8090
             - containerPort: 8091
