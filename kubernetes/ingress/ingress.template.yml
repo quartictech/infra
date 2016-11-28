@@ -57,20 +57,14 @@ objects:
         - secretName: tls-alpha
           hosts:
             - "alpha.$(DOMAIN_NAME)"
-        - secretName: tls-mgmt
-          hosts:
-            - "mgmt.$(DOMAIN_NAME)"
       rules:
         - host: "alpha.$(DOMAIN_NAME)"
           http:
             paths:
-              - path: /
+              - path: /map
                 backend:
                   serviceName: weyl
                   servicePort: 8080
-        - host: "mgmt.$(DOMAIN_NAME)"
-          http:
-            paths:
               - path: /
                 backend:
                   serviceName: management
