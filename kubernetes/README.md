@@ -1,22 +1,31 @@
+# Prerequisites
+
+- [ktmpl](https://github.com/InQuicker/ktmpl):
+
+        brew install rust
+        export PATH=${PATH}:~/.cargo/bin
+        cargo install ktmpl
+
 
 # Bootstrap
- 1. Create a Container Engine cluster either via the Google Console or on the command line:
+
+1. Create a Container Engine cluster either via the Google Console or on the command line:
 
         gcloud container clusters create <my-cluster>
 
- 2. Grab the credentials for kubernetes to connected
+2. Grab the credentials for kubernetes to connected
 
         gcloud container clusters get-credentials
 
- 3. Login with application default creds for some weird reason:
+3. Login with application default creds for some weird reason:
 
         gcloud auth application-default login
 
- 4. Should be good to go. Run `kubectl get events` or something to test.
- 5. You might need to manually add the postgres disk to the cluster machine?
- 6. Open HTTP port on the primary node
- 7. Add our external IP to the primary node
- 8. Label it with `ingressNode=true`
+4. Should be good to go. Run `kubectl get events` or something to test.
+5. You might need to manually add the postgres disk to the cluster machine?
+6. Open HTTP port on the primary node
+7. Add our external IP to the primary node
+8. Label it with `ingressNode=true`
 
         kubectl label nodes <node> ingressNode=true
 
@@ -31,8 +40,8 @@
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:
 
- 1. Find out the IP of one of the Kubernetes cluster boxes.
- 2. Create ssh tunnels:
+1. Find out the IP of one of the Kubernetes cluster boxes.
+2. Create ssh tunnels:
 
         ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
 
