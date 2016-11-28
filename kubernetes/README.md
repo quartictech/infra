@@ -32,7 +32,7 @@
 # Starting the Cluster
 
     kubectl apply -f namespaces
-    ktmpl ingress/ingress.template.yml -p DOMAIN_NAME dev.quartic.io | kubectl apply -f -
+    ktmpl ingress/ingress.template.yml -p DOMAIN_NAME dev.quartic.io | kubectl apply -f -   # Where "dev.quartic.io" is whatever domain is relevant
     kubectl apply -f core
     kubectl apply -f dilectic
     kubectl apply -f platform
