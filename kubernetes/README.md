@@ -3,8 +3,8 @@
 - [ktmpl](https://github.com/InQuicker/ktmpl):
 
         brew install rust
-        export PATH=${PATH}:~/.cargo/bin
         cargo install ktmpl
+        export PATH=${PATH}:~/.cargo/bin    # Should probably go in your .bashrc/.zshrc file
 
 
 # Bootstrap
@@ -32,6 +32,7 @@
 # Starting the Cluster
 
     kubectl apply -f namespaces
+    ktmpl ingress/ingress.template.yml -p DOMAIN_NAME dev.quartic.io | kubectl apply -f -
     kubectl apply -f core
     kubectl apply -f dilectic
     kubectl apply -f platform
