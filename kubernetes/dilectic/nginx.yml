@@ -100,7 +100,7 @@ spec:
               mountPath: /etc/nginx/conf.d
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
       volumes:
         - name: nginx-config-volume
           configMap:

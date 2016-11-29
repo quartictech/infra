@@ -35,4 +35,4 @@ spec:
               value: /datasets
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m

@@ -32,4 +32,4 @@ spec:
             - containerPort: 8080
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
