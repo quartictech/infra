@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import subprocess
+import sys
+import yaml
+
+from jinja2 import Template
+
+# Modified http://blog.endpoint.com/2015/01/getting-realtime-output-using-python.html for Python3 and stdin
+def run_command(command, stdin):
+    process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    process.stdin.write(str.encode(stdin))
+    process.stdin.close()
+    while True:
+        output = process.stdout.readline().decode()
+        if output == "" and process.poll() is not None:
+            break
+        if output:
+            print(output, end="")
+    rc = process.poll()
+    return rc
+
+def get_filenames(path):
+    if os.path.isdir(path):
+        return filter(
+            lambda p: os.path.isfile(p),
+            [os.path.join(path, p) for p in os.listdir(path)]
+        )
+    else:
+        return [path]
+
+def load_config(path, domain_name):
+    with open(path, "r", encoding='utf-8') as stream:
+        config = yaml.load(stream)
+    config["domain_name"] = domain_name
+    return config
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Deploy a platform stack.")
+    parser.add_argument("-n", "--domain-name", required=True, help="Domain name (not including stack name prefix)")
+    parser.add_argument("-o", "--operation", required=True, choices=["create", "apply", "delete"], help="kubectl operation")
+    parser.add_argument("-f", "--filename", required=True, help="Kubernetes definition file (or directory containing files)")
+    parser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
+    args = parser.parse_args()
+
+    stack_configs = {path: load_config(path, args.domain_name) for path in args.stack_file}
+    global_config = { "domain_name": args.domain_name }
+
+    for template_name in get_filenames(args.filename):
+        with open(template_name, "rt") as file:
+            template = Template(file.read())
+
+        if template_name.endswith(".stack.yml"):
+            for stack_name, stack_config in stack_configs.items():
+                print("--- {} ({}) ---".format(template_name, stack_name))
+                rendered = template.render(stack_config)
+                run_command(["kubectl", args.operation, "-f", "-"], stdin=rendered)
+        else:
+            print("--- {} ---".format(template_name))
+            rendered = template.render(global_config)
+            run_command(["kubectl", args.operation, "-f", "-"], stdin=rendered)

@@ -1,11 +1,10 @@
 # Prerequisites
 
-- [ktmpl](https://github.com/InQuicker/ktmpl):
+- Python3 virtualenv:
 
-        brew install rust
-        cargo install ktmpl
-        export PATH=${PATH}:~/.cargo/bin    # Should probably go in your .bashrc/.zshrc file
-
+        virtualenv .env --python=`which python3`
+        source .env/bin/activate
+        pip install -r requirements.txt
 
 # Bootstrap
 
@@ -29,14 +28,22 @@
 
         kubectl label nodes <node> ingressNode=true
 
-# Starting the Cluster
+# Starting the cluster
 
-    kubectl apply -f namespaces
-    ktmpl ingress/ingress.template.yml -p DOMAIN_NAME dev.quartic.io | kubectl apply -f -   # Where "dev.quartic.io" is whatever domain is relevant
-    kubectl apply -f core
-    kubectl apply -f dilectic
-    kubectl apply -f platform
-    kubectl apply -f platform/import
+    export DOMAIN_NAME=dev.quartic.io   # Or whatever the relevant domain is
+
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f namespaces stacks/*
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f core
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f dilectic
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f platform stacks/*
+
+# Dilectic hydration
+
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f dilectic/hydration
+
+# Stack imports
+
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f platform/import stacks/*
 
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:
