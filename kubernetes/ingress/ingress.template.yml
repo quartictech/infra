@@ -1,10 +1,6 @@
 ---
 kind: "Template"
 apiVersion: "v1"
-metadata:
-  name: "ingress"
-labels:
-  template: "ingress-template"
 parameters:
   - name: "DOMAIN_NAME"
     description: "Domain name"
