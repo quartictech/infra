@@ -48,3 +48,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          resources:
+            requests:
+              cpu: 10m

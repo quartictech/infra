@@ -30,3 +30,8 @@ spec:
           image: eu.gcr.io/quartictech/tayo:0.1.0-13-g4bfb92c
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: 10m
+            limits:
+              memory: 32M
