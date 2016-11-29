@@ -1,0 +1,2 @@
+domain_name: dev.quartic.io
+postgres_disk: dev-postgres

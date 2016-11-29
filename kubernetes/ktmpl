@@ -31,22 +31,21 @@ def get_filenames(path):
     else:
         return [path]
 
-def load_config(path, domain_name):
+def load_config(path):
     with open(path, "r", encoding='utf-8') as stream:
         config = yaml.load(stream)
-    config["domain_name"] = domain_name
     return config
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Deploy a platform stack.")
-    parser.add_argument("-n", "--domain-name", required=True, help="Domain name (not including stack name prefix)")
+    parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
+    parser.add_argument("-c", "--cluster", required=True, help="Cluster name (should match prefix of a file in clusters/ dir)")
     parser.add_argument("-o", "--operation", required=True, choices=["create", "apply", "delete"], help="kubectl operation")
     parser.add_argument("-f", "--filename", required=True, help="Kubernetes definition file (or directory containing files)")
     parser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
     args = parser.parse_args()
 
-    stack_configs = {path: load_config(path, args.domain_name) for path in args.stack_file}
-    global_config = { "domain_name": args.domain_name }
+    stack_configs = {path: load_config(path) for path in args.stack_file}
+    cluster_config = load_config(os.path.join("clusters", args.cluster + ".yml"))
 
     for template_name in get_filenames(args.filename):
         with open(template_name, "rt") as file:
@@ -55,9 +54,9 @@ if __name__ == "__main__":
         if template_name.endswith(".stack.yml"):
             for stack_name, stack_config in stack_configs.items():
                 print("--- {} ({}) ---".format(template_name, stack_name))
-                rendered = template.render(stack_config)
+                rendered = template.render({ "cluster": cluster_config, "stack": stack_config })
                 run_command(["kubectl", args.operation, "-f", "-"], stdin=rendered)
         else:
             print("--- {} ---".format(template_name))
-            rendered = template.render(global_config)
+            rendered = template.render({ "cluster": cluster_config })
             run_command(["kubectl", args.operation, "-f", "-"], stdin=rendered)

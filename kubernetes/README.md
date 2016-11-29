@@ -30,27 +30,27 @@
 
 # Starting the cluster
 
-    export DOMAIN_NAME=dev.quartic.io   # Or whatever the relevant domain is
+    export CLUSTER=dev    # Or prod, etc.
 
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f namespaces stacks/*
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f core
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f dilectic
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f platform stacks/*
+    ./ktmpl -c ${CLUSTER} -o apply -f namespaces stacks/*
+    ./ktmpl -c ${CLUSTER} -o apply -f core
+    ./ktmpl -c ${CLUSTER} -o apply -f dilectic
+    ./ktmpl -c ${CLUSTER} -o apply -f platform stacks/*
 
 # Dilectic hydration
 
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f dilectic/hydration
+    ./ktmpl -c ${CLUSTER} -o apply -f dilectic/hydration
 
 # Stack imports
 
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f platform/import stacks/*
+    ./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/*
 
 # Per-stack operations
 
 Any of the multi-stack operations above can be applied in a more granular way by providing specific stack definitions.
 For example:
 
-    ./ktmpl -d ${DOMAIN_NAME} -o apply -f platform/import stacks/alpha.yml
+    ./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/alpha.yml
 
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:

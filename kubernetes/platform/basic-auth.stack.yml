@@ -4,5 +4,5 @@ data:
 kind: Secret
 metadata:
   name: basic-auth
-  namespace: {{stack_name}}
+  namespace: {{stack.name}}
 type: Opaque

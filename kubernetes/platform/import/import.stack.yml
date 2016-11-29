@@ -15,13 +15,13 @@ data:
 kind: ConfigMap
 metadata:
   name: import-job-config
-  namespace: {{stack_name}}
+  namespace: {{stack.name}}
 ---
 kind: Job
 apiVersion: extensions/v1beta1
 metadata:
   name: import-job
-  namespace: {{stack_name}}
+  namespace: {{stack.name}}
 spec:
   template:
     spec:

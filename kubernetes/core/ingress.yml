@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: tls-core
       hosts:
-        - core.{{domain_name}}
+        - core.{{cluster.domain_name}}
   rules:
-    - host: core.{{domain_name}}
+    - host: core.{{cluster.domain_name}}
       http:
         paths:
           - path: /
