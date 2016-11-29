@@ -68,4 +68,4 @@ spec:
             requests:
               cpu: "{{stack.weyl.cpu * cluster.cpu_multiplier}}"
             limits:
-              memory: {{stack.weyl.memory_gb + 0.1}}Gi
+              memory: {{stack.weyl.memory_gb + 0.5}}Gi

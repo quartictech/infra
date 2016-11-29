@@ -7,11 +7,12 @@ data:
     GIT_SSH_COMMAND='ssh -o "StrictHostKeyChecking no" -i /etc/secret/id_rsa' git clone git@github.com:quartictech/dilectic.git
     pip install -r /dilectic/weyl_imports/requirements.txt
     python3 -c 'import locale; print(locale.getpreferredencoding(False))'
+    {% for category in stack.dataset_categories %}
     python3 /dilectic/weyl_imports/import.py -c http://catalogue:8090/api \
-     -p postgres.dilectic \
-     -n nginx.dilectic \
-     /dilectic/weyl_imports/configs/static/* \
-     /dilectic/weyl_imports/configs/live/*
+      -p postgres.dilectic \
+      -n nginx.dilectic \
+      /dilectic/weyl_imports/configs/{{category}}/*
+    {% endfor %}
 kind: ConfigMap
 metadata:
   name: import-job-config
