@@ -3,4 +3,4 @@ name: beta
 platform_version: 0.2.0-444-gc77ce06
 weyl:
   memory_gb: 4
-  cpu: 4
+  cpu: 2

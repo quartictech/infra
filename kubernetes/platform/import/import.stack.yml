@@ -24,6 +24,9 @@ metadata:
   namespace: {{stack.name}}
 spec:
   template:
+    metadata:
+      labels:
+        component: {{stack.name}}
     spec:
       containers:
         - name: data-worker
@@ -34,6 +37,9 @@ spec:
               mountPath: /setup
             - name: deploy-key
               mountPath: /etc/secret
+          resources:
+            limits:
+              cpu: 100m
       restartPolicy: Never
       volumes:
         - name: config-volume

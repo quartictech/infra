@@ -16,6 +16,7 @@ data:
     mkdir -p /data/final /data/derived /data/raw
     gsutil -m rsync -r gs://quartic-dilectic/raw-data /data/raw
     /integration/integrations.sh
+    echo "OH YEAH"
     for f in /data/final/*; do
       curl -f -XPUT http://pogo:8080/datasets/$(basename ${f}) -d @${f}
     done

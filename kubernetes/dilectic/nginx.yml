@@ -101,8 +101,6 @@ spec:
           resources:
             requests:
               cpu: 10m
-            limits:
-              memory: 64M
       volumes:
         - name: nginx-config-volume
           configMap:
