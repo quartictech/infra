@@ -50,7 +50,7 @@
 Any of the multi-stack operations above can be applied in a more granular way by providing specific stack definitions.
 For example:
 
-./ktmpl -d ${DOMAIN_NAME} -o apply -f platform/import stacks/alpha.yml
+    ./ktmpl -d ${DOMAIN_NAME} -o apply -f platform/import stacks/alpha.yml
 
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:
