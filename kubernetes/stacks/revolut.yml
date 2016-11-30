@@ -6,3 +6,4 @@ weyl:
   cpu: 2
 dataset_categories:
   - small
+auth_secret: cmV2b2x1dDokYXByMSQ3cFFqTHQ2YiR5a20ybGZaNTRHeGF6ZmMwYnhndjQxCg==
