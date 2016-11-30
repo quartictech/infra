@@ -1,44 +1,40 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: management
+  name: howl
   namespace: {{stack.name}}
   labels:
-    component: management
+    component: howl
 spec:
   ports:
-  - port: 8100
+  - port: 8090
     protocol: TCP
     name: default
-  - port: 8101
+  - port: 8091
     protocol: TCP
     name: admin
   selector:
-    component: management
+    component: howl
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: management
+  name: howl
   namespace: {{stack.name}}
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: management
+        component: howl
     spec:
       containers:
-        - name: management
-          image: eu.gcr.io/quartictech/management:{{stack.platform_version}}
+        - name: howl
+          image: eu.gcr.io/quartictech/howl:{{stack.platform_version}}
           ports:
-            - containerPort: 8100
-            - containerPort: 8101
+            - containerPort: 8120
+            - containerPort: 8121
           env:
-            - name: MANAGEMENT_APPLICATION_OPTS
-              value: >
-                -Ddw.catalogueUrl=http://catalogue:8090/api
-                -Ddw.howlUrl=http://howl:8120/api
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
               value: influxdb.core
