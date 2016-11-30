@@ -1,0 +1,3 @@
+domain_name: dev.quartic.io
+postgres_disk: dev-postgres
+cpu_multiplier: 0.5

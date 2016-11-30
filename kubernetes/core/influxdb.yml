@@ -36,6 +36,9 @@ spec:
       containers:
       - name: influxdb
         image: tutum/influxdb:0.13
+        resources:
+          limits:
+            cpu: 100m
         volumeMounts:
         - mountPath: /data
           name: influxdb-storage

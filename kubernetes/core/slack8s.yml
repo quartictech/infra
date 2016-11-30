@@ -33,6 +33,9 @@ spec:
         - name: slack8s
           image: ultimateboy/slack8s
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 10m
           env:
             - name: SLACK_TOKEN
               valueFrom:

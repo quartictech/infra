@@ -50,6 +50,9 @@ spec:
           hostPort: 80
         - containerPort: 443
           hostPort: 443
+        resources:
+          limits:
+            cpu: 100m
         args:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/default-http-backend

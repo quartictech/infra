@@ -30,3 +30,6 @@ spec:
           image: eu.gcr.io/quartictech/tracker:0.0.0-19-g1f97091
           ports:
             - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m

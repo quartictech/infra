@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress
-  namespace: platform
+  namespace: {{stack.name}}
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
@@ -10,23 +10,17 @@ metadata:
     ingress.kubernetes.io/auth-secret: basic-auth
 spec:
   tls:
-    - secretName: tls-foo
+    - secretName: tls-{{stack.name}}
       hosts:
-        - alpha.quartic.io
-    - secretName: tls-mgmt
-      hosts:
-        - mgmt.quartic.io
+        - {{stack.name}}.{{cluster.domain_name}}
   rules:
-    - host: alpha.quartic.io
+    - host: {{stack.name}}.{{cluster.domain_name}}
       http:
         paths:
-          - path: /
+          - path: /map
             backend:
               serviceName: weyl
               servicePort: 8080
-    - host: mgmt.quartic.io
-      http:
-        paths:
           - path: /
             backend:
               serviceName: management

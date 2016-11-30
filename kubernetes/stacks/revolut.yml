@@ -1,0 +1,9 @@
+---
+name: revolut
+platform_version: 0.2.0-444-gc77ce06
+weyl:
+  memory_gb: 4
+  cpu: 2
+dataset_categories:
+  - small
+auth_secret: cmV2b2x1dDokYXByMSQ3cFFqTHQ2YiR5a20ybGZaNTRHeGF6ZmMwYnhndjQxCg==

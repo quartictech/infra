@@ -33,3 +33,6 @@ spec:
           env:
             - name: CONTEXT_PATH
               value: /datasets
+          resources:
+            requests:
+              cpu: 100m

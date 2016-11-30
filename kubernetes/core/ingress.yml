@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: tls-core
       hosts:
-        - core.quartic.io
+        - core.{{cluster.domain_name}}
   rules:
-    - host: core.quartic.io
+    - host: core.{{cluster.domain_name}}
       http:
         paths:
           - path: /

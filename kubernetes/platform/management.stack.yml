@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: management
-  namespace: platform
+  namespace: {{stack.name}}
   labels:
     component: management
 spec:
@@ -20,18 +20,17 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: management
-  namespace: platform
+  namespace: {{stack.name}}
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         component: management
-        namespace: platform
     spec:
       containers:
         - name: management
-          image: eu.gcr.io/quartictech/management:0.2.0-433-g4040bd9
+          image: eu.gcr.io/quartictech/management:{{stack.platform_version}}
           ports:
             - containerPort: 8100
             - containerPort: 8101
@@ -51,3 +50,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          resources:
+            requests:
+              cpu: 100m

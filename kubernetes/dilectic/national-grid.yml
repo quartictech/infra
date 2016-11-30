@@ -30,3 +30,6 @@ spec:
           image: eu.gcr.io/quartictech/national-grid:0.1.0-2-g581ab98
           ports:
             - containerPort: 9000
+          resources:
+            requests:
+              cpu: 100m

@@ -1,38 +1,62 @@
+# Prerequisites
+
+- Python3 virtualenv:
+
+        virtualenv .env --python=`which python3`
+        source .env/bin/activate
+        pip install -r requirements.txt
 
 # Bootstrap
- 1. Create a Container Engine cluster either via the Google Console or on the command line:
+
+1. Create a Container Engine cluster either via the Google Console or on the command line:
 
         gcloud container clusters create <my-cluster>
 
- 2. Grab the credentials for kubernetes to connected
+2. Grab the credentials for kubernetes to connected
 
         gcloud container clusters get-credentials
 
- 3. Login with application default creds for some weird reason:
+3. Login with application default creds for some weird reason:
 
         gcloud auth application-default login
 
- 4. Should be good to go. Run `kubectl get events` or something to test.
- 5. You might need to manually add the postgres disk to the cluster machine?
- 6. Open HTTP port on the primary node
- 7. Add our external IP to the primary node
- 8. Label it with `ingressNode=true`
+4. Should be good to go. Run `kubectl get events` or something to test.
+5. You might need to manually add the postgres disk to the cluster machine?
+6. Open HTTP port on the primary node
+7. Add our external IP to the primary node
+8. Label it with `ingressNode=true`
 
         kubectl label nodes <node> ingressNode=true
 
-# Starting the Cluster
+# Starting the cluster
 
-    kubectl apply -f namespaces
-    kubectl apply -f core
-    kubectl apply -f dilectic
-    kubectl apply -f platform
-    kubectl apply -f platform/import
+    export CLUSTER=dev    # Or prod, etc.
+
+    ./ktmpl -c ${CLUSTER} -o apply -f namespaces stacks/*
+    ./ktmpl -c ${CLUSTER} -o apply -f core
+    ./ktmpl -c ${CLUSTER} -o apply -f dilectic
+    ./ktmpl -c ${CLUSTER} -o apply -f platform stacks/*
+
+# Dilectic hydration
+
+    ./ktmpl -c ${CLUSTER} -o apply -f dilectic/hydration
+
+# Stack imports
+
+    ./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/*
+
+# Per-stack operations
+
+Any of the multi-stack operations above can be applied in a more granular way by providing specific stack definitions.
+For example:
+
+    ./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/alpha.yml
 
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:
 
- 1. Find out the IP of one of the Kubernetes cluster boxes.
- 2. Create ssh tunnels:
+1. Find out the IP of one of the Kubernetes cluster boxes.
+2. Create ssh tunnels:
 
         ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
 

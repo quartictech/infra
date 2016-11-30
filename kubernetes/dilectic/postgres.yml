@@ -25,7 +25,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   gcePersistentDisk:
-    pdName: postgres-data-1
+    pdName: {{cluster.postgres_disk}}
     fsType: ext4
 ---
 kind: PersistentVolumeClaim

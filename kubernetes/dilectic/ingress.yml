@@ -10,9 +10,9 @@ spec:
   tls:
     - secretName: tls-tracker
       hosts:
-        - tracker.quartic.io
+        - tracker.{{cluster.domain_name}}
   rules:
-    - host: tracker.quartic.io
+    - host: tracker.{{cluster.domain_name}}
       http:
         paths:
           - path: /upload
