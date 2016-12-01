@@ -36,10 +36,24 @@ def load_config(path):
         config = yaml.load(stream)
     return config
 
+def get_operations(operation):
+    if (operation == "bounce"):
+        return ["delete", "create"]
+    else:
+        return [operation]
+
+def run_from_template(operation, stack_name, template_path, config):
+    with open(template_path, "rt") as file:
+        template = Template(file.read())
+
+    print("--- {} [{}] [{}] ---".format(operation.upper(), stack_name, template_path))
+    rendered = template.render(config)
+    run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
     parser.add_argument("-c", "--cluster", required=True, help="Cluster name (should match prefix of a file in clusters/ dir)")
-    parser.add_argument("-o", "--operation", required=True, choices=["create", "apply", "delete"], help="kubectl operation")
+    parser.add_argument("-o", "--operation", required=True, choices=["create", "apply", "delete", "bounce"], help="kubectl operation")
     parser.add_argument("-f", "--filename", required=True, help="Kubernetes definition file (or directory containing files)")
     parser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
     args = parser.parse_args()
@@ -47,16 +61,10 @@ if __name__ == "__main__":
     stack_configs = {path: load_config(path) for path in args.stack_file}
     cluster_config = load_config(os.path.join("clusters", args.cluster + ".yml"))
 
-    for template_name in get_filenames(args.filename):
-        with open(template_name, "rt") as file:
-            template = Template(file.read())
-
-        if template_name.endswith(".stack.yml"):
-            for stack_name, stack_config in stack_configs.items():
-                print("--- {} ({}) ---".format(template_name, stack_name))
-                rendered = template.render({ "cluster": cluster_config, "stack": stack_config })
-                run_command(["kubectl", args.operation, "-f", "-"], stdin=rendered)
-        else:
-            print("--- {} ---".format(template_name))
-            rendered = template.render({ "cluster": cluster_config })
-            run_command(["kubectl", args.operation, "-f", "-"], stdin=rendered)
+    for operation in get_operations(args.operation):
+        for template_path in get_filenames(args.filename):
+            if template_path.endswith(".stack.yml"):
+                for stack_path, stack_config in stack_configs.items():
+                    run_from_template(operation, stack_config["name"], template_path, { "cluster": cluster_config, "stack": stack_config })
+            else:
+                run_from_template(operation, "global", template_path, { "cluster": cluster_config })
