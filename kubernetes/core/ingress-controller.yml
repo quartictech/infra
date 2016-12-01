@@ -1,3 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-load-balancer-conf
+  namespace: core
+data:
+  body-size: 10m
+---
 # TODO: convert to DaemonSet once we have more than one cluster node
 apiVersion: v1
 kind: ReplicationController
@@ -56,3 +65,4 @@ spec:
         args:
         - /nginx-ingress-controller
         - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
+        - --nginx-configmap=$(POD_NAMESPACE)/nginx-load-balancer-conf

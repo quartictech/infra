@@ -42,7 +42,7 @@ spec:
             - name: WEYL_APPLICATION_OPTS
               value: >
                 -Ddw.catalogueWatchUrl=ws://catalogue:8090/api/datasets/watch
-                -Ddw.cloudStorageUrl=http://management:8100/api
+                -Ddw.howlStorageUrl=http://howl:8120/api
                 -Ddw.server.applicationContextPath=/map
                 -Xms{{stack.weyl.memory_gb}}g -Xmx{{stack.weyl.memory_gb}}g
                 -Dcom.sun.management.jmxremote=
@@ -68,4 +68,4 @@ spec:
             requests:
               cpu: "{{stack.weyl.cpu * cluster.cpu_multiplier}}"
             limits:
-              memory: {{stack.weyl.memory_gb + 0.5}}Gi
+              memory: {{stack.weyl.memory_gb + 1.0}}Gi

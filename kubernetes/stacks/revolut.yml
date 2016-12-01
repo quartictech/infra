@@ -1,6 +1,6 @@
 ---
 name: revolut
-platform_version: 0.2.0-444-gc77ce06
+platform_version: 0.2.0-472-gb327be6
 weyl:
   memory_gb: 4
   cpu: 2

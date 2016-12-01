@@ -1,9 +1,9 @@
 ---
-name: alpha
-platform_version: 0.2.0-444-gc77ce06
+name: demo
+platform_version: 0.2.0-472-gb327be6
 weyl:
   memory_gb: 8
-  cpu: 4
+  cpu: 3
 dataset_categories:
   - small
   - large
