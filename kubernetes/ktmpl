@@ -48,7 +48,9 @@ def run_from_template(operation, stack_name, template_path, config):
 
     print("--- {} [{}] [{}] ---".format(operation.upper(), stack_name, template_path))
     rendered = template.render(config)
-    run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
+    rc = run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
+    if rc != 0:
+        raise EnvironmentError("kubectl failed")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
