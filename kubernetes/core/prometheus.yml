@@ -25,7 +25,7 @@ data:
       # Attach these labels to any time series or alerts when communicating with
       # external systems (federation, remote storage, Alertmanager).
       external_labels:
-          monitor: 'platform'
+          monitor: '{{cluster.domain_name}}'
 
     # Load and evaluate rules in this file every 'evaluation_interval' seconds.
     rule_files:
@@ -42,6 +42,8 @@ data:
         # Override the global default and scrape targets from this job every 5 seconds.
         scrape_interval: 5s
 
+        # context path
+        metrics_path: /prometheus/metrics
         # metrics_path defaults to '/metrics'
         # scheme defaults to 'http'.
 
@@ -214,6 +216,7 @@ spec:
             - '-config.file=/etc/prometheus/prometheus.yml'
             - '-storage.local.path=/prometheus'
             - '-alertmanager.url=http://localhost:9093'
+            - '-web.external-url=https://core.{{cluster.domain_name}}/prometheus'
           ports:
             - containerPort: 9090
           resources:
@@ -251,6 +254,7 @@ spec:
           args:
             - '-config.file=/etc/alertmanager/config.yml'
             - '-storage.path=/alertmanager'
+            - '-web.external-url=https://core.{{cluster.domain_name}}/alertmanager'
       volumes:
         - name: prometheus-config-volume
           configMap:

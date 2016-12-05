@@ -17,6 +17,14 @@ spec:
     - host: core.{{cluster.domain_name}}
       http:
         paths:
+          - path: /prometheus
+            backend:
+              serviceName: prometheus
+              servicePort: 9090
+          - path: /alertmanager
+            backend:
+              serviceName: prometheus
+              servicePort: 9093
           - path: /
             backend:
               serviceName: grafana
