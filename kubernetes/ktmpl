@@ -52,6 +52,11 @@ def run_from_template(operation, stack_name, template_path, config):
     if rc != 0:
         raise EnvironmentError("kubectl failed")
 
+def check_cluster(cluster_name):
+    current_context = subprocess.check_output(["kubectl", "config", "current-context"]).decode("utf-8").strip()
+    if not current_context.endswith(cluster_name):
+        raise ValueError("stack name mismatch. configured {0} but specified {1}".format(current_context, cluster_name))
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
     parser.add_argument("-c", "--cluster", required=True, help="Cluster name (should match prefix of a file in clusters/ dir)")
@@ -60,6 +65,7 @@ if __name__ == "__main__":
     parser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
     args = parser.parse_args()
 
+    check_cluster(args.cluster)
     stack_configs = {path: load_config(path) for path in args.stack_file}
     cluster_config = load_config(os.path.join("clusters", args.cluster + ".yml"))
 
