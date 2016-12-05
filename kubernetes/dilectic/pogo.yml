@@ -5,6 +5,9 @@ metadata:
   namespace: dilectic
   labels:
     component: pogo
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8080"
 spec:
   type: ClusterIP
   ports:
@@ -27,7 +30,7 @@ spec:
     spec:
       containers:
         - name: pogo
-          image: eu.gcr.io/quartictech/pogo:0.0.0-2-g0560265
+          image: eu.gcr.io/quartictech/pogo:0.0.0-4-g6da2128
           ports:
             - containerPort: 8080
           env:

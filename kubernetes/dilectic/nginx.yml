@@ -5,6 +5,9 @@ metadata:
   namespace: dilectic
   labels:
     component: nginx
+  annotations:
+    quartic.io/healthcheck_path: /_status
+    quartic.io/healthcheck_port: "80"
 spec:
   type: ClusterIP
   ports:
