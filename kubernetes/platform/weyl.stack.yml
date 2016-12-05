@@ -44,7 +44,7 @@ spec:
                 -Ddw.catalogueWatchUrl=ws://catalogue:8090/api/datasets/watch
                 -Ddw.howlStorageUrl=http://howl:8120/api
                 -Ddw.server.applicationContextPath=/map
-                -Xms{{stack.weyl.memory_gb}}g -Xmx{{stack.weyl.memory_gb}}g
+                -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
                 -Dcom.sun.management.jmxremote=
                 -Dcom.sun.management.jmxremote.ssl=false
                 -Dcom.sun.management.jmxremote.authenticate=false
@@ -68,4 +68,4 @@ spec:
             requests:
               cpu: "{{stack.weyl.cpu * cluster.cpu_multiplier}}"
             limits:
-              memory: {{stack.weyl.memory_gb + 1.0}}Gi
+              memory: {{(cluster.memory_multiplier * stack.weyl.memory_gb) + 1.0}}Gi

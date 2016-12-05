@@ -1,3 +1,4 @@
 domain_name: quartic.io
 postgres_disk: prod-postgres
 cpu_multiplier: 1.0
+memory_multiplier: 1.0
