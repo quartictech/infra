@@ -5,6 +5,9 @@ metadata:
   namespace: {{stack.name}}
   labels:
     component: catalogue
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8091"
 spec:
   ports:
   - port: 8090
