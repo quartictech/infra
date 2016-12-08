@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: tayo
-          image: eu.gcr.io/quartictech/tayo:0.1.0-13-g4bfb92c
+          image: eu.gcr.io/quartictech/tayo:20
           ports:
             - containerPort: 8080
           resources:

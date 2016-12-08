@@ -1,6 +1,6 @@
 ---
 name: demo
-platform_version: 0.2.0-472-gb327be6
+platform_version: "590"
 weyl:
   memory_gb: 8
   cpu: 3
