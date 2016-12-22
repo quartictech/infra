@@ -6,7 +6,7 @@ metadata:
   labels:
     component: tracker
   annotations:
-    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_path: /tracker/healthcheck
     quartic.io/healthcheck_port: "8080"
 spec:
   type: ClusterIP
@@ -30,7 +30,8 @@ spec:
     spec:
       containers:
         - name: tayo
-          image: eu.gcr.io/quartictech/tracker:24
+          image: eu.gcr.io/quartictech/tracker:22
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           resources:
