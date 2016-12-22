@@ -31,7 +31,6 @@ spec:
       containers:
         - name: tayo
           image: eu.gcr.io/quartictech/tracker:22
-          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           resources:
