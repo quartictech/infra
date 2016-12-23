@@ -6,7 +6,7 @@ metadata:
   labels:
     component: tracker
   annotations:
-    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_path: /tracker/healthcheck
     quartic.io/healthcheck_port: "8080"
 spec:
   type: ClusterIP

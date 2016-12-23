@@ -5,6 +5,9 @@ metadata:
   namespace: dilectic
   labels:
     component: national-grid
+  annotations:
+    quartic.io/healthcheck_path: /national-grid/healthcheck
+    quartic.io/healthcheck_port: "8080"
 spec:
   type: ClusterIP
   ports:
@@ -27,9 +30,9 @@ spec:
     spec:
       containers:
         - name: national-grid
-          image: eu.gcr.io/quartictech/national-grid:0.1.0-2-g581ab98
+          image: eu.gcr.io/quartictech/national-grid:23
           ports:
-            - containerPort: 9000
+            - containerPort: 8080
           resources:
             requests:
               cpu: 100m
