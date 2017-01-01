@@ -1,3 +1,11 @@
 test:
   override:
     - echo "Nothing to do right now"
+
+deployment:
+  hub:
+    branch: /.*/
+    commands:
+      - curl https://raw.githubusercontent.com/quartictech/circleci-utils/develop/circleci-gcloud-login | bash
+      - docker build -t ${QUARTIC_DOCKER_REPOSITORY}/scheduled-jobs/${CIRCLE_BUILD_NUM} scheduled-jobs
+      - docker push ${QUARTIC_DOCKER_REPOSITORY}/scheduled-jobs/${CIRCLE_BUILD_NUM}

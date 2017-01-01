@@ -1,6 +1,6 @@
 # Quartic infrastructure
 
-This repo contains our infrastructure stuff - Ansible configuration for hosts + Kubernetes config.
+This repo contains our infrastructure stuff - Ansible configuration for hosts, Kubernetes config, scheduled jobs.
 
 ## Ansible
 
