@@ -1,3 +1,7 @@
+machine:
+  services:
+    - docker
+
 test:
   override:
     - echo "Nothing to do right now"
