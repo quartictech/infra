@@ -12,4 +12,4 @@ deployment:
     commands:
       - curl https://raw.githubusercontent.com/quartictech/circleci-utils/develop/circleci-gcloud-login | bash
       - docker build --rm=false -t ${QUARTIC_DOCKER_REPOSITORY}/scheduled-jobs:${CIRCLE_BUILD_NUM} scheduled-jobs
-      - docker push ${QUARTIC_DOCKER_REPOSITORY}/scheduled-jobs/${CIRCLE_BUILD_NUM}
+      - docker push ${QUARTIC_DOCKER_REPOSITORY}/scheduled-jobs:${CIRCLE_BUILD_NUM}
