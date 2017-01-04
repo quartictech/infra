@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: pogo
-          image: eu.gcr.io/quartictech/pogo:7
+          image: eu.gcr.io/quartictech/pogo:9
           ports:
             - containerPort: 8080
           env:
