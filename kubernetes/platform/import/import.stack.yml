@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
         - name: data-worker
-          image: eu.gcr.io/quartictech/data-worker:0.2.0-47-g7bd5889
+          image: eu.gcr.io/quartictech/data-worker:6
           command: ["sh", "/setup/run.sh"]
           volumeMounts:
             - name: config-volume
