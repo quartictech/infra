@@ -1,3 +1,5 @@
+In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, etc.).
+
 # Prerequisites
 
 - Python3 virtualenv:
@@ -8,42 +10,40 @@
 
 # Bootstrap
 
-1. Create a Container Engine cluster either via the Google Console or on the command line:
+1. Create a Container Engine cluster and persistent disk:
 
-        gcloud container clusters create <my-cluster>
+    ```
+    ./scripts/create-cluster.sh ${CLUSTER} ${NUM_NODES}
+    ```
 
-2. Grab the credentials for kubernetes to connected
+2. Open HTTP port on the primary node
+3. Add our external IP to the primary node
+4. Label the primary node with `ingressNode=true`:
 
-        gcloud container clusters get-credentials
-
-3. Login with application default creds for some weird reason:
-
-        gcloud auth application-default login
-
-4. Should be good to go. Run `kubectl get events` or something to test.
-5. You might need to manually add the postgres disk to the cluster machine?
-6. Open HTTP port on the primary node
-7. Add our external IP to the primary node
-8. Label it with `ingressNode=true`
-
-        kubectl label nodes <node> ingressNode=true
+    ```
+    kubectl label nodes ${NODE} ingressNode=true
+    ```
 
 # Starting the cluster
 
-    export CLUSTER=dev    # Or prod, etc.
-
-    ./ktmpl -c ${CLUSTER} -o apply -f namespaces stacks/*
-    ./ktmpl -c ${CLUSTER} -o apply -f core
-    ./ktmpl -c ${CLUSTER} -o apply -f dilectic
-    ./ktmpl -c ${CLUSTER} -o apply -f platform stacks/*
+```
+./ktmpl -c ${CLUSTER} -o apply -f namespaces stacks/*
+./ktmpl -c ${CLUSTER} -o apply -f core
+./ktmpl -c ${CLUSTER} -o apply -f dilectic
+./ktmpl -c ${CLUSTER} -o apply -f platform stacks/*
+```
 
 # Dilectic hydration
 
-    ./ktmpl -c ${CLUSTER} -o apply -f dilectic/hydration
+```
+./ktmpl -c ${CLUSTER} -o apply -f dilectic/hydration
+```
 
 # Stack imports
 
-    ./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/*
+```
+./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/*
+```
 
 # Per-stack operations
 

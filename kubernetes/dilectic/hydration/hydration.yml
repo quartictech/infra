@@ -38,7 +38,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: data-worker
-          image: eu.gcr.io/quartictech/data-worker:0.3.0-3-g001356a
+          image: eu.gcr.io/quartictech/data-worker:6
           command: ["sh", "/setup/install.sh"]
           volumeMounts:
             - name: config-volume
