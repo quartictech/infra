@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: btraced-tracker
+  namespace: dilectic
+  labels:
+    component: btraced-tracker
+  annotations:
+    quartic.io/healthcheck_path: /btraced-tracker/healthcheck
+    quartic.io/healthcheck_port: "8080"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    component: btraced-tracker
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: btraced-tracker
+  namespace: dilectic
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: btraced-tracker
+    spec:
+      containers:
+        - name: tayo
+          image: eu.gcr.io/quartictech/btraced-tracker:32
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m

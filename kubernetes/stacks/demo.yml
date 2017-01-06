@@ -1,9 +1,11 @@
 ---
 name: demo
-platform_version: "816"
+platform_version: "825"
 weyl:
   memory_gb: 8
   cpu: 3
+management:
+  memory_gb: 1
 dataset_categories:
   - small
   - large

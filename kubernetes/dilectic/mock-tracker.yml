@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tracker
+  name: mock-tracker
   namespace: dilectic
   labels:
-    component: tracker
+    component: mock-tracker
   annotations:
-    quartic.io/healthcheck_path: /tracker/healthcheck
+    quartic.io/healthcheck_path: /mock-tracker/healthcheck
     quartic.io/healthcheck_port: "8080"
 spec:
   type: ClusterIP
@@ -14,23 +14,23 @@ spec:
   - port: 8080
     protocol: TCP
   selector:
-    component: tracker
+    component: mock-tracker
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: tracker
+  name: mock-tracker
   namespace: dilectic
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: tracker
+        component: mock-tracker
     spec:
       containers:
         - name: tayo
-          image: eu.gcr.io/quartictech/tracker:26
+          image: eu.gcr.io/quartictech/mock-tracker:33
           ports:
             - containerPort: 8080
           resources:
