@@ -3,6 +3,12 @@
 #   - https://geekshare.net/resources/how-to-update-nginx-and-enable-http-2-support-on-debian-8-jessie.16/
 #   - https://certbot.eff.org/#debianjessie-nginx
 
+- name: Add circleci account to quartic group
+  user: >
+    name=circleci
+    groups=quartic
+    append=yes
+
 - name: Install packages
   apt: >
     name={{ item }}
@@ -12,7 +18,6 @@
   with_items:
     - nginx
     - certbot
-    - git
   become: true
 
 - name: Create Nginx global configuration
