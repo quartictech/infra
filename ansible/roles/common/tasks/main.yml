@@ -19,7 +19,7 @@
     state=directory
     owner=quartic
     group=quartic
-    mode=0755
+    mode=0775
   become: true
 
 # Installing via APT leads to all sorts of weirdness (http://stackoverflow.com/questions/27341064/)
