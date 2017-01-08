@@ -1,0 +1,17 @@
+#!/bin/bash
+set -eu
+
+PROJECT=$1
+GCLOUD_SERVICE_KEY_FILE=$2
+CIRCLE_TOKEN=$3
+
+function set_var() {
+  curl -X POST -H "Content-Type: application/json" -d "{ \"name\": \"$1\", \"value\":\"$2\" }" \
+    https://circleci.com/api/v1.1/project/github/quartictech/${PROJECT}/envvar?circle-token=${CIRCLE_TOKEN}
+}
+
+set_var GCLOUD_PROJECT_ID quartictech
+set_var GCLOUD_SERVICE_ACCOUNT circleci
+set_var GCLOUD_SERVICE_KEY `base64 ${GCLOUD_SERVICE_KEY_FILE}`
+set_var GCLOUD_ZONE europe-west1-b
+set_var QUARTIC_DOCKER_REPOSITORY eu.gcr.io/quartictech
