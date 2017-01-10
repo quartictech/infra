@@ -11,11 +11,21 @@ spec:
     - secretName: tls-tracker
       hosts:
         - tracker.{{cluster.domain_name}}
+    - secretName: tls-mock-tracker
+      hosts:
+        - mock-tracker.{{cluster.domain_name}}
   rules:
     - host: tracker.{{cluster.domain_name}}
       http:
         paths:
           - path: /upload
             backend:
-              serviceName: tracker
+              serviceName: btraced-tracker
+              servicePort: 8080
+    - host: mock-tracker.{{cluster.domain_name}}
+      http:
+        paths:
+          - path: /upload
+            backend:
+              serviceName: mock-tracker
               servicePort: 8080
