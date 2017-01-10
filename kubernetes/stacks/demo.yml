@@ -5,7 +5,7 @@ weyl:
   memory_gb: 8
   cpu: 3
 management:
-  memory_gb: 1
+  memory_mb: 128
 dataset_categories:
   - small
   - large

@@ -42,7 +42,7 @@ spec:
               value: >
                 -Ddw.catalogueUrl=http://catalogue:8090/api
                 -Ddw.howlUrl=http://howl:8120/api
-                -Xms{{(cluster.memory_multiplier * stack.management.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.management.memory_gb)|round|int}}g
+                -Xms{{(cluster.memory_multiplier * stack.management.memory_mb)|round|int}}m -Xmx{{(cluster.memory_multiplier * stack.management.memory_mb)|round|int}}m
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
               value: influxdb.core
@@ -60,4 +60,4 @@ spec:
             requests:
               cpu: 100m
             limits:
-              memory: {{(cluster.memory_multiplier * stack.management.memory_gb) + 1.0}}Gi
+              memory: {{(cluster.memory_multiplier * stack.management.memory_mb) + 32}}Mi
