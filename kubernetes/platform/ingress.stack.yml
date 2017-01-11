@@ -17,6 +17,10 @@ spec:
     - host: {{stack.name}}.{{cluster.domain_name}}
       http:
         paths:
+          - path: /jupyter
+            backend:
+              serviceName: jupyter
+              servicePort: 8888
           - path: /map
             backend:
               serviceName: weyl

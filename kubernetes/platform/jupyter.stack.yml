@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter
+  namespace: {{stack.name}}
+  labels:
+    component: jupyter
+spec:
+  ports:
+  - port: 8888
+    protocol: TCP
+    name: default
+  selector:
+    component: jupyter
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: jupyter
+  namespace: {{stack.name}}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: jupyter
+    spec:
+      containers:
+        - name: jupyter
+          image: jupyter/minimal-notebook
+          ports:
+            - containerPort: 8888
+          args: ["jupyter", "notebook", "--debug", "--NotebookApp.base_url=/jupyter", "--NotebookApp.token=''"]
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
