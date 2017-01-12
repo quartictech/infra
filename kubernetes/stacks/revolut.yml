@@ -1,11 +1,9 @@
 ---
 name: revolut
-platform_version: "855"
+platform_version: "863"
 weyl:
   memory_gb: 4
   cpu: 2
-management:
-  memory_mb: 2048
 dataset_categories:
   - small
 auth_secret: cmV2b2x1dDokYXByMSQ3cFFqTHQ2YiR5a20ybGZaNTRHeGF6ZmMwYnhndjQxCg==

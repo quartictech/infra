@@ -25,6 +25,10 @@ spec:
             backend:
               serviceName: prometheus
               servicePort: 9093
+          - path: /jupyter
+            backend:
+              serviceName: jupyter
+              servicePort: 8888
           - path: /
             backend:
               serviceName: grafana
