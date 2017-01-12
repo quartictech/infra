@@ -38,6 +38,10 @@ spec:
             - containerPort: 8120
             - containerPort: 8121
           env:
+            - name: HOWL_APPLICATION_OPTS
+              value: >
+                -Ddw.storage.type=google_cloud_storage
+                -Ddw.storage.bucketName={{stack.name}}.{{cluster.datastore_namespace_prefix}}.quartic.io
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
               value: influxdb.core
