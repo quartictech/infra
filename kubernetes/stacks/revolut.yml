@@ -1,6 +1,6 @@
 ---
 name: revolut
-platform_version: "837"
+platform_version: "855"
 weyl:
   memory_gb: 4
   cpu: 2
