@@ -13,6 +13,7 @@ SCOPES="https://www.googleapis.com/auth/compute","https://www.googleapis.com/aut
 #----------------------------------------------------#
 gcloud container --project "${PROJECT}" clusters create "${NAME}" \
   --zone "${ZONE}" \
+  --cluster-version=1.5.1 \
   --machine-type "n1-standard-4" \
   --image-type "GCI" \
   --disk-size "100" \

@@ -25,9 +25,9 @@ spec:
             backend:
               serviceName: prometheus
               servicePort: 9093
-          - path: /jupyter
+          - path: /analysis
             backend:
-              serviceName: jupyter
+              serviceName: taijitu
               servicePort: 8888
           - path: /
             backend:
