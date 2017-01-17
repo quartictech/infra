@@ -58,5 +58,3 @@ spec:
           resources:
             requests:
               cpu: 100m
-            # limits:
-            #   memory: {{(cluster.memory_multiplier * stack.management.memory_mb) + 32}}Mi
