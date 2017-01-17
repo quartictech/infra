@@ -5,7 +5,7 @@ metadata:
   name: nginx-load-balancer-conf
   namespace: core
 data:
-  body-size: 50m
+  body-size: 250m
 ---
 # TODO: convert to DaemonSet once we have more than one cluster node
 apiVersion: v1
