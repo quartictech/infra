@@ -44,7 +44,9 @@ spec:
           env:
             - name: WEYL_APPLICATION_OPTS
               value: >
-                -Ddw.catalogueWatchUrl=ws://catalogue:8090/api/datasets/watch
+                -Ddw.catalogue.hostName=catalogue
+                -Ddw.catalogue.port=8090
+                -Ddw.catalogue.useSsl=false
                 -Ddw.howlStorageUrl=http://howl:8120/api
                 -Ddw.server.applicationContextPath=/map
                 -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
