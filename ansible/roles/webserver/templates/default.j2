@@ -41,6 +41,7 @@ server {
 
     # For letsencrypt bootstrapping
     location /.well-known {
+      root                      /var/www/html;
       try_files $uri $uri/ =404;
     }
 
