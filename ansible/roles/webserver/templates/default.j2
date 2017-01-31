@@ -21,7 +21,25 @@ server {
 
     server_name                 {{ all_domains }};
 
-    root                        /opt/quartic/_site;
+    root                        /opt/quartic/www.quartic.io;
+    index                       index.html;
+
+    location ~ /\. {
+       deny all;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+server {
+    listen                      80;
+    listen                      [::]:80;
+
+    server_name                 {{ test_domains }};
+
+    root                        /opt/quartic/www-test.quartic.io;
     index                       index.html;
 
     location ~ /\. {
