@@ -27,5 +27,5 @@ spec:
               servicePort: 8080
           - path: /
             backend:
-              serviceName: management
+              serviceName: mgmt
               servicePort: 8100
