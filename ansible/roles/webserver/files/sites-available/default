@@ -1,0 +1,80 @@
+#-----------------------------------------#
+# Production HTTPS site
+#-----------------------------------------#
+server {
+    server_name                 www.quartic.io;
+    listen                      443 ssl http2 default_server;
+    listen                      [::]:443 ssl http2 default_server;
+
+    include                     /etc/nginx/ssl.conf;
+
+    root                        /opt/quartic/www.quartic.io;
+    index                       index.html;
+
+    error_page 404 403 /_super_secret/404.html;
+
+    location ~ /\. {
+       deny all;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+#-----------------------------------------#
+# Non-www (both HTTP and HTTPS)
+#-----------------------------------------#
+server {
+    server_name                 quartic.io;
+    listen                      80;
+    listen                      [::]:80;
+    listen                      443 ssl http2;
+    listen                      [::]:443 ssl http2;
+
+    include                     /etc/nginx/ssl.conf;
+    include                     /etc/nginx/letsencrypt.conf;
+
+    location / {
+      return                    301 https://www.quartic.io$request_uri;
+    }
+}
+
+#-----------------------------------------#
+# Non-HTTPS
+#-----------------------------------------#
+server {
+    server_name                 www.quartic.io;
+    listen                      80;
+    listen                      [::]:80;
+
+    include                     /etc/nginx/letsencrypt.conf;
+
+    location / {
+      return                    301 https://www.quartic.io$request_uri;
+    }
+}
+
+#-----------------------------------------#
+# Test site
+#-----------------------------------------#
+server {
+    server_name                 www-test.quartic.io;
+    listen                      80;
+    listen                      [::]:80;
+
+    root                        /opt/quartic/www-test.quartic.io;
+    index                       index.html;
+
+    error_page 404 403 /_super_secret/404.html;
+
+    location ~ /\. {
+       deny all;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+        auth_basic              "Restricted Content";
+        auth_basic_user_file    .htpasswd;
+    }
+}
