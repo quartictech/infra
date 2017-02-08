@@ -27,6 +27,8 @@ server {
     root                        /opt/quartic/www.quartic.io;
     index                       index.html;
 
+    error_page 404 403 /_super_secret/404.html;
+
     location ~ /\. {
        deny all;
     }
@@ -47,6 +49,8 @@ server {
 
     root                        /opt/quartic/www-test.quartic.io;
     index                       index.html;
+
+    error_page 404 403 /_super_secret/404.html;
 
     location ~ /\. {
        deny all;
