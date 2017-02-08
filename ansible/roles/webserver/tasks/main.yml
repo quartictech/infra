@@ -23,8 +23,11 @@
 
 - name: Create Nginx global configuration
   copy: >
-    src=nginx.conf
-    dest=/etc/nginx/nginx.conf
+    src={{ item }}
+    dest=/etc/nginx/{{ item }}
+  with_items:
+    - nginx.conf
+    - .htpasswd
   become: true
 
 - name: Create Nginx default site configuration
