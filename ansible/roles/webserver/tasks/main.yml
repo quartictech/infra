@@ -21,23 +21,20 @@
     - certbot
   become: true
 
-- name: Create Nginx global configuration
+- name: Create Nginx configuration
   copy: >
     src={{ item }}
     dest=/etc/nginx/{{ item }}
   with_items:
     - nginx.conf
+    - ssl.conf
+    - letsencrypt.conf
+    - sites-available/default
     - .htpasswd
   become: true
 
-- name: Create Nginx default site configuration
-  template: >
-    src=default.j2
-    dest=/etc/nginx/sites-available/default
-  become: true
-
 - name: Check if we already have a cert
-  stat: path=/etc/letsencrypt/live/{{ first_domain }}/fullchain.pem
+  stat: path=/etc/letsencrypt/live/{{ cert_directory }}/fullchain.pem
   register: cert
   become: true
 
