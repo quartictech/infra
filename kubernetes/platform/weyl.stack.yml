@@ -44,10 +44,11 @@ spec:
           env:
             - name: WEYL_APPLICATION_OPTS
               value: >
-                -Ddw.catalogue.hostName=catalogue
+                -Ddw.catalogue.hostname=catalogue
                 -Ddw.catalogue.port=8090
                 -Ddw.catalogue.useSsl=false
                 -Ddw.howlStorageUrl=http://howl:8120/api
+                -Ddw.rainWsUrlRoot=ws://rain:8150/ws
                 -Ddw.server.applicationContextPath=/map
                 -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
                 -Dcom.sun.management.jmxremote=
