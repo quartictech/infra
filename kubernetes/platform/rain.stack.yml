@@ -40,6 +40,7 @@ spec:
           env:
             - name: RAIN_APPLICATION_OPTS
               value: >
+                -Xmx1g
                 -Ddw.howlUrl=http://howl:8120/api
                 -Ddw.howlWatchUrl=ws://howl:8120/changes
             - name: ENABLE_METRICS

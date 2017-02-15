@@ -1,5 +1,5 @@
 domain_name: dev.quartic.io
-postgres_disk: dev-postgres
+postgres_disk: beta-postgres
 datastore_namespace_prefix: dev
 cpu_multiplier: 1.0
 memory_multiplier: 1.0

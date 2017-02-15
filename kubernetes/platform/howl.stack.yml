@@ -41,6 +41,7 @@ spec:
             - name: HOWL_APPLICATION_OPTS
               value: >
                 -Ddw.storage.type=google_cloud_storage
+                -Ddw.server.applicationConnectors[0].idleTimeout="90 seconds"
                 -Ddw.storage.bucketName={{stack.name}}.{{cluster.datastore_namespace_prefix}}.quartic.io
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
