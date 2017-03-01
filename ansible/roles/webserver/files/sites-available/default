@@ -12,6 +12,10 @@ server {
     index                       index.html;
 
     error_page 404 403 /_super_secret/404.html;
+    
+    location /post {
+      proxy_pass http://127.0.0.1:8080;
+    }
 
     location ~ /\. {
        deny all;
@@ -50,10 +54,6 @@ server {
 
     include                     /etc/nginx/letsencrypt.conf;
     
-    location /post {
-      proxy_pass http://127.0.0.1:8080;
-    }
-
     location / {
       return                    301 https://www.quartic.io$request_uri;
     }
