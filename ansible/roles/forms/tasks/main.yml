@@ -11,7 +11,7 @@
   docker_container:
     name: formistry-test
     state: started
-    image: eu.gcr.io/quartictech/formistry:5
+    image: eu.gcr.io/quartictech/formistry:8
     volumes:
       - "/var/forms:/var/formistry"
     ports:
