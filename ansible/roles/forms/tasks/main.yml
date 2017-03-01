@@ -1,0 +1,14 @@
+---
+- name: Docker login
+  become: true
+  shell: docker login -e 1234@5678.com -u oauth2accesstoken -p "$(gcloud auth print-access-token)" https://eu.gcr.io
+- name: Container present
+  docker_container:
+    name: formistry-test
+    state: started
+    image: eu.gcr.io/quartictech/formistry:4
+    volumes:
+      - "/var/forms:/var/formistry"
+    ports:
+      - "8080:8080"
+  become: true
