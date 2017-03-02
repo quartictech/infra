@@ -1,4 +1,15 @@
 #-----------------------------------------#
+# Expiration map (see https://www.digitalocean.com/community/tutorials/how-to-implement-browser-caching-with-nginx-s-header-module-on-centos-7)
+#-----------------------------------------#
+map $sent_http_content_type $expires {
+    default                    off;
+    text/html                  epoch;
+    text/css                   1w;
+    application/javascript     1w;
+    ~image/                    1w;
+}
+
+#-----------------------------------------#
 # Production HTTPS site
 #-----------------------------------------#
 server {
@@ -16,6 +27,8 @@ server {
     location /post {
       proxy_pass http://127.0.0.1:8080;
     }
+
+    expires                     $expires;
 
     location ~ /\. {
        deny all;
@@ -71,6 +84,8 @@ server {
     index                       index.html;
 
     error_page 404 403 /_super_secret/404.html;
+
+    expires                     $expires;
 
     location ~ /\. {
        deny all;
