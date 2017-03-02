@@ -4,8 +4,8 @@
 map $sent_http_content_type $expires {
     default                    off;
     text/html                  epoch;
-    text/css                   1w;
-    application/javascript     1w;
+    text/css                   epoch;
+    application/javascript     epoch;
     ~image/                    1w;
 }
 
