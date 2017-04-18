@@ -1,0 +1,10 @@
+---
+name: magnolia
+codename: dozers
+platform_version: "1084"
+weyl:
+  memory_gb: 4
+  cpu: 2
+dataset_categories:
+  - small
+auth_secret: bWFnbm9saWE6JGFwcjEkcFNpbEJqTzEkYUo2LzUuaWYyYmY3bkZiNmNoTFV2Lwo=

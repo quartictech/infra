@@ -4,9 +4,11 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 
 - Python3 virtualenv:
 
-        virtualenv .env --python=`which python3`
-        source .env/bin/activate
-        pip install -r requirements.txt
+    ```
+    virtualenv .env --python=`which python3`
+    source .env/bin/activate
+    pip install -r requirements.txt
+    ```
 
 # Bootstrap
 
@@ -50,7 +52,9 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 Any of the multi-stack operations above can be applied in a more granular way by providing specific stack definitions.
 For example:
 
-    ./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/alpha.yml
+```
+./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/alpha.yml
+```
 
 # Alerting
 To checkout the Prometheus/AlertManager UIs in the event of an outage:
@@ -58,7 +62,9 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
 1. Find out the IP of one of the Kubernetes cluster boxes.
 2. Create ssh tunnels:
 
-        ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
+    ```
+    ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
+    ```
 
 # Adding dashboards
 
@@ -74,9 +80,17 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
 
 5. Run:
 
-        kubectl -n core delete cm grafana-dashboards
-        kubectl -n core create cm grafana-dashboards --from-file=core/dashboards
-        kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml
+    ```
+    kubectl -n core delete cm grafana-dashboards
+    kubectl -n core create cm grafana-dashboards --from-file=core/dashboards
+    kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml
+    ```
 
 6. Remove guff in metadata except for `name` and `namespace`.
 7. Do normal Git stuff.
+
+# Creating basic-auth passwords
+
+```
+htpasswd -c ${STACK_NAME} | base64
+```
