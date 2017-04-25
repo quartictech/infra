@@ -17,5 +17,5 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: redash-server
-              servicePort: 5000
+              serviceName: metabase
+              servicePort: 3000
