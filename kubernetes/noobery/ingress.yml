@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: noobery
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - secretName: tls-noobery
+      hosts:
+        - noobery.{{cluster.domain_name}}
+  rules:
+    - host: noobery.{{cluster.domain_name}}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: redash-server
+              servicePort: 5000

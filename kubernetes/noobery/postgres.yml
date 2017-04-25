@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: noobery
+  labels:
+    component: postgres
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+    name: default
+  selector:
+    component: postgres
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: postgres
+  namespace: noobery
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:9.5.6-alpine
+          ports:
+            - containerPort: 5432
