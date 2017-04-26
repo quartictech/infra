@@ -1,6 +1,6 @@
 ---
 name: demo
-platform_version: "1142"
+platform_version: "1159"
 weyl:
   memory_gb: 8
   cpu: 3
