@@ -11,8 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   gcePersistentDisk:
-    # TODO - parameterise this
-    pdName: prod-metabase
+    pdName: {{cluster.disk_prefix}}-metabase
     fsType: ext4
 ---
 kind: PersistentVolumeClaim

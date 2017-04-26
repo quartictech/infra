@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: dilectic
+  namespace: core
   labels:
     component: postgres
 spec:
@@ -16,7 +16,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: postgres-data
-  namespace: dilectic
+  namespace: core
   labels:
     name: postgres-data
 spec:
@@ -25,14 +25,14 @@ spec:
   accessModes:
     - ReadWriteOnce
   gcePersistentDisk:
-    pdName: {{cluster.disk_prefix}}-postgres
+    pdName: {{cluster.disk_prefix}}-core-postgres
     fsType: ext4
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: postgres-data-claim
-  namespace: dilectic
+  namespace: core
 spec:
   accessModes:
     - ReadWriteOnce
@@ -44,7 +44,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: postgres
-  namespace: dilectic
+  namespace: core
 spec:
   replicas: 1
   template:
@@ -59,7 +59,7 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_PASSWORD
-              value: dilectic
+              value: core
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql-data
