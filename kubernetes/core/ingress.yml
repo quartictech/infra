@@ -39,12 +39,11 @@ spec:
               serviceName: grafana
               servicePort: 3000
 
-      # In a separate domain because Metabase doesn't support custom URL root (see https://github.com/metabase/metabase/issues/2090)
     - host: dash.{{cluster.domain_name}}
       http:
         paths:
           - path: /
             backend:
-              serviceName: metabase
-              servicePort: 3000
+              serviceName: bokeh
+              servicePort: 5006
 
