@@ -8,11 +8,13 @@ metadata:
     kubernetes.io/tls-acme: "true"
     ingress.kubernetes.io/auth-type: basic
     ingress.kubernetes.io/auth-secret: basic-auth
+
 spec:
   tls:
     - secretName: tls-core
       hosts:
         - core.{{cluster.domain_name}}
+
   rules:
     - host: core.{{cluster.domain_name}}
       http:
@@ -29,7 +31,12 @@ spec:
             backend:
               serviceName: taijitu
               servicePort: 8888
+          - path: /dashboards
+            backend:
+              serviceName: bokeh
+              servicePort: 5006
           - path: /
             backend:
               serviceName: grafana
               servicePort: 3000
+
