@@ -5,7 +5,7 @@ data:
     mkdir ./bucket
     gcsfuse -o nonempty quartictech ./bucket
     cd ./bucket/jupyter/bokeh-dashboards
-    bokeh serve --use-xheaders --prefix=dashboards --host=core.{{cluster.domain_name}} --allow-websocket-origin=core.{{cluster.domain_name}} *
+    bokeh serve --use-xheaders --prefix=dashboards --host=core.{{cluster.domain_name}} --allow-websocket-origin=core.{{cluster.domain_name}} `find . -name "main.py" -exec dirname {} \;`
 kind: ConfigMap
 metadata:
   name: start
