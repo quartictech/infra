@@ -1,4 +1,17 @@
 apiVersion: v1
+data:
+  start.sh: |
+    set -e
+    mkdir ./bucket
+    gcsfuse -o nonempty quartictech ./bucket
+    cd bucket/jupyter
+    jupyter notebook --debug --NotebookApp.base_url=/analysis --NotebookApp.token=''
+kind: ConfigMap
+metadata:
+  name: start
+  namespace: core
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: taijitu
@@ -27,13 +40,27 @@ spec:
     spec:
       containers:
         - name: taijitu
-          image: eu.gcr.io/quartictech/taijitu:6
+          image: eu.gcr.io/quartictech/taijitu:11
           ports:
             - containerPort: 8888
           resources:
             requests:
               cpu: 1
               memory: 1Gi
-          env:
-            - name: JUPYTER_GOOGLE_CLOUD_BUCKET
-              value: quartictech/jupyter
+          securityContext:
+            privileged: true
+            capabilities:
+                add:
+                  - SYS_ADMIN
+          lifecycle:
+            preStop:
+              exec:
+                command: ["fusermount", "-u", "/bucket"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /setup
+          command: ["sh", "/setup/start.sh"]
+      volumes:
+        - name: config-volume
+          configMap:
+            name: start
