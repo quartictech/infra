@@ -50,6 +50,9 @@ spec:
                 -Ddw.howlStorageUrl=http://howl:8120/api
                 -Ddw.rainWsUrlRoot=ws://rain:8150/ws
                 -Ddw.server.applicationContextPath=/map
+                -Ddw.map.lat={{stack.weyl.location.lat}}
+                -Ddw.map.lng={{stack.weyl.location.lng}}
+                -Ddw.map.zoom={{stack.weyl.location.zoom}}
                 -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
                 -Dcom.sun.management.jmxremote=
                 -Dcom.sun.management.jmxremote.ssl=false

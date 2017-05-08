@@ -1,9 +1,13 @@
 ---
 name: demo
-platform_version: "1159"
+platform_version: "1244"
 weyl:
   memory_gb: 8
   cpu: 3
+  location:
+    lat: 51.5174
+    lng: -0.0915
+    zoom: 9.7
 dataset_categories:
   - small
   - large
