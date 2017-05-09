@@ -1,10 +1,14 @@
 ---
 name: magnolia
 codename: dozers
-platform_version: "1159"
+platform_version: "1244"
 weyl:
   memory_gb: 4
   cpu: 2
+  location:
+    lat: 51.4679
+    lng: -0.3548
+    zoom: 11.7
 dataset_categories:
   - small
 auth_secret: bWFnbm9saWE6JGFwcjEkcFNpbEJqTzEkYUo2LzUuaWYyYmY3bkZiNmNoTFV2Lwo=
