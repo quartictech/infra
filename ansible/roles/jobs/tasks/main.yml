@@ -1,0 +1,7 @@
+---
+- name: Add jupyter backup job
+  cron: >
+    name="backup jupyter"
+    hour="*" minute="3"
+    job="/usr/bin/gsutil -m rsync -r gs://quartictech/jupyter gs://backups.quartic.io/jupyter/$(/bin/date -u +"\%Y-\%m-\%dT\%H:\%M:\%SZ")"
+    state=present
