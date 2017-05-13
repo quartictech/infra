@@ -1,17 +1,55 @@
-#!/bin/bash
-set -eu
+#!/usr/bin/env python
 
-PROJECT=$1
-GCLOUD_SERVICE_KEY_FILE=$2
-CIRCLE_TOKEN=$3
+import argparse
+import requests
+import base64
+import csv
 
-function set_var() {
-  curl -X POST -H "Content-Type: application/json" -d "{ \"name\": \"$1\", \"value\":\"$2\" }" \
-    https://circleci.com/api/v1.1/project/github/quartictech/${PROJECT}/envvar?circle-token=${CIRCLE_TOKEN}
-}
+url_root = "https://circleci.com/api/v1.1/project/github/quartictech"
 
-set_var GCLOUD_PROJECT_ID quartictech
-set_var GCLOUD_SERVICE_ACCOUNT circleci
-set_var GCLOUD_SERVICE_KEY `base64 ${GCLOUD_SERVICE_KEY_FILE}`
-set_var GCLOUD_ZONE europe-west1-b
-set_var QUARTIC_DOCKER_REPOSITORY eu.gcr.io/quartictech
+def set_env_vars(session, args):
+    with open(args.gcloud_key_file, "rb") as key_file:
+        encoded_key = base64.b64encode(key_file.read()).decode("utf-8")
+
+    vars = {
+        "GCLOUD_PROJECT_ID": "quartictech",
+        "GCLOUD_SERVICE_ACCOUNT": "circleci",
+        "GCLOUD_SERVICE_KEY": encoded_key,
+        "GCLOUD_ZONE": "europe-west1-b",
+        "QUARTIC_DOCKER_REPOSITORY": "eu.gcr.io/quartictech"
+    }
+
+    for k, v in vars.items():
+        r = session.post("{}/{}/envvar".format(url_root, args.project), json={"name": k, "value": v})
+        r.raise_for_status()
+
+def set_aws_creds(session, args):
+    with open(args.aws_key_file) as key_file:
+        reader = csv.DictReader(key_file)
+        for row in reader:
+            access_key_id = row["Access key ID"]
+            secret_access_key = row["Secret access key"]
+
+    r = session.put("{}/{}/settings".format(url_root, args.project), json={
+        "aws": {
+            "keypair": {
+                "access_key_id": access_key_id,
+                "secret_access_key": secret_access_key
+            }
+        }
+    })
+    r.raise_for_status()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Configure a CircleCI project.")
+    parser.add_argument("-t", "--token", required=True, help="CircleCI API token")
+    parser.add_argument("-g", "--gcloud-key-file", required=True, help="GCloud service key file (JSON)")
+    parser.add_argument("-a", "--aws-key-file", required=True, help="AWS access key file (CSV)")
+    parser.add_argument("project", help="Project name")
+    args = parser.parse_args()
+
+    session = requests.Session()
+    session.params = {"circle-token": args.token}
+
+    set_env_vars(session, args)
+    set_aws_creds(session, args)
