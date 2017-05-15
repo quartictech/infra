@@ -18,6 +18,7 @@
     state=present
   with_items:
     - nginx
+    - nginx-extras
     - certbot
   become: true
 
