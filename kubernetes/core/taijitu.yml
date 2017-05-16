@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: taijitu
-          image: eu.gcr.io/quartictech/taijitu:21
+          image: eu.gcr.io/quartictech/taijitu:23
           ports:
             - containerPort: 8888
           resources:
