@@ -5,7 +5,11 @@ data:
     mkdir ./bucket
     gcsfuse -o nonempty quartictech ./bucket
     cd ./bucket/jupyter/bokeh-dashboards
-    bokeh serve --use-xheaders --prefix=dashboards --host=core.{{cluster.domain_name}} --allow-websocket-origin=core.{{cluster.domain_name}} `find . -name "main.py" -exec dirname {} \;`
+    # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
+    while true; do
+      bokeh serve --use-xheaders --prefix=dashboards --host=core.{{cluster.domain_name}} --allow-websocket-origin=core.{{cluster.domain_name}} `find . -name "main.py" -exec dirname {} \;`
+      sleep 5 # To avoid madness in cases where server fails to start
+    done
 kind: ConfigMap
 metadata:
   name: start
@@ -40,7 +44,7 @@ spec:
     spec:
       containers:
         - name: bokeh
-          image: eu.gcr.io/quartictech/taijitu:11
+          image: eu.gcr.io/quartictech/taijitu:21
           ports:
             - containerPort: 5006
           resources:
