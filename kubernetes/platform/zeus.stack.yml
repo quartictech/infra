@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zeus
+  namespace: {{stack.name}}
+  labels:
+    component: zeus
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8161"
+spec:
+  ports:
+  - port: 8160
+    protocol: TCP
+    name: default
+  - port: 8161
+    protocol: TCP
+    name: admin
+  selector:
+    component: zeus
+---
+apiVersion: v1
+data:
+  zeus.yml: |
+    datasets:
+      assets:
+        type: url
+        url: http://howl.magnolia:8120/api/zeus/roads
+        indexedAttributes: [ "RSL" ]
+    server:
+      applicationContextPath: /inbox
+      applicationConnectors:
+        - type: http
+          port: 8160
+      adminConnectors:
+        - type: http
+          port: 8161
+kind: ConfigMap
+metadata:
+  namespace: {{stack.name}}
+  name: zeus-config
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: zeus
+  namespace: {{stack.name}}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: zeus
+    spec:
+      containers:
+        - name: zeus
+          image: eu.gcr.io/quartictech/zeus:{{stack.zeus_version}}
+          ports:
+            - containerPort: 8160
+            - containerPort: 8161
+          volumeMounts:
+            - name: config
+              mountPath: /zeus-backend-{{stack.zeus_version}}/zeus.yml
+              subPath: zeus.yml
+          env:
+            - name: ZEUS_BACKEND_OPTS
+              value: -Xmx1g
+            - name: ENABLE_METRICS
+            - name: INFLUX_HOST
+              value: influxdb.core
+            - name: INFLUX_PORT
+              value: "8086"
+            - name: INFLUX_DB
+              value: k8s
+            - name: INFLUX_AUTH
+              value: root:root
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+      volumes:
+        - name: "config"
+          configMap:
+            name: "zeus-config"

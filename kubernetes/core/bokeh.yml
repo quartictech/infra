@@ -5,6 +5,7 @@ data:
     mkdir ./bucket
     gcsfuse -o nonempty quartictech ./bucket
     cd ./bucket/jupyter/bokeh-dashboards
+    shrubbery_update taijitu
 
     # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
     set +e
@@ -46,7 +47,7 @@ spec:
     spec:
       containers:
         - name: bokeh
-          image: eu.gcr.io/quartictech/taijitu:21
+          image: eu.gcr.io/quartictech/taijitu:23
           ports:
             - containerPort: 5006
           resources:
