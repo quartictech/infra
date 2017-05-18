@@ -5,7 +5,9 @@ data:
     mkdir ./bucket
     gcsfuse -o nonempty quartictech ./bucket
     cd ./bucket/jupyter/bokeh-dashboards
-    shrubbery_update taijitu
+
+    # Update shrubbery stuff. This comes from jupyter-image.
+    /update.sh
 
     # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
     set +e
