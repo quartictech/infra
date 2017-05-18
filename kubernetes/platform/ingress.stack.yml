@@ -21,6 +21,10 @@ spec:
             backend:
               serviceName: weyl
               servicePort: 8080
+          - path: /inbox
+            backend:
+              serviceName: zeus
+              servicePort: 8160
           - path: /
             backend:
               serviceName: mgmt
