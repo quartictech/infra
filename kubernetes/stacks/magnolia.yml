@@ -3,8 +3,8 @@ name: magnolia
 codename: dozers
 platform_version: "1287"
 weyl:
-  memory_gb: 4
-  cpu: 2
+  memory_gb: 8
+  cpu: 3
   location:
     lat: 51.4679
     lng: -0.3548
