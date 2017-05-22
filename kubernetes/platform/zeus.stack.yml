@@ -26,7 +26,7 @@ data:
       assets:
         type: url
         url: http://howl.magnolia:8120/api/zeus/roads
-        indexedAttributes: [ "RSL" ]
+        indexedAttributes: [ "RSL", "Road Name" ]
     server:
       applicationContextPath: /inbox
       applicationConnectors:
