@@ -27,6 +27,10 @@ data:
         type: url
         url: http://howl.magnolia:8120/api/zeus/roads
         indexedAttributes: [ "RSL", "Road Name" ]
+      jobs:
+        type: url
+        url: http://howl.magnolia:8120/api/zeus/jobs
+        indexedAttributes: [ "Number" ]
     server:
       applicationContextPath: /inbox
       applicationConnectors:
