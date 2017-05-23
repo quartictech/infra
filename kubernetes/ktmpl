@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import argparse
+import base64
 import os
 import subprocess
 import sys
 import yaml
 
-from jinja2 import Template
+from jinja2 import Environment, Template
 
 # Modified http://blog.endpoint.com/2015/01/getting-realtime-output-using-python.html for Python3 and stdin
 def run_command(command, stdin):
@@ -43,11 +44,15 @@ def get_operations(operation):
         return [operation]
 
 def run_from_template(operation, stack_name, template_path, config):
+    env = Environment()
+    env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
     with open(template_path, "rt") as file:
-        template = Template(file.read())
+        template = env.from_string(file.read())
 
     print("--- {} [{}] [{}] ---".format(operation.upper(), stack_name, template_path))
+    
     rendered = template.render(config)
+
     rc = run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
     if rc != 0:
         raise EnvironmentError("kubectl failed")
