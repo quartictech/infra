@@ -32,7 +32,7 @@ data:
         url: http://howl.magnolia:8120/api/zeus/jobs
         indexedAttributes: [ "Number" ]
     server:
-      applicationContextPath: /inbox
+      applicationContextPath: /
       applicationConnectors:
         - type: http
           port: 8160

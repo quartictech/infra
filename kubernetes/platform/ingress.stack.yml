@@ -17,15 +17,15 @@ spec:
     - host: {{stack.name}}.{{cluster.domain_name}}
       http:
         paths:
+          - path: /
+            backend:
+              serviceName: zeus
+              servicePort: 8160
           - path: /map
             backend:
               serviceName: weyl
               servicePort: 8080
-          - path: /inbox
-            backend:
-              serviceName: zeus
-              servicePort: 8160
-          - path: /
+          - path: /mgmt
             backend:
               serviceName: mgmt
               servicePort: 8100
