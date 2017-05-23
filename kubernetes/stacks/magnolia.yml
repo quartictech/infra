@@ -2,7 +2,7 @@
 name: magnolia
 codename: dozers
 platform_version: "1299"
-zeus_version: 96
+zeus_version: 119
 weyl:
   memory_gb: 8
   cpu: 3
