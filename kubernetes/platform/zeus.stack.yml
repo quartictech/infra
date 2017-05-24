@@ -26,9 +26,13 @@ data:
       assets:
         type: url
         url: http://howl.magnolia:8120/api/zeus/roads
-        indexedAttributes: [ "RSL" ]
+        indexedAttributes: [ "RSL", "Road Name" ]
+      jobs:
+        type: url
+        url: http://howl.magnolia:8120/api/zeus/jobs
+        indexedAttributes: [ "Number" ]
     server:
-      applicationContextPath: /inbox
+      applicationContextPath: /
       applicationConnectors:
         - type: http
           port: 8160

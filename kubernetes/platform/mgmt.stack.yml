@@ -40,6 +40,7 @@ spec:
           env:
             - name: MGMT_APPLICATION_OPTS
               value: >
+                -Ddw.server.applicationContextPath=/mgmt
                 -Ddw.catalogueUrl=http://catalogue:8090/api
                 -Ddw.howlUrl=http://howl:8120/api
             - name: ENABLE_METRICS
