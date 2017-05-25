@@ -10,6 +10,30 @@ map $sent_http_content_type $expires {
 }
 
 #-----------------------------------------#
+# Tools HTTPS site
+#-----------------------------------------#
+server {
+    server_name                 tools.quartic.io;
+    listen                      443 ssl http2;
+    listen                      [::]:443 ssl http2;
+
+    include                     /etc/nginx/ssl.conf;
+
+    root                        /opt/quartic/tools.quartic.io;
+
+    expires                     $expires;
+
+    location ~ /\. {
+       deny all;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+
+
+#-----------------------------------------#
 # Production HTTPS site
 #-----------------------------------------#
 server {
@@ -70,7 +94,18 @@ server {
     location / {
       return                    301 https://www.quartic.io$request_uri;
     }
-  }
+}
+server {
+    server_name                 tools.quartic.io;
+    listen                      80;
+    listen                      [::]:80;
+
+    include                     /etc/nginx/letsencrypt.conf;
+    
+    location / {
+      return                    301 https://tools.quartic.io$request_uri;
+    }
+}
 
 #-----------------------------------------#
 # Test site
