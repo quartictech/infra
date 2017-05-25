@@ -1,18 +1,17 @@
 apiVersion: v1
 data:
   start.sh: |
-    set -e
-    mkdir ./bucket
-    gcsfuse -o nonempty quartictech ./bucket
-    cd ./bucket/jupyter/bokeh-dashboards
-
     # Update shrubbery stuff. This comes from jupyter-image.
     /update.sh
+
+    git clone git@github.com:quartictech/shrubbery.git
+    cd shrubbery/bokeh-dashboards
 
     # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
     set +e
     while true; do
-      bokeh serve --use-xheaders --prefix=dashboards --host=core.{{cluster.domain_name}} --allow-websocket-origin=core.{{cluster.domain_name}} `find . -name "main.py" -exec dirname {} \;`
+      git pull
+      bokeh serve --use-xheaders --prefix=dashboards --allow-websocket-origin='*' `find . -name "main.py" -exec dirname {} \;`
       sleep 5 # To avoid madness in cases where server fails to start
     done
 kind: ConfigMap
@@ -56,15 +55,6 @@ spec:
             requests:
               cpu: 1
               memory: 1Gi
-          securityContext:
-            privileged: true
-            capabilities:
-                add:
-                  - SYS_ADMIN
-          lifecycle:
-            preStop:
-              exec:
-                command: ["fusermount", "-u", "/bucket"]
           volumeMounts:
             - name: config-volume
               mountPath: /setup
