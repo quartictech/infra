@@ -1,7 +1,7 @@
 ---
 name: demo
-platform_version: "1299"
-zeus_version: 122
+platform_version: "1313"
+zeus_version: "135"
 weyl:
   memory_gb: 8
   cpu: 3
