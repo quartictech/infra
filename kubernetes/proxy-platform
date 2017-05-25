@@ -1,0 +1,16 @@
+#! /bin/bash
+set -eu
+
+namespace=${1}
+
+
+function kill_pf() {
+    local port=${1}
+    ps -ef | grep port-forward | grep ${port} | awk '{print $2}' | xargs kill -9
+}
+
+kill_pf 8090
+kill_pf 8120
+
+kubectl port-forward -n ${namespace} `./get-pod ${namespace} catalogue` 8090 &
+kubectl port-forward -n ${namespace} `./get-pod ${namespace} howl` 8120 &
