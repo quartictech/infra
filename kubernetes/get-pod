@@ -1,0 +1,7 @@
+#! /bin/bash
+set -eu
+
+namespace=${1}
+service=${2}
+
+kubectl get pod -n ${namespace} -o name -lcomponent=${service} | awk -F/ '{print $2}'
