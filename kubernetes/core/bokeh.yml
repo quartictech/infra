@@ -5,7 +5,7 @@ data:
     /update.sh
 
     git clone git@github.com:quartictech/shrubbery.git
-    cd shrubbery/bokeh-dashboards
+    cd shrubbery/src/bokeh-dashboards
 
     # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
     set +e
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: bokeh
-          image: eu.gcr.io/quartictech/taijitu:26
+          image: eu.gcr.io/quartictech/taijitu:32
           ports:
             - containerPort: 5006
           resources:
