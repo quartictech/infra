@@ -31,6 +31,10 @@ data:
         type: url
         url: http://howl.magnolia:8120/api/zeus/jobs
         indexedAttributes: [ "Number" ]
+      aom_treatments:
+        type: url
+        url: http://howl.magnolia:8120/api/zeus/aom
+        indexedAttributes: [ ]
     server:
       applicationContextPath: /
       applicationConnectors:
