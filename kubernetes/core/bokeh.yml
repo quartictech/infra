@@ -1,15 +1,14 @@
 apiVersion: v1
 data:
   start.sh: |
-    # Update shrubbery stuff. This comes from jupyter-image.
-    /update.sh
-
     git clone git@github.com:quartictech/shrubbery.git
     cd shrubbery/src/bokeh-dashboards
 
     # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
     set +e
     while true; do
+      # Update shrubbery stuff. This comes from jupyter-image.
+      shrubbery_update
       git pull
       bokeh serve --use-xheaders --prefix=dashboards --allow-websocket-origin='*' `find . -name "main.py" -exec dirname {} \;`
       sleep 5 # To avoid madness in cases where server fails to start
