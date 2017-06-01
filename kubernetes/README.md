@@ -18,14 +18,6 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     ./scripts/create-cluster.sh ${CLUSTER} ${NUM_NODES}
     ```
 
-2. Open HTTP port on the primary node
-3. Add our external IP to the primary node
-4. Label the primary node with `ingressNode=true`:
-
-    ```
-    kubectl label nodes ${NODE} ingressNode=true
-    ```
-
 # Starting the cluster
 
 ```

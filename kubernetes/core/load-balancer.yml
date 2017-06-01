@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-controller
+  namespace: core
+spec:
+  type: LoadBalancer
+  loadBalancerIP: {{cluster.static_ip}}
+  ports:
+    - port: 80
+      name: http
+    - port: 443
+      name: https
+  selector:
+    component: ingress-controller

@@ -35,8 +35,6 @@ spec:
         namespace: core
     spec:
       terminationGracePeriodSeconds: 60
-      nodeSelector:
-        ingressNode: "true"
       containers:
       - image: gcr.io/google_containers/nginx-ingress-controller:0.9.0-beta.3
         name: nginx-ingress-lb
@@ -44,12 +42,12 @@ spec:
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 10254
+            port: 80
             scheme: HTTP
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 10254
+            port: 80
             scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 1
