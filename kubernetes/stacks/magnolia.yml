@@ -1,7 +1,7 @@
 ---
 name: magnolia
 codename: dozers
-platform_version: "1315"
+platform_version: "1324"
 zeus_version: "205"
 weyl:
   memory_gb: 8
