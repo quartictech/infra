@@ -7,6 +7,12 @@ import csv
 
 url_root = "https://circleci.com/api/v1.1/project/github/quartictech"
 
+def set_env_vars_raw(session, vars):
+    for k, v in vars.items():
+        r = session.post("{}/{}/envvar".format(url_root, args.project), json={"name": k, "value": v})
+        r.raise_for_status()
+
+
 def set_env_vars(session, args):
     with open(args.gcloud_key_file, "rb") as key_file:
         encoded_key = base64.b64encode(key_file.read()).decode("utf-8")
@@ -19,9 +25,7 @@ def set_env_vars(session, args):
         "QUARTIC_DOCKER_REPOSITORY": "eu.gcr.io/quartictech"
     }
 
-    for k, v in vars.items():
-        r = session.post("{}/{}/envvar".format(url_root, args.project), json={"name": k, "value": v})
-        r.raise_for_status()
+    set_env_vars_raw(session, vars)
 
 def set_aws_creds(session, args):
     with open(args.aws_key_file) as key_file:
@@ -29,6 +33,12 @@ def set_aws_creds(session, args):
         for row in reader:
             access_key_id = row["Access key ID"]
             secret_access_key = row["Secret access key"]
+
+    # Workaround for https://discuss.circleci.com/t/issue-logging-in-to-aws-missing-credentials/10680 on CircleCI 2.0
+    set_env_vars_raw(session, {
+        "AWS_ACCESS_KEY_ID": access_key_id,
+        "AWS_SECRET_ACCESS_KEY": secret_access_key,
+    })
 
     r = session.put("{}/{}/settings".format(url_root, args.project), json={
         "aws": {
