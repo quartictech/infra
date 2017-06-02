@@ -7,6 +7,7 @@ data:
     # Bokeh server doesn't hot-reload code, so our dev cycle involves bouncing it (via kubectl exec ... killall bokeh)
     set +e
     while true; do
+      echo "======= Bokeh loop ======="
       # Update shrubbery stuff. This comes from jupyter-image.
       shrubbery_update
       git pull
