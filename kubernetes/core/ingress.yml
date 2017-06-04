@@ -31,10 +31,6 @@ spec:
             backend:
               serviceName: jupyter
               servicePort: 8888
-          - path: /dashboards
-            backend:
-              serviceName: bokeh
-              servicePort: 5006
           - path: /
             backend:
               serviceName: grafana
