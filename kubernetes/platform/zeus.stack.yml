@@ -24,15 +24,15 @@ data:
   zeus.yml: |
     datasets:
       assets:
-        type: url
+        prettyName: "RSL assets"
         url: http://howl.magnolia:8120/api/zeus/roads
         indexedAttributes: [ "RSL", "Road Name" ]
       jobs:
-        type: url
+        prettyName: "Jobs"
         url: http://howl.magnolia:8120/api/zeus/jobs
         indexedAttributes: [ "Number" ]
       aom_treatments:
-        type: url
+        prettyName: "AOM treatments"
         url: http://howl.magnolia:8120/api/zeus/aom
         indexedAttributes: [ ]
     server:

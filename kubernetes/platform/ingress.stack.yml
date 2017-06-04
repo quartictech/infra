@@ -29,3 +29,8 @@ spec:
             backend:
               serviceName: mgmt
               servicePort: 8100
+          - path: /dashboards
+            backend:
+              serviceName: bokeh
+              servicePort: 5006
+
