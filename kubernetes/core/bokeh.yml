@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: bokeh
-          image: eu.gcr.io/quartictech/taijitu:45
+          image: eu.gcr.io/quartictech/jupyter:46
           ports:
             - containerPort: 5006
           resources:

@@ -29,7 +29,7 @@ spec:
               servicePort: 9093
           - path: /analysis
             backend:
-              serviceName: taijitu
+              serviceName: jupyter
               servicePort: 8888
           - path: /dashboards
             backend:
