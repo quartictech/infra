@@ -1,0 +1,73 @@
+apiVersion: v1
+data:
+  start.sh: |
+    mkdir /var/run/sshd
+    python3 /setup/add-keys.py $USER
+    # possibly needed to prevent weirdzones on user logout
+    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+    /usr/sbin/sshd -D
+    sleep infinity
+  add-keys.py: |
+    #!/bin/python
+    import requests
+    import sys
+    keys = requests.get("https://api.github.com/users/{}/keys".format(sys.argv[1])).json()
+    keysf = open("/home/jovyan/.ssh/authorized_keys", "w")
+    for key in keys:
+      print(key["key"], file=keysf)
+kind: ConfigMap
+metadata:
+  name: jupyter-scripts
+  namespace: core
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter-{{variables.user}}
+  namespace: core
+  labels:
+    component: jupyter-{{variables.user}}
+spec:
+  ports:
+  - port: 22
+    protocol: TCP
+    name: default
+  selector:
+    component: jupyter-{{variables.user}}
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: jupyter-{{variables.user}}
+  namespace: core
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: jupyter-{{variables.user}}
+    spec:
+      containers:
+        - name: jupyter
+          image: eu.gcr.io/quartictech/jupyter:50
+          ports:
+            - containerPort: 22
+          resources:
+            requests:
+              cpu: 1
+              memory: 1Gi
+            limits:
+              cpu: 2
+          command: ["sh", "/setup/start.sh"]
+          env:
+            - name: JUPYTER_GOOGLE_CLOUD_BUCKET
+              value: quartictech/jupyter
+            - name: USER
+              value: {{variables.user}}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /setup
+      volumes:
+        - name: config-volume
+          configMap:
+            name: jupyter-scripts
