@@ -107,7 +107,7 @@ kubectl -n analysis port-forward jupyter-${GITHUB_USERNAME}-0 9022:22
 ssh -p 9022 jovyan@localhost
 ```
 
-To push and pull from git, set up `ssh-agent` with forwarding like so:
+To push and pull from git, set up `ssh-agent` with forwarding by modifying `~/.ssh/config` like so:
 
 ```
 Host localhost
