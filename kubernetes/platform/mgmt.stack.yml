@@ -4,7 +4,7 @@ data:
     catalogueUrl: http://catalogue:8090/api
     howlUrl: http://howl:8120/api
     authorisedNamespaces:
-      magnolia: ["*"]
+      admin: ["*"]
     server:
       applicationContextPath: /mgmt
       applicationConnectors:

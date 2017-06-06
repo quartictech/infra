@@ -1,7 +1,7 @@
 ---
 name: demo
-platform_version: "1313"
-zeus_version: "135"
+platform_version: "1326"
+zeus_version: "257"
 weyl:
   memory_gb: 8
   cpu: 3
@@ -14,4 +14,4 @@ dataset_categories:
   - large
   - live
 auth_secret: |
-  dilectic:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
+  admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
