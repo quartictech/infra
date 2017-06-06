@@ -4,9 +4,8 @@ data:
     mkdir /var/run/sshd
     python3 /setup/add-keys.py $USER
     # possibly needed to prevent weirdzones on user logout
-    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+    #sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
     /usr/sbin/sshd -D
-    sleep infinity
   add-keys.py: |
     #!/bin/python
     import requests
@@ -23,29 +22,29 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: jupyter-{{variables.user}}
+  name: jupyter-{{environment.user}}
   namespace: core
   labels:
-    component: jupyter-{{variables.user}}
+    component: jupyter-{{environment.user}}
 spec:
   ports:
   - port: 22
     protocol: TCP
     name: default
   selector:
-    component: jupyter-{{variables.user}}
+    component: jupyter-{{environment.user}}
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: jupyter-{{variables.user}}
+  name: jupyter-{{environment.user}}
   namespace: core
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: jupyter-{{variables.user}}
+        component: jupyter-{{environment.user}}
     spec:
       containers:
         - name: jupyter
@@ -63,7 +62,7 @@ spec:
             - name: JUPYTER_GOOGLE_CLOUD_BUCKET
               value: quartictech/jupyter
             - name: USER
-              value: {{variables.user}}
+              value: {{environment.user}}
           volumeMounts:
             - name: config-volume
               mountPath: /setup
