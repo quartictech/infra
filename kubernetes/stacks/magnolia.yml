@@ -2,7 +2,7 @@
 name: magnolia
 codename: dozers
 platform_version: "1326"
-zeus_version: "226"
+zeus_version: "257"
 weyl:
   memory_gb: 8
   cpu: 3
@@ -13,7 +13,7 @@ weyl:
 dataset_categories:
   - small
 auth_secret: |
-  magnolia:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
+  admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
   yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.
   sebastien.magat:$apr1$MCsVbqHi$.FYsHBJUUZUCr7HmmRhBh/
   tim.hurley:$apr1$O7bJA1J.$egy3al/ZO4XlFk62qa33g.
