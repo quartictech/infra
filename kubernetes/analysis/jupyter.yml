@@ -1,4 +1,14 @@
 apiVersion: v1
+data:
+  start.sh: |
+    start.sh shrubbery_update
+    start-notebook.sh --debug --ip='*' --NotebookApp.token=''
+kind: ConfigMap
+metadata:
+  name: jupyter-scripts
+  namespace: analysis
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: jupyter
@@ -27,7 +37,7 @@ spec:
     spec:
       containers:
         - name: jupyter
-          image: eu.gcr.io/quartictech/jupyter:46
+          image: eu.gcr.io/quartictech/jupyter:50
           ports:
             - containerPort: 8888
           resources:
@@ -37,4 +47,11 @@ spec:
           env:
             - name: JUPYTER_GOOGLE_CLOUD_BUCKET
               value: quartictech/jupyter
-          command: ["sh", "-c", "shrubbery_update && start-notebook.sh --debug --ip='*' --NotebookApp.token=''"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /setup
+          command: ["sh", "/setup/start.sh"]
+      volumes:
+        - name: config-volume
+          configMap:
+            name: jupyter-scripts
