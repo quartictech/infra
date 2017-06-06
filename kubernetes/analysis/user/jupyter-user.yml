@@ -3,6 +3,9 @@ data:
   start.sh: |
     mkdir /var/run/sshd
     python3 /setup/add-keys.py $USER
+    groupadd -g 1337 diskwriters
+    usermod -aG diskwriters jovyan
+    chmod -R g+rwx /home/jovyan/work
     /usr/sbin/sshd -D
   add-keys.py: |
     #!/bin/python
@@ -67,6 +70,8 @@ spec:
               mountPath: /setup
             - name: work
               mountPath: /home/jovyan/work
+      securityContext:
+        fsGroup: 1337
       volumes:
         - name: config-volume
           configMap:
