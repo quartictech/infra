@@ -84,32 +84,63 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
 
 # Creating basic-auth passwords
 
-```
-htpasswd -c ${STACK_NAME} | base64
-```
+1. Create a strong password:
+
+    ```
+    pwgen -1s 16
+    ```
+
+2. Record the password to the Creds spreadsheet.
+
+3. Generate the password hash in a suitable format (note `htpasswd` uses a random salt, so this will be different every
+  time you run it):
+
+    ```
+    htpasswd -n "${USERNAME}"
+    ```
+
+4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `stacks/`).
 
 # Starting a private Python container
+
 1. Create the box:
 
-```
-./ktmpl -c ${CLUSTER} apply -f analysis/user -e user=${GITHUB_USERNAME}
-```
+    ```
+    ./ktmpl -c ${CLUSTER} apply -f analysis/user -e user=${GITHUB_USERNAME}
+    ```
 
 2. Port forward
 
-```
-kubectl -n analysis port-forward jupyter-${GITHUB_USERNAME}-0 9022:22
-```
+    ```
+    kubectl -n analysis port-forward jupyter-${GITHUB_USERNAME}-0 9022:22
+    ```
 
-3. SSH to the box:
+
+## SSH-ing to the container
 
 ```
 ssh -p 9022 jovyan@localhost
 ```
 
-To push and pull from git, set up `ssh-agent` with forwarding by modifying `~/.ssh/config` like so:
+## Pushing and pulling from GitHub
+
+To push and pull from Git, set up `ssh-agent` with forwarding by modifying `~/.ssh/config` like so:
 
 ```
 Host localhost
   ForwardAgent yes
+```
+
+## Mounting container directory to local filesystem
+
+```
+mkdir ${LOCAL_FOLDER}
+sshfs -p 9022 jovyan@localhost: ${LOCAL_FOLDER}
+```
+
+To unmount, run one of the following:
+
+```
+umount ${LOCAL_FOLDER}                # OSX
+fusermount -u ${LOCAL_FOLDER}         # Linux
 ```
