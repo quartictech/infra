@@ -21,22 +21,23 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 # Starting the cluster
 
 ```
-./ktmpl -c ${CLUSTER} -o apply -f namespaces stacks/*
-./ktmpl -c ${CLUSTER} -o apply -f core
-./ktmpl -c ${CLUSTER} -o apply -f dilectic
-./ktmpl -c ${CLUSTER} -o apply -f platform stacks/*
+./ktmpl -c ${CLUSTER} apply -f namespaces stacks/*
+./ktmpl -c ${CLUSTER} apply -f core
+./ktmpl -c ${CLUSTER} apply -f dilectic
+./ktmpl -c ${CLUSTER} apply -f analysis
+./ktmpl -c ${CLUSTER} apply -f platform stacks/*
 ```
 
 # Dilectic hydration
 
 ```
-./ktmpl -c ${CLUSTER} -o apply -f dilectic/hydration
+./ktmpl -c ${CLUSTER} apply -f dilectic/hydration
 ```
 
 # Stack imports
 
 ```
-./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/*
+./ktmpl -c ${CLUSTER} apply -f platform/import stacks/*
 ```
 
 # Per-stack operations
@@ -45,7 +46,7 @@ Any of the multi-stack operations above can be applied in a more granular way by
 For example:
 
 ```
-./ktmpl -c ${CLUSTER} -o apply -f platform/import stacks/alpha.yml
+./ktmpl -c ${CLUSTER} apply -f platform/import stacks/alpha.yml
 ```
 
 # Alerting
@@ -86,3 +87,25 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
 ```
 htpasswd -c ${STACK_NAME} | base64
 ```
+
+# Starting a private Python container
+1. Create the box:
+
+```
+./ktmpl -c ${CLUSTER} apply -f analysis/user -e user=${GITHUB_USERNAME}
+```
+
+2. Port forward
+
+```
+kubectl -n analysis port-forward jupyter-${GITHUB_USERNAME}-0 9022:22
+```
+
+3. SSH to the box:
+
+```
+ssh -p 9022 jovyan@localhost
+```
+
+To push and pull from git, set up `ssh-agent` with forwarding.
+

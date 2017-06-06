@@ -7,7 +7,7 @@ import subprocess
 import sys
 import yaml
 
-from jinja2 import Environment, Template
+from jinja2 import Environment, Template, StrictUndefined
 
 # Modified http://blog.endpoint.com/2015/01/getting-realtime-output-using-python.html for Python3 and stdin
 def run_command(command, stdin):
@@ -44,7 +44,7 @@ def get_operations(operation):
         return [operation]
 
 def run_from_template(operation, stack_name, template_path, config):
-    env = Environment()
+    env = Environment(undefined=StrictUndefined)
     env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
     with open(template_path, "rt") as file:
         template = env.from_string(file.read())
@@ -63,21 +63,51 @@ def check_cluster(cluster_name):
         raise ValueError("stack name mismatch. configured {0} but specified {1}".format(current_context, cluster_name))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
-    parser.add_argument("-c", "--cluster", required=True, help="Cluster name (should match prefix of a file in clusters/ dir)")
-    parser.add_argument("-o", "--operation", required=True, choices=["create", "apply", "delete", "bounce"], help="kubectl operation")
-    parser.add_argument("-f", "--filename", required=True, help="Kubernetes definition file (or directory containing files)")
-    parser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
-    args = parser.parse_args()
+    PARSER = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
+    PARSER.add_argument("-c", "--cluster", required=True,
+                           help="Cluster name (should match prefix of a file in clusters/ dir)")
+
+    SUBPARSERS = PARSER.add_subparsers(help="sub-command help", dest="operation")
+    SUBPARSERS.required = True
+    OPERATIONS = [
+        ("create", "create resource"),
+        ("apply", "apply configuration to a resource"),
+        ("delete", "delete a resource"),
+        ("bounce", "delete and recreate a resource")
+    ]
+
+    for operation, help_msg in OPERATIONS:
+        subparser = SUBPARSERS.add_parser(operation, help=help_msg)
+
+        subparser.set_defaults(operation=operation)
+        subparser.add_argument("-f", "--filename", required=True,
+                               help="Kubernetes definition file (or directory containing files)")
+        subparser.add_argument("-e", "--environment", nargs=1, action="append", default=[],
+                               help="Additional variables for template expansion")
+        subparser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
+    args = PARSER.parse_args()
+
+    if not args.operation:
+        sys.exit(1)
 
     check_cluster(args.cluster)
     stack_configs = {path: load_config(path) for path in args.stack_file}
     cluster_config = load_config(os.path.join("clusters", args.cluster + ".yml"))
-
+    environment = {}
+    for var in args.environment:
+        bits = var[0].split("=")
+        if len(bits) != 2:
+            print("malformed variable option: {}".format(var))
+            sys.exit(1)
+        environment[bits[0]] = bits[1]
+        
     for operation in get_operations(args.operation):
         for template_path in get_filenames(args.filename):
             if template_path.endswith(".stack.yml"):
                 for stack_path, stack_config in stack_configs.items():
-                    run_from_template(operation, stack_config["name"], template_path, { "cluster": cluster_config, "stack": stack_config })
+                    run_from_template(operation, stack_config["name"], 
+                                      template_path, 
+                                      {"cluster": cluster_config, "stack": stack_config, "environment": environment})
             else:
-                run_from_template(operation, "global", template_path, { "cluster": cluster_config })
+                run_from_template(operation, "global", template_path, 
+                                  {"cluster": cluster_config, "environment": environment})

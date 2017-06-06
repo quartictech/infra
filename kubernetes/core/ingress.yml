@@ -27,10 +27,6 @@ spec:
             backend:
               serviceName: prometheus
               servicePort: 9093
-          - path: /analysis
-            backend:
-              serviceName: jupyter
-              servicePort: 8888
           - path: /
             backend:
               serviceName: grafana
