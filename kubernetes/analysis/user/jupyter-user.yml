@@ -15,13 +15,13 @@ data:
 kind: ConfigMap
 metadata:
   name: jupyter-scripts
-  namespace: core
+  namespace: analysis
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: jupyter-{{environment.user}}
-  namespace: core
+  namespace: analysis
   labels:
     component: jupyter-{{environment.user}}
 spec:
@@ -36,7 +36,7 @@ kind: StatefulSet
 apiVersion: apps/v1beta1
 metadata:
   name: jupyter-{{environment.user}}
-  namespace: core
+  namespace: analysis
 spec:
   serviceName: jupyter-{{environment.user}}
   replicas: 1
