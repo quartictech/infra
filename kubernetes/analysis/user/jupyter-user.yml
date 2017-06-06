@@ -3,8 +3,6 @@ data:
   start.sh: |
     mkdir /var/run/sshd
     python3 /setup/add-keys.py $USER
-    # possibly needed to prevent weirdzones on user logout
-    #sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
     /usr/sbin/sshd -D
   add-keys.py: |
     #!/bin/python
@@ -34,12 +32,13 @@ spec:
   selector:
     component: jupyter-{{environment.user}}
 ---
-kind: Deployment
-apiVersion: extensions/v1beta1
+kind: StatefulSet
+apiVersion: apps/v1beta1
 metadata:
   name: jupyter-{{environment.user}}
   namespace: core
 spec:
+  serviceName: jupyter-{{environment.user}}
   replicas: 1
   template:
     metadata:
@@ -66,7 +65,19 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /setup
+            - name: work
+              mountPath: /home/jovyan/work
       volumes:
         - name: config-volume
           configMap:
             name: jupyter-scripts
+  volumeClaimTemplates:
+  - metadata:
+      name: work
+      annotations:
+        volume.beta.kubernetes.io/storage-class: user-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
