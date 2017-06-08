@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   start.sh: |
-    mkdir /var/run/sshd
+    set -eu
     python3 /setup/add-keys.py $USER
     groupadd -g 1337 diskwriters
     usermod -aG diskwriters jovyan
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: jupyter
-          image: eu.gcr.io/quartictech/jupyter:50
+          image: eu.gcr.io/quartictech/jupyter:53
           ports:
             - containerPort: 22
           resources:
