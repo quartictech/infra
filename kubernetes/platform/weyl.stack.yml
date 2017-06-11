@@ -22,6 +22,35 @@ spec:
   selector:
     component: weyl
 ---
+apiVersion: v1
+data:
+  weyl.yml: |
+    catalogue:
+      hostname: catalogue
+      port: 8090
+      useSsl: false
+    howlStorageUrl: http://howl:8120/api
+    rainWsUrlRoot: ws://rain:8150/ws
+    importNamespaceRules:
+      open-source: ["small", "large", "live"]
+    exportNamespace: weyl-export
+    map:
+      lat: {{stack.weyl.location.lat}}
+      lng: {{stack.weyl.location.lng}}
+      zoom: {{stack.weyl.location.zoom}}
+    server:
+      applicationContextPath: /map
+      applicationConnectors:
+        - type: http
+          port: 8080
+      adminConnectors:
+        - type: http
+          port: 8081
+kind: ConfigMap
+metadata:
+  namespace: {{stack.name}}
+  name: weyl-config
+---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
@@ -41,18 +70,13 @@ spec:
             - containerPort: 8080
             - containerPort: 8081
             - containerPort: 9999
+          volumeMounts:
+            - name: config
+              mountPath: /weyl-application-{{stack.platform_version}}/weyl.yml
+              subPath: weyl.yml
           env:
             - name: WEYL_APPLICATION_OPTS
               value: >
-                -Ddw.catalogue.hostname=catalogue
-                -Ddw.catalogue.port=8090
-                -Ddw.catalogue.useSsl=false
-                -Ddw.howlStorageUrl=http://howl:8120/api
-                -Ddw.rainWsUrlRoot=ws://rain:8150/ws
-                -Ddw.server.applicationContextPath=/map
-                -Ddw.map.lat={{stack.weyl.location.lat}}
-                -Ddw.map.lng={{stack.weyl.location.lng}}
-                -Ddw.map.zoom={{stack.weyl.location.zoom}}
                 -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
                 -Dcom.sun.management.jmxremote=
                 -Dcom.sun.management.jmxremote.ssl=false
@@ -78,3 +102,7 @@ spec:
               cpu: "{{stack.weyl.cpu * cluster.cpu_multiplier}}"
             limits:
               memory: {{(cluster.memory_multiplier * stack.weyl.memory_gb) + 1.0}}Gi
+      volumes:
+        - name: "config"
+          configMap:
+            name: "weyl-config"
