@@ -32,7 +32,8 @@ data:
     howlStorageUrl: http://howl:8120/api
     rainWsUrlRoot: ws://rain:8150/ws
     importNamespaceRules:
-      open-source: ["small", "large", "live"]
+      open-source: {{stack.weyl.open_source_tags}}
+      {{stack.name}}: []
     exportNamespace: weyl-export
     map:
       lat: {{stack.weyl.location.lat}}
