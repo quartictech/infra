@@ -1,6 +1,6 @@
 ---
 name: demo
-platform_version: "1326"
+platform_version: "1344"
 zeus_version: "257"
 weyl:
   memory_gb: 8
@@ -9,9 +9,6 @@ weyl:
     lat: 51.5174
     lng: -0.0915
     zoom: 9.7
-dataset_categories:
-  - small
-  - large
-  - live
+  open_source_tags: ["small", "large", "live"]
 auth_secret: |
   admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
