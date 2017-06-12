@@ -14,7 +14,7 @@ data:
     cp /integration/config.yml.example /integration/config.yml
     sed -i.bak 's/host: localhost/host: postgres/g' /integration/config.yml
     mkdir -p /data/final /data/derived /data/raw
-    gsutil -m rsync -r gs://quartic-dilectic/raw-data /data/raw
+    gsutil -m rsync -r gs://open-source.prod.quartic.io/raw /data/raw
     /integration/integrations.sh
     for f in /data/final/*; do
       curl -f -XPUT http://pogo:8080/datasets/$(basename ${f}) -d @${f}
