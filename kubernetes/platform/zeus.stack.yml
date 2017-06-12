@@ -62,13 +62,13 @@ spec:
     spec:
       containers:
         - name: zeus
-          image: eu.gcr.io/quartictech/zeus:{{stack.zeus_version}}
+          image: eu.gcr.io/quartictech/zeus:{{cluster.zeus_version}}
           ports:
             - containerPort: 8160
             - containerPort: 8161
           volumeMounts:
             - name: config
-              mountPath: /zeus-backend-{{stack.zeus_version}}/zeus.yml
+              mountPath: /zeus-backend-{{cluster.zeus_version}}/zeus.yml
               subPath: zeus.yml
           env:
             - name: ZEUS_BACKEND_OPTS

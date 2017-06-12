@@ -66,14 +66,14 @@ spec:
     spec:
       containers:
         - name: weyl
-          image: eu.gcr.io/quartictech/weyl:{{stack.platform_version}}
+          image: eu.gcr.io/quartictech/weyl:{{cluster.platform_version}}
           ports:
             - containerPort: 8080
             - containerPort: 8081
             - containerPort: 9999
           volumeMounts:
             - name: config
-              mountPath: /weyl-application-{{stack.platform_version}}/weyl.yml
+              mountPath: /weyl-application-{{cluster.platform_version}}/weyl.yml
               subPath: weyl.yml
           env:
             - name: WEYL_APPLICATION_OPTS

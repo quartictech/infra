@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: howl
-          image: eu.gcr.io/quartictech/howl:{{stack.platform_version}}
+          image: eu.gcr.io/quartictech/howl:{{cluster.platform_version}}
           ports:
             - containerPort: 8120
             - containerPort: 8121

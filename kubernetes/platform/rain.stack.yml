@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: rain
-          image: eu.gcr.io/quartictech/rain:{{stack.platform_version}}
+          image: eu.gcr.io/quartictech/rain:{{clusterstack.platform_version}}
           ports:
             - containerPort: 8150
             - containerPort: 8151
