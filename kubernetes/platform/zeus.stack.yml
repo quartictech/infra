@@ -25,15 +25,15 @@ data:
     datasets:
       assets:
         prettyName: "RSL assets"
-        url: http://howl.magnolia:8120/api/zeus/roads
+        url: http://howl.magnolia:8120/api/magnolia/zeus%2Froads
         indexedAttributes: [ "RSL", "Road Name" ]
       jobs:
         prettyName: "Jobs"
-        url: http://howl.magnolia:8120/api/zeus/jobs
+        url: http://howl.magnolia:8120/api/magnolia/zeus%2Fjobs
         indexedAttributes: [ "Number" ]
       aom_treatments:
         prettyName: "AOM treatments"
-        url: http://howl.magnolia:8120/api/zeus/aom
+        url: http://howl.magnolia:8120/api/magnolia/zeus%2Faom
         indexedAttributes: [ ]
     server:
       applicationContextPath: /
