@@ -29,8 +29,8 @@ data:
       hostname: catalogue
       port: 8090
       useSsl: false
-    howlStorageUrl: http://howl:8120/api
-    rainWsUrlRoot: ws://rain:8150/ws
+    howlStorageUrl: http://howl.core:8120/api
+    rainWsUrlRoot: ws://rain.core:8150/ws
     importNamespaceRules:
       open-source: {{stack.weyl.open_source_tags}}
       {{stack.name}}: []
