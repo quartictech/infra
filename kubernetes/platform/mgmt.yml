@@ -2,7 +2,7 @@ apiVersion: v1
 data:
   mgmt.yml: |
     catalogueUrl: http://catalogue:8090/api
-    howlUrl: http://howl.core:8120/api
+    howlUrl: http://howl:8120/api
     authorisedNamespaces:
       admin: ["*"]
     server:
@@ -15,14 +15,14 @@ data:
           port: 8101
 kind: ConfigMap
 metadata:
-  namespace: {{stack.name}}
+  namespace: core
   name: mgmt-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mgmt
-  namespace: {{stack.name}}
+  namespace: core
   labels:
     component: mgmt
   annotations:
@@ -43,7 +43,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: mgmt
-  namespace: {{stack.name}}
+  namespace: core
 spec:
   replicas: 1
   template:
