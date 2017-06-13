@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: platform
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: basic-auth
+spec:
+  tls:
+    - secretName: tls-platform
+      hosts:
+        - platform.{{cluster.domain_name}}
+  rules:
+    - host: platform.{{cluster.domain_name}}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: mgmt
+              servicePort: 8100
+

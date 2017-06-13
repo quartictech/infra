@@ -6,7 +6,7 @@ data:
     authorisedNamespaces:
       admin: ["*"]
     server:
-      applicationContextPath: /mgmt
+      applicationContextPath: /
       applicationConnectors:
         - type: http
           port: 8100
@@ -15,14 +15,14 @@ data:
           port: 8101
 kind: ConfigMap
 metadata:
-  namespace: {{stack.name}}
+  namespace: platform
   name: mgmt-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mgmt
-  namespace: {{stack.name}}
+  namespace: platform
   labels:
     component: mgmt
   annotations:
@@ -43,7 +43,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: mgmt
-  namespace: {{stack.name}}
+  namespace: platform
 spec:
   replicas: 1
   template:
@@ -53,13 +53,13 @@ spec:
     spec:
       containers:
         - name: mgmt
-          image: eu.gcr.io/quartictech/mgmt:{{stack.platform_version}}
+          image: eu.gcr.io/quartictech/mgmt:{{cluster.platform_version}}
           ports:
             - containerPort: 8100
             - containerPort: 8101
           volumeMounts:
             - name: config
-              mountPath: /mgmt-application-{{stack.platform_version}}/mgmt.yml
+              mountPath: /mgmt-application-{{cluster.platform_version}}/mgmt.yml
               subPath: mgmt.yml
           env:
             - name: ENABLE_METRICS

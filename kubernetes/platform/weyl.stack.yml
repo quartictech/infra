@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: weyl
-  namespace: {{stack.name}}
+  name: weyl-{{stack.name}}
+  namespace: platform
   labels:
     component: weyl
   annotations:
@@ -20,7 +20,7 @@ spec:
     protocol: TCP
     name: jmx
   selector:
-    component: weyl
+    component: weyl-{{stack.name}}
 ---
 apiVersion: v1
 data:
@@ -49,31 +49,31 @@ data:
           port: 8081
 kind: ConfigMap
 metadata:
-  namespace: {{stack.name}}
-  name: weyl-config
+  namespace: platform
+  name: weyl-config-{{stack.name}}
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: weyl
-  namespace: {{stack.name}}
+  name: weyl-{{stack.name}}
+  namespace: platform
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: weyl
+        component: weyl-{{stack.name}}
     spec:
       containers:
         - name: weyl
-          image: eu.gcr.io/quartictech/weyl:{{stack.platform_version}}
+          image: eu.gcr.io/quartictech/weyl:{{cluster.platform_version}}
           ports:
             - containerPort: 8080
             - containerPort: 8081
             - containerPort: 9999
           volumeMounts:
             - name: config
-              mountPath: /weyl-application-{{stack.platform_version}}/weyl.yml
+              mountPath: /weyl-application-{{cluster.platform_version}}/weyl.yml
               subPath: weyl.yml
           env:
             - name: WEYL_APPLICATION_OPTS
@@ -106,4 +106,4 @@ spec:
       volumes:
         - name: "config"
           configMap:
-            name: "weyl-config"
+            name: "weyl-config-{{stack.name}}"

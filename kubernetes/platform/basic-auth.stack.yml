@@ -3,6 +3,6 @@ data:
   auth: {{stack.auth_secret | b64encode}}
 kind: Secret
 metadata:
-  name: basic-auth
-  namespace: {{stack.name}}
+  name: basic-auth-{{stack.name}}
+  namespace: platform
 type: Opaque
