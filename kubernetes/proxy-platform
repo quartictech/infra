@@ -2,9 +2,6 @@
 set -eu
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-namespace=${1}
-
-
 function kill_pf() {
     local port=${1}
     ps -ef | grep port-forward | grep ${port} | awk '{print $2}' | xargs kill -9
@@ -13,5 +10,5 @@ function kill_pf() {
 kill_pf 8090
 kill_pf 8120
 
-kubectl port-forward -n ${namespace} `${DIR}/get-pod ${namespace} catalogue` 8090 &
-kubectl port-forward -n ${namespace} `${DIR}/get-pod ${namespace} howl` 8120 &
+kubectl port-forward -n platform `${DIR}/get-pod platform catalogue` 8090 &
+kubectl port-forward -n platform `${DIR}/get-pod platform howl` 8120 &
