@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: catalogue
-  namespace: core
+  namespace: platform
   labels:
     component: catalogue
   annotations:
@@ -23,7 +23,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: catalogue
-  namespace: core
+  namespace: platform
 spec:
   replicas: 1
   template:

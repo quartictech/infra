@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-{{stack.name}}
+  name: ingress-bokeh-{{stack.name}}
   namespace: platform
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -17,11 +17,7 @@ spec:
     - host: {{stack.name}}.{{cluster.domain_name}}
       http:
         paths:
-          - path: /
+          - path: /dashboards
             backend:
-              serviceName: zeus-{{stack.name}}
-              servicePort: 8160
-          - path: /map
-            backend:
-              serviceName: weyl-{{stack.name}}
-              servicePort: 8080
+              serviceName: bokeh-{{stack.name}}
+              servicePort: 5006

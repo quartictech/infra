@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: weyl
-  namespace: {{stack.name}}
+  name: weyl-{{stack.name}}
+  namespace: platform
   labels:
     component: weyl
   annotations:
@@ -20,17 +20,17 @@ spec:
     protocol: TCP
     name: jmx
   selector:
-    component: weyl
+    component: weyl-{{stack.name}}
 ---
 apiVersion: v1
 data:
   weyl.yml: |
     catalogue:
-      hostname: catalogue.core
+      hostname: catalogue
       port: 8090
       useSsl: false
-    howlStorageUrl: http://howl.core:8120/api
-    rainWsUrlRoot: ws://rain.core:8150/ws
+    howlStorageUrl: http://howl:8120/api
+    rainWsUrlRoot: ws://rain:8150/ws
     importNamespaceRules:
       open-source: {{stack.weyl.open_source_tags}}
       {{stack.name}}: []
@@ -49,20 +49,20 @@ data:
           port: 8081
 kind: ConfigMap
 metadata:
-  namespace: {{stack.name}}
-  name: weyl-config
+  namespace: platform
+  name: weyl-config-{{stack.name}}
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: weyl
-  namespace: {{stack.name}}
+  name: weyl-{{stack.name}}
+  namespace: platform
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: weyl
+        component: weyl-{{stack.name}}
     spec:
       containers:
         - name: weyl
@@ -106,4 +106,4 @@ spec:
       volumes:
         - name: "config"
           configMap:
-            name: "weyl-config"
+            name: "weyl-config-{{stack.name}}"

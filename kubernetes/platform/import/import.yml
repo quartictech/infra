@@ -14,18 +14,18 @@ data:
 kind: ConfigMap
 metadata:
   name: import-job-config
-  namespace: core
+  namespace: platform
 ---
 kind: Job
 apiVersion: extensions/v1beta1
 metadata:
   name: import-job
-  namespace: core
+  namespace: platform
 spec:
   template:
     metadata:
       labels:
-        component: core
+        component: platform
     spec:
       containers:
         - name: data-worker

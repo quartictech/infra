@@ -6,7 +6,7 @@ data:
     authorisedNamespaces:
       admin: ["*"]
     server:
-      applicationContextPath: /mgmt
+      applicationContextPath: /
       applicationConnectors:
         - type: http
           port: 8100
@@ -15,14 +15,14 @@ data:
           port: 8101
 kind: ConfigMap
 metadata:
-  namespace: core
+  namespace: platform
   name: mgmt-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: mgmt
-  namespace: core
+  namespace: platform
   labels:
     component: mgmt
   annotations:
@@ -43,7 +43,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: mgmt
-  namespace: core
+  namespace: platform
 spec:
   replicas: 1
   template:
