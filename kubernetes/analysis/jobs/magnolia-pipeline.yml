@@ -1,0 +1,37 @@
+apiVersion: v1
+data:
+  run.sh: |
+    set -e
+    export PATH=/opt/conda/bin:$PATH
+    shrubbery_update feature/fixes
+    echo "HELLO"
+    python --version
+    python -u -m taijitu.make magnolia.pipelines.main run --namespace magnolia 
+kind: ConfigMap
+metadata:
+  name: pipeline-job-config
+  namespace: platform
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pipeline-job
+  namespace: platform
+spec:
+  template:
+    metadata:
+      labels:
+        component: platform
+    spec:
+      containers:
+        - name: jupyter
+          image: eu.gcr.io/quartictech/jupyter:53
+          command: ["sudo", "-u", "jovyan", "sh", "/setup/run.sh"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /setup
+      restartPolicy: Never
+      volumes:
+        - name: config-volume
+          configMap:
+            name: pipeline-job-config
