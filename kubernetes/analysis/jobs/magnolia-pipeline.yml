@@ -3,9 +3,8 @@ data:
   run.sh: |
     set -e
     export PATH=/opt/conda/bin:$PATH
-    shrubbery_update feature/fixes
-    echo "HELLO"
-    python --version
+    shrubbery_update
+    # Running unbuffered due to weirdness with kubectl logs -f not updating
     python -u -m taijitu.make magnolia.pipelines.main run --namespace magnolia 
 kind: ConfigMap
 metadata:
