@@ -144,3 +144,10 @@ To unmount, run one of the following:
 umount ${LOCAL_FOLDER}                # OSX
 fusermount -u ${LOCAL_FOLDER}         # Linux
 ```
+
+# Running magnolia pipeline
+To kick off the pipeline job:
+
+```
+./ktmpl -c prod bounce -f analysis/jobs/magnolia-pipeline.yml
+```
