@@ -43,7 +43,7 @@ def get_operations(operation):
     else:
         return [operation]
 
-def run_from_template(operation, stack_name, template_path, config):
+def run_from_template(operation, dry_run, stack_name, template_path, config):
     env = Environment(undefined=StrictUndefined)
     env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
     with open(template_path, "rt") as file:
@@ -53,22 +53,26 @@ def run_from_template(operation, stack_name, template_path, config):
     
     rendered = template.render(config)
 
-    rc = run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
-    if rc != 0:
-        raise EnvironmentError("kubectl failed")
+    if (dry_run):
+        print(rendered)
+    else:
+        rc = run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
+        if rc != 0:
+            raise EnvironmentError("kubectl failed")
 
 def check_cluster(cluster_name):
     current_context = subprocess.check_output(["kubectl", "config", "current-context"]).decode("utf-8").strip()
     if not current_context.endswith(cluster_name):
         raise ValueError("stack name mismatch. configured {0} but specified {1}".format(current_context, cluster_name))
 
-if __name__ == "__main__":
-    PARSER = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
-    PARSER.add_argument("-c", "--cluster", required=True,
+def parse_args():
+    parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
+    parser.add_argument("-c", "--cluster", required=True,
                            help="Cluster name (should match prefix of a file in clusters/ dir)")
 
-    SUBPARSERS = PARSER.add_subparsers(help="sub-command help", dest="operation")
-    SUBPARSERS.required = True
+    subparsers = parser.add_subparsers(help="sub-command help", dest="operation")
+    subparsers.required = True
+
     OPERATIONS = [
         ("create", "create resource"),
         ("apply", "apply configuration to a resource"),
@@ -77,15 +81,21 @@ if __name__ == "__main__":
     ]
 
     for operation, help_msg in OPERATIONS:
-        subparser = SUBPARSERS.add_parser(operation, help=help_msg)
+        subparser = subparsers.add_parser(operation, help=help_msg)
 
         subparser.set_defaults(operation=operation)
         subparser.add_argument("-f", "--filename", required=True,
                                help="Kubernetes definition file (or directory containing files)")
         subparser.add_argument("-e", "--environment", nargs=1, action="append", default=[],
                                help="Additional variables for template expansion")
+        subparser.add_argument("-d", "--dry-run", action="store_true",
+                               help="Enable dry-run mode (just prints rendered templates, no actions are taken)")
         subparser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
-    args = PARSER.parse_args()
+
+    return parser.parse_args()
+
+if __name__ == "__main__":
+    args = parse_args()
 
     if not args.operation:
         sys.exit(1)
@@ -97,7 +107,7 @@ if __name__ == "__main__":
     for var in args.environment:
         bits = var[0].split("=")
         if len(bits) != 2:
-            print("malformed variable option: {}".format(var))
+            print("Malformed variable option: {}".format(var))
             sys.exit(1)
         environment[bits[0]] = bits[1]
         
@@ -105,9 +115,10 @@ if __name__ == "__main__":
         for template_path in get_filenames(args.filename):
             if template_path.endswith(".stack.yml"):
                 for stack_path, stack_config in stack_configs.items():
-                    run_from_template(operation, stack_config["name"], 
+                    run_from_template(operation, args.dry_run, stack_config["name"], 
                                       template_path, 
                                       {"cluster": cluster_config, "stack": stack_config, "environment": environment})
             else:
-                run_from_template(operation, "global", template_path, 
+                run_from_template(operation, args.dry_run, "global",
+                                  template_path, 
                                   {"cluster": cluster_config, "environment": environment})
