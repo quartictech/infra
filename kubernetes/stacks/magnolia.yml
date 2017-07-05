@@ -1,6 +1,7 @@
 ---
 name: magnolia
 codename: dozers
+
 weyl:
   memory_gb: 8
   cpu: 3
@@ -9,6 +10,22 @@ weyl:
     lng: -0.3548
     zoom: 11.7
   open_source_tags: ["small"]
+
+zeus:
+  datasets: |
+    assets:
+      prettyName: "RSL assets"
+      url: http://howl:8120/api/magnolia/zeus%2Froads
+      indexedAttributes: [ "RSL", "Road Name" ]
+    jobs:
+      prettyName: "Jobs"
+      url: http://howl:8120/api/magnolia/zeus%2Fjobs
+      indexedAttributes: [ "Number" ]
+    aom_treatments:
+      prettyName: "AOM treatments"
+      url: http://howl:8120/api/magnolia/zeus%2Faom
+      indexedAttributes: [ ]
+
 auth_secret: |
   admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
   yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.

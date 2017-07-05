@@ -1,5 +1,6 @@
 ---
 name: demo
+
 weyl:
   memory_gb: 8
   cpu: 3
@@ -8,5 +9,10 @@ weyl:
     lng: -0.0915
     zoom: 9.7
   open_source_tags: ["small", "large", "live"]
+
+zeus:
+  datasets: |
+    {}
+
 auth_secret: |
   admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1

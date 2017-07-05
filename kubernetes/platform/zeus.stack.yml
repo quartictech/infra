@@ -23,18 +23,7 @@ apiVersion: v1
 data:
   zeus.yml: |
     datasets:
-      assets:
-        prettyName: "RSL assets"
-        url: http://howl:8120/api/magnolia/zeus%2Froads
-        indexedAttributes: [ "RSL", "Road Name" ]
-      jobs:
-        prettyName: "Jobs"
-        url: http://howl:8120/api/magnolia/zeus%2Fjobs
-        indexedAttributes: [ "Number" ]
-      aom_treatments:
-        prettyName: "AOM treatments"
-        url: http://howl:8120/api/magnolia/zeus%2Faom
-        indexedAttributes: [ ]
+      {{stack.zeus.datasets | indent(6)}}
     server:
       applicationContextPath: /
       applicationConnectors:
