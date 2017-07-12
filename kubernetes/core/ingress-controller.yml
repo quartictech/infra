@@ -13,7 +13,7 @@ metadata:
   name: nginx-load-balancer-conf
   namespace: core
 data:
-  body-size: 250m
+  proxy-body-size: 250m
   proxy-set-headers: "core/custom-headers"
 ---
 # TODO: convert to DaemonSet once we have more than one cluster node

@@ -12,7 +12,19 @@ weyl:
 
 zeus:
   datasets: |
-    {}
+    assets:
+      prettyName: "RSL assets"
+      url: http://howl:8120/api/demo/zeus%2Fzeus_clean.json
+      indexedAttributes: [ "RSL", "Road Name" ]
+    jobs:
+      prettyName: "Jobs"
+      url: http://howl:8120/api/demo/zeus%2Fzeus_jobs_clean.json
+      indexedAttributes: [ "Number" ]
+    insights:
+      prettyName: "Insights"
+      url: http://howl:8120/api/demo/zeus%2Fzeus_insights_clean.json
+      indexedAttributes: [ ]
+
 
 auth_secret: |
   admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
