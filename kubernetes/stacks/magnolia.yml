@@ -25,7 +25,10 @@ zeus:
       prettyName: "AOM treatments"
       url: http://howl:8120/api/magnolia/zeus%2Faom
       indexedAttributes: [ ]
-
+    insights:
+      prettyName: "Insights"
+      url: http://howl:8120/api/magnolia/zeus%2Finsights
+      indexedAttributes: [ ]
 auth_secret: |
   admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
   yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.
