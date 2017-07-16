@@ -46,7 +46,7 @@ server {
     root                        /opt/quartic/www.quartic.io;
     index                       index.html;
 
-    error_page 404 403 /_super_secret/404.html;
+    error_page                  404 403 /_super_secret/404.html;
     
     location /post {
       proxy_pass http://127.0.0.1:8080;
@@ -56,6 +56,10 @@ server {
 
     location ~ /\. {
        deny all;
+    }
+
+    location /_super_secret/404.html {
+        internal;
     }
 
     location / {
@@ -118,9 +122,9 @@ server {
     root                        /opt/quartic/www-test.quartic.io;
     index                       index.html;
 
-    error_page 404 403 /_super_secret/404.html;
-
     expires                     $expires;
+
+    error_page                  404 403 /_super_secret/404.html;
 
     location ~ /\. {
        deny all;
@@ -128,6 +132,10 @@ server {
    
     location /post {
       proxy_pass http://127.0.0.1:8080;
+    }
+
+    location /_super_secret/404.html {
+        internal;
     }
 
     location / {
