@@ -59,7 +59,7 @@ server {
     }
 
     location / {
-        try_files $uri $uri/ =404;
+        include                 /etc/nginx/serve-without-suffix.conf;
     }
 }
 
@@ -131,7 +131,8 @@ server {
     }
 
     location / {
-        try_files $uri $uri/ =404;
+        include                 /etc/nginx/serve-without-suffix.conf;
+
         auth_basic              "Restricted Content";
         auth_basic_user_file    .htpasswd;
     }

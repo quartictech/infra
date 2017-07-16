@@ -29,6 +29,7 @@
   with_items:
     - nginx.conf
     - ssl.conf
+    - serve-without-suffix.conf
     - letsencrypt.conf
     - sites-available/default
     - .htpasswd
