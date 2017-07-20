@@ -3,8 +3,8 @@ name: magnolia
 codename: dozers
 
 weyl:
-  memory_gb: 8
-  cpu: 3
+  memory_gb: 7
+  cpu: 2
   location:
     lat: 51.4679
     lng: -0.3548
