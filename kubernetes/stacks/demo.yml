@@ -14,7 +14,7 @@ zeus:
   datasets: |
     assets:
       prettyName: "RSL assets"
-      url: http://howl:8120/api/demo/zeus%2Fzeus_clean.json
+      url: http://howl:8120/api/demo/zeus%2Fzeus_roads_clean.json
       indexedAttributes: [ "RSL", "Road Name" ]
     jobs:
       prettyName: "Jobs"
