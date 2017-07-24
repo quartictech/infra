@@ -2,8 +2,8 @@
 name: demo
 
 weyl:
-  memory_gb: 8
-  cpu: 3
+  memory_gb: 6
+  cpu: 2
   location:
     lat: 51.5174
     lng: -0.0915
@@ -14,7 +14,7 @@ zeus:
   datasets: |
     assets:
       prettyName: "RSL assets"
-      url: http://howl:8120/api/demo/zeus%2Fzeus_clean.json
+      url: http://howl:8120/api/demo/zeus%2Fzeus_roads_clean.json
       indexedAttributes: [ "RSL", "Road Name" ]
     jobs:
       prettyName: "Jobs"
