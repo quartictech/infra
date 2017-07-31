@@ -1,4 +1,28 @@
 apiVersion: v1
+data:
+  howl.yml: |
+    namespaces:
+    {% for customer in customers %}
+    {% if customers[customer].namespace %}
+      {{customer|indent(6)}}:
+        {{customers[customer].namespace|indent(8)}}
+    {% endif %}
+    {% endfor %}
+
+    server:
+      applicationContextPath: /
+      applicationConnectors:
+        - type: http
+          port: 8120
+      adminConnectors:
+        - type: http
+          port: 8121
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: howl-config
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: howl
@@ -37,11 +61,11 @@ spec:
           ports:
             - containerPort: 8120
             - containerPort: 8121
+          volumeMounts:
+            - name: config
+              mountPath: /howl-application-{{cluster.platform_version}}/howl.yml
+              subPath: howl.yml
           env:
-            - name: HOWL_APPLICATION_OPTS
-              value: >
-                -Ddw.storage.type=google_cloud_storage
-                -Ddw.storage.bucketSuffix={{cluster.datastore_namespace_prefix}}.quartic.io
             - name: ENABLE_METRICS
             - name: INFLUX_HOST
               value: influxdb.core
@@ -58,3 +82,7 @@ spec:
           resources:
             requests:
               cpu: 100m
+      volumes:
+        - name: "config"
+          configMap:
+            name: "howl-config"

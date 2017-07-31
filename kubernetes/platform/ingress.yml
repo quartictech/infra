@@ -6,19 +6,30 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-    ingress.kubernetes.io/auth-type: basic
-    ingress.kubernetes.io/auth-secret: basic-auth
 spec:
   tls:
-    - secretName: tls-platform
+    {% for customer in customers %}
+    - secretName: tls-platform-{{customer}}
       hosts:
-        - platform.{{cluster.domain_name}}
+        - {{customer}}.{{cluster.domain_name}}
+    {% endfor %}
+    - secretName: tls-platform-api
+      hosts:
+        - api.{{cluster.domain_name}}
   rules:
-    - host: platform.{{cluster.domain_name}}
+    - host: api.{{cluster.domain_name}}
+      http:
+        paths:
+          - path: /api/auth/gh/callback
+            backend:
+              serviceName: mgmt
+              servicePort: 8100
+    {% for customer in customers %}
+    - host: {{customer}}.{{cluster.domain_name}}
       http:
         paths:
           - path: /
             backend:
               serviceName: mgmt
               servicePort: 8100
-
+    {% endfor %}

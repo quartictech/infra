@@ -1,0 +1,6 @@
+magnolia:
+  namespace: |
+    type: gcs
+    bucket: magnolia.prod.quartic.io
+cs:
+  namespace: null

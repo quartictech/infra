@@ -102,7 +102,8 @@ if __name__ == "__main__":
 
     check_cluster(args.cluster)
     stack_configs = {path: load_config(path) for path in args.stack_file}
-    cluster_config = load_config(os.path.join("clusters", args.cluster + ".yml"))
+    cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
+    customers = load_config(os.path.join("config", "customers.yml"))
     environment = {}
     for var in args.environment:
         bits = var[0].split("=")
@@ -121,4 +122,4 @@ if __name__ == "__main__":
             else:
                 run_from_template(operation, args.dry_run, "global",
                                   template_path, 
-                                  {"cluster": cluster_config, "environment": environment})
+                                  {"cluster": cluster_config, "environment": environment, "customers": customers})
