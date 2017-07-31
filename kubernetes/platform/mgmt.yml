@@ -3,8 +3,12 @@ data:
   mgmt.yml: |
     catalogueUrl: http://catalogue:8090/api
     howlUrl: http://howl:8120/api
+    # TODO: this needs to be overhauled!
     authorisedNamespaces:
       admin: ["*"]
+      alexsparrow: ["*"]
+      choliver: ["*"]
+      arlobryer: ["*"]
     github:
       clientId: "ab6d4546d3895f750518"
       clientSecret: "211501cfe34b15d53ce131b4f9f6d7f690cc7984"
