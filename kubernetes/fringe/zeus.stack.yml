@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zeus-{{stack.name}}
-  namespace: platform
+  namespace: fringe
   labels:
     component: zeus
   annotations:
@@ -34,14 +34,14 @@ data:
           port: 8161
 kind: ConfigMap
 metadata:
-  namespace: platform
+  namespace: fringe
   name: zeus-config-{{stack.name}}
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: zeus-{{stack.name}}
-  namespace: platform
+  namespace: fringe
 spec:
   replicas: 1
   template:

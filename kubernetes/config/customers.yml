@@ -2,5 +2,9 @@ magnolia:
   namespace: |
     type: gcs
     bucket: magnolia.prod.quartic.io
+demo:
+  namespace: |
+    type: gcs
+    bucket: demo.prod.quartic.io
 cs:
   namespace: null

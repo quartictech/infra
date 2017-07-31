@@ -21,11 +21,12 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 # Starting the cluster
 
 ```
-./ktmpl -c ${CLUSTER} apply -f namespaces stacks/*
+./ktmpl -c ${CLUSTER} apply -f namespaces
 ./ktmpl -c ${CLUSTER} apply -f core
 ./ktmpl -c ${CLUSTER} apply -f dilectic
 ./ktmpl -c ${CLUSTER} apply -f analysis
-./ktmpl -c ${CLUSTER} apply -f platform stacks/*
+./ktmpl -c ${CLUSTER} apply -f platform
+./ktmpl -c ${CLUSTER} apply -f fringe stacks/*
 ```
 
 # Dilectic hydration
