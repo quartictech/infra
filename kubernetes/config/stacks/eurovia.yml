@@ -1,6 +1,5 @@
 ---
 name: eurovia
-codename: dozers
 
 weyl:
   memory_gb: 7
