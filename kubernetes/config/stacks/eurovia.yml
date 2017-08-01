@@ -1,6 +1,5 @@
 ---
-name: magnolia
-codename: dozers
+name: eurovia
 
 weyl:
   memory_gb: 7
@@ -15,19 +14,19 @@ zeus:
   datasets: |
     assets:
       prettyName: "RSL assets"
-      url: http://howl:8120/api/magnolia/zeus%2Froads
+      url: http://howl.platform:8120/api/magnolia/zeus%2Froads
       indexedAttributes: [ "RSL", "Road Name" ]
     jobs:
       prettyName: "Jobs"
-      url: http://howl:8120/api/magnolia/zeus%2Fjobs
+      url: http://howl.platform:8120/api/magnolia/zeus%2Fjobs
       indexedAttributes: [ "Number" ]
     aom_treatments:
       prettyName: "AOM treatments"
-      url: http://howl:8120/api/magnolia/zeus%2Faom
+      url: http://howl.platform:8120/api/magnolia/zeus%2Faom
       indexedAttributes: [ ]
     insights:
       prettyName: "Insights"
-      url: http://howl:8120/api/magnolia/zeus%2Finsights
+      url: http://howl.platform:8120/api/magnolia/zeus%2Finsights
       indexedAttributes: [ ]
 auth_secret: |
   admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
