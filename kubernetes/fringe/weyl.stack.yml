@@ -85,19 +85,6 @@ spec:
                 -Dcom.sun.management.jmxremote.port=9999
                 -Dcom.sun.management.jmxremote.rmi.port=9999
                 -Djava.rmi.server.hostname=localhost
-            - name: ENABLE_METRICS
-            - name: INFLUX_HOST
-              value: influxdb.core
-            - name: INFLUX_PORT
-              value: "8086"
-            - name: INFLUX_DB
-              value: k8s
-            - name: INFLUX_AUTH
-              value: root:root
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
           resources:
             requests:
               cpu: "{{stack.weyl.cpu * cluster.cpu_multiplier}}"
