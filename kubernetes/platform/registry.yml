@@ -1,0 +1,76 @@
+apiVersion: v1
+data:
+  registry.yml: |
+    # TODO: this is obviously nonsense in the long run
+    customers:
+      - id: 111
+        name: CS
+        subdomain: cs
+        namespace: cs
+        githubOrgId: 30663321
+        githubRepoId: 555
+
+    server:
+      applicationContextPath: /
+      applicationConnectors:
+        - type: http
+          port: 8190
+      adminConnectors:
+        - type: http
+          port: 8191
+    
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: registry-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry
+  namespace: platform
+  labels:
+    component: registry
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8191"
+spec:
+  ports:
+  - port: 8190
+    protocol: TCP
+    name: default
+  - port: 8191
+    protocol: TCP
+    name: admin
+  selector:
+    component: registry
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: registry
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: registry
+    spec:
+      containers:
+        - name: registry
+          image: eu.gcr.io/quartictech/registry:{{cluster.platform_version}}
+          ports:
+            - containerPort: 8190
+            - containerPort: 8191
+          volumeMounts:
+            - name: config
+              mountPath: /registry-{{cluster.platform_version}}/registry.yml
+              subPath: registry.yml
+          resources:
+            requests:
+              cpu: 100m
+      volumes:
+        - name: "config"
+          configMap:
+            name: "registry-config"
