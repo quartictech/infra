@@ -3,27 +3,32 @@ data:
   mgmt.yml: |
     catalogueUrl: http://catalogue:8090/api
     howlUrl: http://howl:8120/api
+    registryUrl: http://registry:8190/api
+    bildUrl: http://bild:8200/api
+
     # TODO: this needs to be overhauled!
+    # TODO: remove secrets from code
+
     authorisedNamespaces:
       admin: ["*"]
       alexsparrow: ["*"]
       choliver: ["*"]
       arlobryer: ["*"]
+      
     github:
       clientId: "ab6d4546d3895f750518"
       clientSecret: "211501cfe34b15d53ce131b4f9f6d7f690cc7984"
-      allowedOrganisations:
-        - quartictech
       trampolineUrl: "https://api.quartic.io/api/auth/gh/callback"
-
-      #redirectHost: "http://localhost:3010"
-      # in prod this should be
       redirectHost: "https://%s.quartic.io"
+      scopes: [user]
 
-      useSecureCookies: true
-      cookieMaxAgeSeconds: 2592000 # 30 days
-      scopes:
-        - user
+    cookies:
+      secure: true
+      maxAgeSeconds: 2592000 # 30 days
+
+    auth:
+      type: token
+      base64EncodedKey: "BffwOJzi7ejTe9yC1IpQ4+P6fYpyGz+GvVyrfhamNisNqa96CF8wGSp3uATaITUP7r9n6zn9tDN8k4424zwZ2Q=="
 
     server:
       applicationContextPath: /
@@ -33,10 +38,6 @@ data:
       adminConnectors:
         - type: http
           port: 8101
-    auth:
-      type: token
-      base64EncodedKey: "BffwOJzi7ejTe9yC1IpQ4+P6fYpyGz+GvVyrfhamNisNqa96CF8wGSp3uATaITUP7r9n6zn9tDN8k4424zwZ2Q=="
-
     
 kind: ConfigMap
 metadata:

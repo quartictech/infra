@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bild
+  namespace: platform
+  labels:
+    component: bild
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8201"
+spec:
+  ports:
+  - port: 8200
+    protocol: TCP
+    name: default
+  - port: 8201
+    protocol: TCP
+    name: admin
+  selector:
+    component: bild
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: bild
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: bild
+    spec:
+      containers:
+        - name: bild
+          image: eu.gcr.io/quartictech/bild:{{cluster.platform_version}}
+          ports:
+            - containerPort: 8200
+            - containerPort: 8201
+          resources:
+            requests:
+              cpu: 100m
