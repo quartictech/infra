@@ -86,20 +86,6 @@ spec:
             - name: config
               mountPath: /mgmt-application-{{cluster.platform_version}}/mgmt.yml
               subPath: mgmt.yml
-          env:
-            - name: ENABLE_METRICS
-            - name: INFLUX_HOST
-              value: influxdb.core
-            - name: INFLUX_PORT
-              value: "8086"
-            - name: INFLUX_DB
-              value: k8s
-            - name: INFLUX_AUTH
-              value: root:root
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
           resources:
             requests:
               cpu: 100m

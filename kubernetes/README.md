@@ -50,39 +50,6 @@ For example:
 ./ktmpl -c ${CLUSTER} apply -f platform/import stacks/alpha.yml
 ```
 
-# Alerting
-To checkout the Prometheus/AlertManager UIs in the event of an outage:
-
-1. Find out the IP of one of the Kubernetes cluster boxes.
-2. Create ssh tunnels:
-
-    ```
-    ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
-    ```
-
-# Adding dashboards
-
-**Note:** This procedure is still pretty ropy.
-
-1. Create dashboard in Grafana UI.
-
-2. Export dashboard (Cog icon -> Export).
-
-3. Move to `core/dashboards/` directory.
-
-4. Add `{ "dashboard": XXX, overwrite: false }` surrounding structure. Set id to null.
-
-5. Run:
-
-    ```
-    kubectl -n core delete cm grafana-dashboards
-    kubectl -n core create cm grafana-dashboards --from-file=core/dashboards
-    kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml
-    ```
-
-6. Remove guff in metadata except for `name` and `namespace`.
-7. Do normal Git stuff.
-
 # Creating basic-auth passwords
 
 1. Create a strong password:

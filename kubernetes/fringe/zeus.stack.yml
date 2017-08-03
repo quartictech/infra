@@ -59,22 +59,6 @@ spec:
             - name: config
               mountPath: /zeus-backend-{{cluster.platform_version}}/zeus.yml
               subPath: zeus.yml
-          env:
-            - name: ZEUS_BACKEND_OPTS
-              value: -Xmx1g
-            - name: ENABLE_METRICS
-            - name: INFLUX_HOST
-              value: influxdb.core
-            - name: INFLUX_PORT
-              value: "8086"
-            - name: INFLUX_DB
-              value: k8s
-            - name: INFLUX_AUTH
-              value: root:root
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
       volumes:
         - name: "config"
           configMap:
