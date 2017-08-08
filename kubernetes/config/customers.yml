@@ -2,7 +2,7 @@ magnolia:
   namespace: |
     type: gcs
     bucket: magnolia.prod.quartic.io
-demo:
+dilectic:
   namespace: |
     type: gcs
     bucket: demo.prod.quartic.io
