@@ -5,4 +5,4 @@ cpu_multiplier: 1.0
 memory_multiplier: 1.0
 static_ip: 104.199.28.27
 zone: europe-west1-b
-platform_version: "1703"
+platform_version: "1716"

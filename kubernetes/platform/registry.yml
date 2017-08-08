@@ -6,7 +6,7 @@ data:
       - id: 111
         name: CS
         subdomain: cs
-        namespace: cs
+        namespace: magnolia
         githubOrgId: 30663321
         githubRepoId: 555
 
