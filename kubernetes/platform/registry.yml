@@ -4,12 +4,17 @@ data:
     # TODO: this is obviously nonsense in the long run
     customers:
       - id: 111
-        name: CS
+        name: CustomSell
         subdomain: cs
-        namespace: magnolia
+        namespace: cs
         githubOrgId: 30663321
         githubRepoId: 555
-
+      - id: 112
+        name: Magnolia
+        subdomain: magnolia
+        namespace: magnolia
+        githubOrgId: 30663321
+        githubRepoId: 556
     server:
       applicationContextPath: /
       applicationConnectors:
