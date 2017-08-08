@@ -18,6 +18,12 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     ./scripts/create-cluster.sh ${CLUSTER} ${NUM_NODES}
     ```
 
+2. Deploy the master key:
+
+    ```
+    kubectl create secret generic -n platform secrets --from-file=master_key_base64=master-key
+    ```
+
 # Starting the cluster
 
 ```
