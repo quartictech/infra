@@ -61,6 +61,12 @@ spec:
           ports:
             - containerPort: 8120
             - containerPort: 8121
+          env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
           volumeMounts:
             - name: config
               mountPath: /howl-application-{{cluster.platform_version}}/howl.yml

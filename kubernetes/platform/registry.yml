@@ -68,6 +68,12 @@ spec:
           ports:
             - containerPort: 8190
             - containerPort: 8191
+          env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
           volumeMounts:
             - name: config
               mountPath: /registry-{{cluster.platform_version}}/registry.yml

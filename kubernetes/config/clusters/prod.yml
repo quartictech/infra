@@ -5,7 +5,7 @@ cpu_multiplier: 1.0
 memory_multiplier: 1.0
 static_ip: 104.199.28.27
 zone: europe-west1-b
-platform_version: "1733"
+platform_version: "1753"
 
 secrets:
   token_signing_key: 1$c2285b5111d2c0d7e4c6738c$c6c4e9586270bf02204b24638295f666a6e1d31b5d65957885ff2affbf3690e5ccf1693430194a826b524306b2b0f574044919c18b223903c1dad9e280009873b493ede69c203a632aa88caa05513c4d2805d255c60a1c78$163d115d313d88be641a3d6fe533e18d

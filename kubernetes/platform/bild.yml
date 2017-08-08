@@ -37,6 +37,12 @@ spec:
           ports:
             - containerPort: 8200
             - containerPort: 8201
+          env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
           resources:
             requests:
               cpu: 100m

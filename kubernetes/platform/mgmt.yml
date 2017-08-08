@@ -78,7 +78,7 @@ spec:
             - name: MASTER_KEY_BASE64
               valueFrom:
                 secretKeyRef:
-                  name: platform
+                  name: secrets
                   key: master_key_base64
           volumeMounts:
             - name: config
