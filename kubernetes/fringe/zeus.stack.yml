@@ -55,6 +55,14 @@ spec:
           ports:
             - containerPort: 8160
             - containerPort: 8161
+          env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
+            - name: ZEUS_BACKEND_OPTS
+              value: -Xmx1g
           volumeMounts:
             - name: config
               mountPath: /zeus-backend-{{cluster.platform_version}}/zeus.yml

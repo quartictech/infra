@@ -18,6 +18,13 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     ./scripts/create-cluster.sh ${CLUSTER} ${NUM_NODES}
     ```
 
+2. Deploy the master keys:
+
+    ```
+    kubectl create secret generic -n platform secrets --from-file=master_key_base64=master-key-platform
+    kubectl create secret generic -n fringe secrets --from-file=master_key_base64=master-key-fringe
+    ```
+
 # Starting the cluster
 
 ```
@@ -26,7 +33,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 ./ktmpl -c ${CLUSTER} apply -f dilectic
 ./ktmpl -c ${CLUSTER} apply -f analysis
 ./ktmpl -c ${CLUSTER} apply -f platform
-./ktmpl -c ${CLUSTER} apply -f fringe stacks/*
+./ktmpl -c ${CLUSTER} apply -f fringe config/stacks/*
 ```
 
 # Dilectic hydration
@@ -38,7 +45,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 # Stack imports
 
 ```
-./ktmpl -c ${CLUSTER} apply -f platform/import stacks/*
+./ktmpl -c ${CLUSTER} apply -f fringe/import config/stacks/*
 ```
 
 # Per-stack operations
@@ -47,7 +54,7 @@ Any of the multi-stack operations above can be applied in a more granular way by
 For example:
 
 ```
-./ktmpl -c ${CLUSTER} apply -f platform/import stacks/alpha.yml
+./ktmpl -c ${CLUSTER} apply -f fringe/import config/stacks/alpha.yml
 ```
 
 # Creating basic-auth passwords
@@ -67,7 +74,7 @@ For example:
     htpasswd -n "${USERNAME}"
     ```
 
-4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `stacks/`).
+4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `config/stacks/`).
 
 # Starting a private Python container
 

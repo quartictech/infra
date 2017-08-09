@@ -38,6 +38,11 @@ spec:
             - containerPort: 8090
             - containerPort: 8091
           env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
             - name: CATALOGUE_APPLICATION_OPTS
               value: >
                 -Ddw.backend.type=google_datastore

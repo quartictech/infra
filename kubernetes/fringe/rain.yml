@@ -38,6 +38,11 @@ spec:
             - containerPort: 8150
             - containerPort: 8151
           env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
             - name: RAIN_APPLICATION_OPTS
               value: >
                 -Xmx1g
