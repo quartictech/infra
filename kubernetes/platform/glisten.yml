@@ -1,4 +1,25 @@
 apiVersion: v1
+data:
+  glisten.yml: |
+    bildUrl: http://bild:8200/api
+
+    webhookSecretEncrypted: {{cluster.secrets.github_webhook_secret}}
+
+    server:
+      applicationContextPath: /
+      applicationConnectors:
+        - type: http
+          port: 8170
+      adminConnectors:
+        - type: http
+          port: 8171
+   
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: glisten-config
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: glisten
@@ -38,14 +59,19 @@ spec:
             - containerPort: 8170
             - containerPort: 8171
           env:
-            - name: JAVA_OPTS
-              value: >
-                -Ddw.webhookSecretEncrypted={{cluster.secrets.github_webhook_secret}}
             - name: MASTER_KEY_BASE64
               valueFrom:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
+          volumeMounts:
+            - name: config
+              mountPath: /glisten-{{cluster.platform_version}}/glisten.yml
+              subPath: glisten.yml
           resources:
             requests:
               cpu: 100m
+      volumes:
+        - name: "config"
+          configMap:
+            name: "glisten-config"
