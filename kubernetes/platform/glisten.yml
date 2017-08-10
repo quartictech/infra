@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: glisten
+  namespace: platform
+  labels:
+    component: glisten
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8171"
+spec:
+  ports:
+  - port: 8170
+    protocol: TCP
+    name: default
+  - port: 8171
+    protocol: TCP
+    name: admin
+  selector:
+    component: glisten
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: glisten
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: glisten
+    spec:
+      containers:
+        - name: glisten
+          image: eu.gcr.io/quartictech/glisten:{{cluster.platform_version}}
+          ports:
+            - containerPort: 8170
+            - containerPort: 8171
+          env:
+            - name: JAVA_OPTS
+              value: >
+                -Ddw.webhookSecretEncrypted={{cluster.secrets.github_webhook_secret}}
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
+          resources:
+            requests:
+              cpu: 100m
