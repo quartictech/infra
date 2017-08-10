@@ -1,4 +1,57 @@
 apiVersion: v1
+data:
+  bild.yml: |
+    kubernetes:
+      enable: true
+      namespace: bild
+      numConcurrentJobs: 4
+      maxFailures: 5
+      creationTimeoutSeconds: 60
+      runTimeoutSeconds: 3600
+      backChannelEndpoint: "http://bild.platform:8200/api/exec/backchannel/%s"
+      template:
+        apiVersion: batch/v1
+        kind: Job
+        spec:
+          template:
+            spec:
+              automountServiceAccountToken: false
+              containers:
+                - name: jupyter
+                  image: eu.gcr.io/quartictech/jupyter:53
+                  command:
+                    - "sudo"
+                    - "-E"
+                    - "-u"
+                    - "jovyan"
+                    - "bash"
+                    - "-c"
+                    - "export PATH=/opt/conda/bin:$PATH; pip install $QUARTIC_RUNNER_ENDPOINT && python -u -m quarty"
+              restartPolicy: Never
+
+    registryUrl: http://registry:8190/api
+
+    github:
+      appId: 3853
+      apiRootUrl: https://api.github.com
+      privateKeyEncrypted: {{cluster.secrets.github_private_key}}
+
+    server:
+      applicationContextPath: /
+      applicationConnectors:
+        - type: http
+          port: 8200
+      adminConnectors:
+        - type: http
+          port: 8201
+
+   
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: bild-config
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: bild
@@ -43,6 +96,14 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
+          volumeMounts:
+            - name: config
+              mountPath: /bild-{{cluster.platform_version}}/bild.yml
+              subPath: bild.yml
           resources:
             requests:
               cpu: 100m
+      volumes:
+        - name: "config"
+          configMap:
+            name: "bild-config"
