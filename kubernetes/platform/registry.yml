@@ -15,7 +15,6 @@ data:
         namespace: magnolia
         githubOrgId: 30663321
         githubRepoId: 556
-
       - id: 113
         name: Noobhole
         subdomain: noobhole
@@ -23,15 +22,8 @@ data:
         githubOrgId: 30663321
         githubRepoId: 99951423
 
-
-    server:
-      applicationContextPath: /
-      applicationConnectors:
-        - type: http
-          port: 8190
-      adminConnectors:
-        - type: http
-          port: 8191
+    url:
+      port: 8190
     
 kind: ConfigMap
 metadata:

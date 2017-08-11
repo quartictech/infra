@@ -24,14 +24,8 @@ data:
   zeus.yml: |
     datasets:
       {{stack.zeus.datasets | indent(6)}}
-    server:
-      applicationContextPath: /
-      applicationConnectors:
-        - type: http
-          port: 8160
-      adminConnectors:
-        - type: http
-          port: 8161
+    url:
+      port: 8160
 kind: ConfigMap
 metadata:
   namespace: fringe

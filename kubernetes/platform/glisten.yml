@@ -5,14 +5,8 @@ data:
 
     webhookSecretEncrypted: {{cluster.secrets.github_webhook_secret}}
 
-    server:
-      applicationContextPath: /
-      applicationConnectors:
-        - type: http
-          port: 8170
-      adminConnectors:
-        - type: http
-          port: 8171
+    url:
+      port: 8170
    
 kind: ConfigMap
 metadata:

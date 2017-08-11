@@ -39,14 +39,9 @@ data:
       lat: {{stack.weyl.location.lat}}
       lng: {{stack.weyl.location.lng}}
       zoom: {{stack.weyl.location.zoom}}
-    server:
-      applicationContextPath: /map
-      applicationConnectors:
-        - type: http
-          port: 8080
-      adminConnectors:
-        - type: http
-          port: 8081
+    url:
+      port: 8080
+      contextPath: /map
 kind: ConfigMap
 metadata:
   namespace: fringe
