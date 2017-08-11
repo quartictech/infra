@@ -9,14 +9,9 @@ data:
     {% endif %}
     {% endfor %}
 
-    server:
-      applicationContextPath: /
-      applicationConnectors:
-        - type: http
-          port: 8120
-      adminConnectors:
-        - type: http
-          port: 8121
+    url:
+      port: 8120
+
 kind: ConfigMap
 metadata:
   namespace: platform

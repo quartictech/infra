@@ -21,14 +21,8 @@ data:
       type: token
       keyEncryptedBase64: {{cluster.secrets.token_signing_key}}
 
-    server:
-      applicationContextPath: /
-      applicationConnectors:
-        - type: http
-          port: 8100
-      adminConnectors:
-        - type: http
-          port: 8101
+    url:
+      port: 8100
     
 kind: ConfigMap
 metadata:

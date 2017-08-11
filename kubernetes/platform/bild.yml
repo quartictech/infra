@@ -36,14 +36,8 @@ data:
       apiRootUrl: https://api.github.com
       privateKeyEncrypted: {{cluster.secrets.github_private_key}}
 
-    server:
-      applicationContextPath: /
-      applicationConnectors:
-        - type: http
-          port: 8200
-      adminConnectors:
-        - type: http
-          port: 8201
+    url:
+      port: 8200
 
    
 kind: ConfigMap
