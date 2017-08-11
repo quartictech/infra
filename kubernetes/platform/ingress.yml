@@ -24,6 +24,10 @@ spec:
             backend:
               serviceName: mgmt
               servicePort: 8100
+          - path: /api/hooks/github
+            backend:
+              serviceName: glisten
+              servicePort: 8170
     {% for customer in customers %}
     - host: {{customer}}.{{cluster.domain_name}}
       http:

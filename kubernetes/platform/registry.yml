@@ -15,6 +15,15 @@ data:
         namespace: magnolia
         githubOrgId: 30663321
         githubRepoId: 556
+
+      - id: 113
+        name: Noobhole
+        subdomain: noobhole
+        namespace: noobhole
+        githubOrgId: 30663321
+        githubRepoId: 99951423
+
+
     server:
       applicationContextPath: /
       applicationConnectors:
