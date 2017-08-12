@@ -24,7 +24,7 @@ spec:
 ---
 apiVersion: v1
 data:
-  weyl.yml: |
+  config.yml: |
     catalogue:
       hostname: catalogue.platform
       port: 8090
@@ -68,8 +68,8 @@ spec:
             - containerPort: 9999
           volumeMounts:
             - name: config
-              mountPath: /weyl-{{cluster.platform_version}}/weyl.yml
-              subPath: weyl.yml
+              mountPath: /service/config.yml
+              subPath: config.yml
           env:
             - name: MASTER_KEY_BASE64
               valueFrom:

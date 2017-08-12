@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  glisten.yml: |
+  config.yml: |
     bildUrl: http://bild:8200/api
 
     webhookSecretEncrypted: {{cluster.secrets.github_webhook_secret}}
@@ -60,8 +60,8 @@ spec:
                   key: master_key_base64
           volumeMounts:
             - name: config
-              mountPath: /glisten-{{cluster.platform_version}}/glisten.yml
-              subPath: glisten.yml
+              mountPath: /service/config.yml
+              subPath: config.yml
           resources:
             requests:
               cpu: 100m

@@ -21,7 +21,7 @@ spec:
 ---
 apiVersion: v1
 data:
-  zeus.yml: |
+  config.yml: |
     datasets:
       {{stack.zeus.datasets | indent(6)}}
     url:
@@ -59,8 +59,8 @@ spec:
               value: -Xmx1g
           volumeMounts:
             - name: config
-              mountPath: /zeus-backend-{{cluster.platform_version}}/zeus.yml
-              subPath: zeus.yml
+              mountPath: /service/config.yml
+              subPath: config.yml
       volumes:
         - name: "config"
           configMap:
