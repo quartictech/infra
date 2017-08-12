@@ -22,7 +22,7 @@ spec:
         paths:
           - path: /api/auth/gh/callback
             backend:
-              serviceName: mgmt
+              serviceName: home
               servicePort: 8100
           - path: /api/hooks/github
             backend:
@@ -34,6 +34,6 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: mgmt
+              serviceName: home
               servicePort: 8100
     {% endfor %}

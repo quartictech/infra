@@ -68,7 +68,7 @@ spec:
             - containerPort: 9999
           volumeMounts:
             - name: config
-              mountPath: /weyl-application-{{cluster.platform_version}}/weyl.yml
+              mountPath: /weyl-{{cluster.platform_version}}/weyl.yml
               subPath: weyl.yml
           env:
             - name: MASTER_KEY_BASE64
@@ -76,7 +76,7 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
-            - name: WEYL_APPLICATION_OPTS
+            - name: JAVA_OPTS
               value: >
                 -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
                 -Dcom.sun.management.jmxremote=

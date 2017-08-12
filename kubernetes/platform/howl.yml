@@ -64,7 +64,7 @@ spec:
                   key: master_key_base64
           volumeMounts:
             - name: config
-              mountPath: /howl-application-{{cluster.platform_version}}/howl.yml
+              mountPath: /howl-{{cluster.platform_version}}/howl.yml
               subPath: howl.yml
           resources:
             requests:
