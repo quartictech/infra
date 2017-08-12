@@ -43,7 +43,7 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
-            - name: CATALOGUE_APPLICATION_OPTS
+            - name: JAVA_OPTS
               value: >
                 -Ddw.backend.type=google_datastore
                 -Ddw.backend.projectId=quartictech

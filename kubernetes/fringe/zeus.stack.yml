@@ -55,7 +55,7 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
-            - name: ZEUS_BACKEND_OPTS
+            - name: JAVA_OPTS
               value: -Xmx1g
           volumeMounts:
             - name: config
