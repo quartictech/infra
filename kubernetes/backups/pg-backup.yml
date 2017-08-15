@@ -29,9 +29,11 @@ spec:
             - name: GCS_BUCKET
               value: backups.quartic.io
             - name: SOURCE_POSTGRES_HOST
-              value: example-postgres # TODO: Replace with real Postgres
+              value: postgres.platform
             - name: SOURCE_POSTGRES_USER
               value: postgres
+            - name: SOURCE_POSTGRES_PASSWORD
+              value: dilectic                 # TODO: security around these creds
             - name: TEMP_POSTGRES_HOST
               value: postgres
             - name: TEMP_POSTGRES_USER
