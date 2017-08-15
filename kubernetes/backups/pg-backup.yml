@@ -2,7 +2,7 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: backup-scripts
-  namespace: noob
+  namespace: backups
 data: 
   pg-backup.sh: |
     {{ from("scripts/pg-backup.sh") | indent(4) }}
@@ -11,7 +11,7 @@ kind: Job
 apiVersion: batch/v1
 metadata:
   name: pg-backup
-  namespace: noob
+  namespace: backups
 spec:
   template:
     metadata:
@@ -28,15 +28,17 @@ spec:
               value: xxx      # TODO: Pipe VERSION from somewhere useful
             - name: GCS_BUCKET
               value: backups.quartic.io
-            - name: POSTGRES_HOST
-              value: example-postgres
-            - name: POSTGRES_USER
+            - name: SOURCE_POSTGRES_HOST
+              value: example-postgres # TODO: Replace with real Postgres
+            - name: SOURCE_POSTGRES_USER
+              value: postgres
+            - name: TEMP_POSTGRES_HOST
+              value: postgres
+            - name: TEMP_POSTGRES_USER
               value: postgres
           volumeMounts:
             - name: scripts
               mountPath: /scripts
-        - name: postgres
-          image: postgres:9.4.13
       volumes:
         - name: "scripts"
           configMap:

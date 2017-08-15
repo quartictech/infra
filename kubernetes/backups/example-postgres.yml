@@ -1,8 +1,9 @@
+# TODO: This service/deployment will be deleted eventually
 apiVersion: v1
 kind: Service
 metadata:
   name: example-postgres
-  namespace: noob
+  namespace: backups
   labels:
     component: example-postgres
 spec:
@@ -16,7 +17,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: example-postgres
-  namespace: noob
+  namespace: backups
 spec:
   replicas: 1
   template:
@@ -29,3 +30,7 @@ spec:
           image: postgres:9.4.13
           ports:
             - containerPort: 5432
+          resources:
+            limits:
+              memory: 100Mi
+              cpu: 100m
