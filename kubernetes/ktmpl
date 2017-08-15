@@ -43,6 +43,10 @@ def get_operations(operation):
     else:
         return [operation]
 
+def read_from_file(template_path, relative_path):
+    with open(os.path.join(os.path.dirname(template_path), relative_path), "rt") as file:
+        return file.read()
+
 def run_from_template(operation, dry_run, stack_name, template_path, config):
     env = Environment(undefined=StrictUndefined)
     env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
@@ -50,6 +54,8 @@ def run_from_template(operation, dry_run, stack_name, template_path, config):
         template = env.from_string(file.read())
 
     print("--- {} [{}] [{}] ---".format(operation.upper(), stack_name, template_path))
+
+    config["from"] = lambda relative_path: read_from_file(template_path, relative_path)
     
     rendered = template.render(config)
 
