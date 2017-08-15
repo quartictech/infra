@@ -7,18 +7,18 @@ data:
   pg-backup.sh: |
     {{ from("scripts/pg-backup.sh") | indent(4) }}
 ---
-kind: Deployment
-apiVersion: extensions/v1beta1
+kind: Job
+apiVersion: batch/v1
 metadata:
   name: pg-backup
   namespace: noob
 spec:
-  replicas: 1
   template:
     metadata:
       labels:
         component: pg-backup
     spec:
+      restartPolicy: Never
       containers:
         - name: master
           image: quartic/backer-upper:4

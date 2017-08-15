@@ -29,5 +29,12 @@ gsutil cp ${DUMP_FILE} ${GCS_URL}
 echo "Downloading from ${GCS_URL} ..."
 gsutil cp ${GCS_URL} ${RESTORE_FILE}
 
+echo "Waiting for local Postgres to become ready ..."
+until pg_isready -h localhost; do
+    sleep 1
+done
+
 echo "Restoring to temp Postgres instance ..."
 gunzip < ${RESTORE_FILE} | psql -h localhost -U postgres -d postgres -q
+
+echo "Complete!"
