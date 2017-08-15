@@ -1,3 +1,12 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: backup-scripts
+  namespace: noob
+data: 
+  pg-backup.sh: |
+    {{ from("scripts/pg-backup.sh") | indent(4) }}
+---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
@@ -13,13 +22,22 @@ spec:
       containers:
         - name: master
           image: quartic/backer-upper:4
-          command: ["tail", "-f", "/dev/null"]
+          command: ["bash", "/scripts/pg-backup.sh"]
           env:
+            - name: VERSION
+              value: xxx      # TODO: Pipe VERSION from somewhere useful
             - name: GCS_BUCKET
               value: backups.quartic.io
             - name: POSTGRES_HOST
-              value: dummy-postgres
+              value: example-postgres
             - name: POSTGRES_USER
               value: postgres
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
         - name: postgres
           image: postgres:9.4.13
+      volumes:
+        - name: "scripts"
+          configMap:
+            name: "backup-scripts"

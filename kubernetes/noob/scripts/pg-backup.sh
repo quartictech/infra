@@ -3,18 +3,21 @@ set -euo pipefail
 
 # TODO - secure credentials?
 # TODO - test query or something
+# TODO - we should record the platform version in the filename or something
 
 DUMP_FILE="/db.sql.gz"
 RESTORE_FILE="/restore.sql.gz"
 
-GCS_URL="gs://${GCS_BUCKET}/postgres/db.$(date -u +"%Y-%m-%dT%H:%M:%SZ").sql.gz"
+GCS_URL="gs://${GCS_BUCKET}/postgres/postgres.$(date -u +"%Y-%m-%dT%H:%M:%SZ").${VERSION}.sql.gz"
 
 #----------------------------------------#
 # Backup
 #----------------------------------------#
 
+# If we don't use --data-only, then we end up trying to restore e.g. "postgres" role, which causes errors on restore
+# We assume that users, etc. are created programmatically
 echo "Running pg_dumpall ..."
-pg_dumpall -h ${SOURCE_PG_HOST} -U ${SOURCE_PG_USER} | gzip > ${DUMP_FILE}
+pg_dumpall -h ${POSTGRES_HOST} -U ${POSTGRES_USER} --data-only | gzip > ${DUMP_FILE}
 
 echo "Uploading to ${GCS_URL} ..."
 gsutil cp ${DUMP_FILE} ${GCS_URL}
