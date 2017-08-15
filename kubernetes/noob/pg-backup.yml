@@ -14,5 +14,12 @@ spec:
         - name: master
           image: quartic/backer-upper:4
           command: ["tail", "-f", "/dev/null"]
+          env:
+            - name: GCS_BUCKET
+              value: backups.quartic.io
+            - name: POSTGRES_HOST
+              value: dummy-postgres
+            - name: POSTGRES_USER
+              value: postgres
         - name: postgres
           image: postgres:9.4.13
