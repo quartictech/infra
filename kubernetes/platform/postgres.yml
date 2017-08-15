@@ -40,7 +40,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: postgres
-        image: postgres
+        image: postgres:9.4.13
         ports:
           - containerPort: 5432
         env:
