@@ -17,24 +17,24 @@ TEMP_PG_HOST="postgres"
 TEMP_PG_USER="postgres"
 TEMP_PG_DATABASE="postgres"
 
-DUMP_FILE="/db.sql"
+DUMP_FILE="/db.sql.gz"
 RESTORE_FILE="/restore.sql"
 
 GCS_URL="gs://${GCS_BUCKET}/postgres/db.$(date -u +"%Y-%m-%dT%H:%M:%SZ").sql"
 
 function dump_to_local() {
     echo "Running pg_dump ..."
-    pg_dump -h ${SOURCE_PG_HOST} -U ${SOURCE_PG_USER} -f ${DUMP_FILE} ${SOURCE_PG_DATABASE}
+    pg_dump -h ${SOURCE_PG_HOST} -U ${SOURCE_PG_USER} ${SOURCE_PG_DATABASE} | gzip | ${DUMP_FILE}
 }
 
 function upload_to_gcs() { 
-    echo "Uploading to ${gcs_url} ..."
-    gsutil -m rsync ${DUMP_FILE} ${gcs_url}
+    echo "Uploading to ${GCS_URL} ..."
+    gsutil -m rsync ${DUMP_FILE} ${GCS_URL}
 }
 
 function download_from_gcs() { 
-    echo "Downloading from ${gcs_url} ..."
-    gsutil -m rsync ${gcs_url} ${RESTORE_FILE}
+    echo "Downloading from ${GCS_URL} ..."
+    gsutil -m rsync ${GCS_URL} ${RESTORE_FILE}
 }
 
 # Backup
