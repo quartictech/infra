@@ -38,24 +38,16 @@ spec:
             - containerPort: 8150
             - containerPort: 8151
           env:
-            - name: RAIN_APPLICATION_OPTS
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
+            - name: JAVA_OPTS
               value: >
                 -Xmx1g
                 -Ddw.howlUrl=http://howl.platform:8120/api
                 -Ddw.howlWatchUrl=ws://howl.platform:8120/changes
-            - name: ENABLE_METRICS
-            - name: INFLUX_HOST
-              value: influxdb.core
-            - name: INFLUX_PORT
-              value: "8086"
-            - name: INFLUX_DB
-              value: k8s
-            - name: INFLUX_AUTH
-              value: root:root
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
           resources:
             requests:
               cpu: 100m

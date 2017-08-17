@@ -18,6 +18,13 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     ./scripts/create-cluster.sh ${CLUSTER} ${NUM_NODES}
     ```
 
+2. Deploy the master keys:
+
+    ```
+    kubectl create secret generic -n platform secrets --from-file=master_key_base64=master-key-platform
+    kubectl create secret generic -n fringe secrets --from-file=master_key_base64=master-key-fringe
+    ```
+
 # Starting the cluster
 
 ```
@@ -26,7 +33,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 ./ktmpl -c ${CLUSTER} apply -f dilectic
 ./ktmpl -c ${CLUSTER} apply -f analysis
 ./ktmpl -c ${CLUSTER} apply -f platform
-./ktmpl -c ${CLUSTER} apply -f fringe stacks/*
+./ktmpl -c ${CLUSTER} apply -f fringe config/stacks/*
 ```
 
 # Dilectic hydration
@@ -38,7 +45,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 # Stack imports
 
 ```
-./ktmpl -c ${CLUSTER} apply -f platform/import stacks/*
+./ktmpl -c ${CLUSTER} apply -f fringe/import config/stacks/*
 ```
 
 # Per-stack operations
@@ -47,41 +54,8 @@ Any of the multi-stack operations above can be applied in a more granular way by
 For example:
 
 ```
-./ktmpl -c ${CLUSTER} apply -f platform/import stacks/alpha.yml
+./ktmpl -c ${CLUSTER} apply -f fringe/import config/stacks/alpha.yml
 ```
-
-# Alerting
-To checkout the Prometheus/AlertManager UIs in the event of an outage:
-
-1. Find out the IP of one of the Kubernetes cluster boxes.
-2. Create ssh tunnels:
-
-    ```
-    ssh -fnNT -L 32220:localhost:32220 -L 32221:localhost:32221 <IP>
-    ```
-
-# Adding dashboards
-
-**Note:** This procedure is still pretty ropy.
-
-1. Create dashboard in Grafana UI.
-
-2. Export dashboard (Cog icon -> Export).
-
-3. Move to `core/dashboards/` directory.
-
-4. Add `{ "dashboard": XXX, overwrite: false }` surrounding structure. Set id to null.
-
-5. Run:
-
-    ```
-    kubectl -n core delete cm grafana-dashboards
-    kubectl -n core create cm grafana-dashboards --from-file=core/dashboards
-    kubectl -n core get cm grafana-dashboards -o yaml > core/grafana-dashboards.yml
-    ```
-
-6. Remove guff in metadata except for `name` and `namespace`.
-7. Do normal Git stuff.
 
 # Creating basic-auth passwords
 
@@ -100,7 +74,7 @@ To checkout the Prometheus/AlertManager UIs in the event of an outage:
     htpasswd -n "${USERNAME}"
     ```
 
-4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `stacks/`).
+4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `config/stacks/`).
 
 # Starting a private Python container
 

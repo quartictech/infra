@@ -1,0 +1,110 @@
+apiVersion: v1
+data:
+  config.yml: |
+    kubernetes:
+      enable: true
+      namespace: bild
+      numConcurrentJobs: 4
+      maxFailures: 5
+      creationTimeoutSeconds: 60
+      runTimeoutSeconds: 3600
+      backChannelEndpoint: "http://bild.platform:8200/api/backchannel/%s"
+      template:
+        apiVersion: batch/v1
+        kind: Job
+        spec:
+          template:
+            spec:
+              automountServiceAccountToken: false
+              containers:
+                - name: jupyter
+                  image: eu.gcr.io/quartictech/jupyter:53
+                  command:
+                    - "sudo"
+                    - "-E"
+                    - "-u"
+                    - "jovyan"
+                    - "bash"
+                    - "-c"
+                    - "export PATH=/opt/conda/bin:$PATH; pip install $QUARTIC_RUNNER_ENDPOINT && python -u -m quarty"
+              restartPolicy: Never
+
+    registryUrl: http://registry:8190/api
+
+    github:
+      appId: 3853
+      apiRootUrl: https://api.github.com
+      privateKeyEncrypted: {{cluster.secrets.github_private_key}}
+
+    database:
+      runEmbedded: false
+      dataSource:
+        hostName: postgres.platform
+        user: postgres
+        password: 1$93d02a3a074e5b6839703c00$bc0f9cfcad88457d$86e831ebece740d9c836878ab6588099
+
+    url:
+      port: 8200
+
+   
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: bild-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bild
+  namespace: platform
+  labels:
+    component: bild
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8201"
+spec:
+  ports:
+  - port: 8200
+    protocol: TCP
+    name: default
+  - port: 8201
+    protocol: TCP
+    name: admin
+  selector:
+    component: bild
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: bild
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: bild
+    spec:
+      containers:
+        - name: bild
+          image: eu.gcr.io/quartictech/bild:{{cluster.platform_version}}
+          ports:
+            - containerPort: 8200
+            - containerPort: 8201
+          env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
+          volumeMounts:
+            - name: config
+              mountPath: /service/config.yml
+              subPath: config.yml
+          resources:
+            requests:
+              cpu: 100m
+      volumes:
+        - name: "config"
+          configMap:
+            name: "bild-config"

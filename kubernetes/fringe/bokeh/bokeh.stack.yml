@@ -17,13 +17,13 @@ data:
 kind: ConfigMap
 metadata:
   name: start
-  namespace: platform
+  namespace: fringe
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: bokeh-{{stack.name}}
-  namespace: platform
+  namespace: fringe
   labels:
     component: bokeh
 spec:
@@ -38,7 +38,7 @@ kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
   name: bokeh-{{stack.name}}
-  namespace: platform
+  namespace: fringe
 spec:
   replicas: 1
   template:

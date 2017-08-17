@@ -24,7 +24,7 @@ spec:
 ---
 apiVersion: v1
 data:
-  weyl.yml: |
+  config.yml: |
     catalogue:
       hostname: catalogue.platform
       port: 8090
@@ -39,14 +39,9 @@ data:
       lat: {{stack.weyl.location.lat}}
       lng: {{stack.weyl.location.lng}}
       zoom: {{stack.weyl.location.zoom}}
-    server:
-      applicationContextPath: /map
-      applicationConnectors:
-        - type: http
-          port: 8080
-      adminConnectors:
-        - type: http
-          port: 8081
+    url:
+      port: 8080
+      contextPath: /map
 kind: ConfigMap
 metadata:
   namespace: fringe
@@ -73,10 +68,15 @@ spec:
             - containerPort: 9999
           volumeMounts:
             - name: config
-              mountPath: /weyl-application-{{cluster.platform_version}}/weyl.yml
-              subPath: weyl.yml
+              mountPath: /service/config.yml
+              subPath: config.yml
           env:
-            - name: WEYL_APPLICATION_OPTS
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
+            - name: JAVA_OPTS
               value: >
                 -Xms{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g -Xmx{{(cluster.memory_multiplier * stack.weyl.memory_gb)|round|int}}g
                 -Dcom.sun.management.jmxremote=
@@ -85,19 +85,6 @@ spec:
                 -Dcom.sun.management.jmxremote.port=9999
                 -Dcom.sun.management.jmxremote.rmi.port=9999
                 -Djava.rmi.server.hostname=localhost
-            - name: ENABLE_METRICS
-            - name: INFLUX_HOST
-              value: influxdb.core
-            - name: INFLUX_PORT
-              value: "8086"
-            - name: INFLUX_DB
-              value: k8s
-            - name: INFLUX_AUTH
-              value: root:root
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
           resources:
             requests:
               cpu: "{{stack.weyl.cpu * cluster.cpu_multiplier}}"

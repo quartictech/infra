@@ -1,0 +1,47 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: backup-scripts
+  namespace: backups
+data: 
+  pg-backup.sh: |
+    {{ from("scripts/pg-backup.sh") | indent(4) }}
+---
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: pg-backup
+  namespace: backups
+spec:
+  template:
+    metadata:
+      labels:
+        component: pg-backup
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: master
+          image: quartic/backer-upper:4
+          command: ["bash", "/scripts/pg-backup.sh"]
+          env:
+            - name: VERSION
+              value: xxx      # TODO: Pipe VERSION from somewhere useful
+            - name: GCS_BUCKET
+              value: backups.quartic.io
+            - name: SOURCE_POSTGRES_HOST
+              value: postgres.platform
+            - name: SOURCE_POSTGRES_USER
+              value: postgres
+            - name: SOURCE_POSTGRES_PASSWORD
+              value: dilectic                 # TODO: security around these creds
+            - name: TEMP_POSTGRES_HOST
+              value: postgres
+            - name: TEMP_POSTGRES_USER
+              value: postgres
+          volumeMounts:
+            - name: scripts
+              mountPath: /scripts
+      volumes:
+        - name: "scripts"
+          configMap:
+            name: "backup-scripts"

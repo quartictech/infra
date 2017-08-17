@@ -1,67 +1,71 @@
 apiVersion: v1
+data:
+  config.yml: |
+    bildUrl: http://bild:8200/api
+
+    webhookSecretEncrypted: {{cluster.secrets.github_webhook_secret}}
+
+    url:
+      port: 8170
+   
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: glisten-config
+---
+apiVersion: v1
 kind: Service
 metadata:
-  name: zeus-{{stack.name}}
-  namespace: fringe
+  name: glisten
+  namespace: platform
   labels:
-    component: zeus
+    component: glisten
   annotations:
     quartic.io/healthcheck_path: /healthcheck
-    quartic.io/healthcheck_port: "8161"
+    quartic.io/healthcheck_port: "8171"
 spec:
   ports:
-  - port: 8160
+  - port: 8170
     protocol: TCP
     name: default
-  - port: 8161
+  - port: 8171
     protocol: TCP
     name: admin
   selector:
-    component: zeus-{{stack.name}}
----
-apiVersion: v1
-data:
-  config.yml: |
-    datasets:
-      {{stack.zeus.datasets | indent(6)}}
-    url:
-      port: 8160
-kind: ConfigMap
-metadata:
-  namespace: fringe
-  name: zeus-config-{{stack.name}}
+    component: glisten
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: zeus-{{stack.name}}
-  namespace: fringe
+  name: glisten
+  namespace: platform
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: zeus-{{stack.name}}
+        component: glisten
     spec:
       containers:
-        - name: zeus
-          image: eu.gcr.io/quartictech/zeus:{{cluster.platform_version}}
+        - name: glisten
+          image: eu.gcr.io/quartictech/glisten:{{cluster.platform_version}}
           ports:
-            - containerPort: 8160
-            - containerPort: 8161
+            - containerPort: 8170
+            - containerPort: 8171
           env:
             - name: MASTER_KEY_BASE64
               valueFrom:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
-            - name: JAVA_OPTS
-              value: -Xmx1g
           volumeMounts:
             - name: config
               mountPath: /service/config.yml
               subPath: config.yml
+          resources:
+            requests:
+              cpu: 100m
       volumes:
         - name: "config"
           configMap:
-            name: "zeus-config-{{stack.name}}"
+            name: "glisten-config"

@@ -1,61 +1,74 @@
 apiVersion: v1
 data:
   config.yml: |
-    namespaces:
-    {% for customer in customers %}
-    {% if customers[customer].namespace %}
-      {{customer|indent(6)}}:
-        {{customers[customer].namespace|indent(8)}}
-    {% endif %}
-    {% endfor %}
+    # TODO: this is obviously nonsense in the long run
+    customers:
+      - id: 111
+        name: CustomSell
+        subdomain: cs
+        namespace: cs
+        githubOrgId: 30663321
+        githubRepoId: 555
+      - id: 112
+        name: Magnolia
+        subdomain: magnolia
+        namespace: magnolia
+        githubOrgId: 30663321
+        githubRepoId: 556
+      - id: 113
+        name: Noobhole
+        subdomain: noobhole
+        namespace: noobhole
+        githubOrgId: 30663321
+        githubRepoId: 99951423
 
     url:
-      port: 8120
-
+      port: 8190
+    
 kind: ConfigMap
 metadata:
   namespace: platform
-  name: howl-config
+  name: registry-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: howl
+  name: registry
   namespace: platform
   labels:
-    component: howl
+    component: registry
   annotations:
     quartic.io/healthcheck_path: /healthcheck
-    quartic.io/healthcheck_port: "8121"
+    quartic.io/healthcheck_port: "8191"
 spec:
   ports:
-  - port: 8120
+  - port: 8190
     protocol: TCP
     name: default
-  - port: 8121
+  - port: 8191
     protocol: TCP
     name: admin
   selector:
-    component: howl
+    component: registry
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: howl
+  name: registry
   namespace: platform
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: howl
+        component: registry
     spec:
       containers:
-        - name: howl
-          image: eu.gcr.io/quartictech/howl:{{cluster.platform_version}}
+        - name: registry
+          image: eu.gcr.io/quartictech/registry:{{cluster.platform_version}}
           ports:
-            - containerPort: 8120
-            - containerPort: 8121
+            - containerPort: 8190
+            - containerPort: 8191
           env:
             - name: MASTER_KEY_BASE64
               valueFrom:
@@ -72,4 +85,4 @@ spec:
       volumes:
         - name: "config"
           configMap:
-            name: "howl-config"
+            name: "registry-config"
