@@ -20,7 +20,7 @@ metadata:
 provisioner: kubernetes.io/gce-pd
 parameters:
   type: pd-ssd
-  zones: europe-west1-b
+  zones: {{cluster.zone}}
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
@@ -40,12 +40,13 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: postgres
-        image: postgres:9.4.13
+        image: postgres:{{cluster.postgres_version}}
         ports:
           - containerPort: 5432
         env:
           - name: POSTGRES_PASSWORD
-            value: dilectic
+            # TODO: This needs to be encrypted or otherwise moved out of this file!
+            value: {{cluster.secrets.postgres_password_plaintext}}
           - name: PGDATA
             value: /var/lib/postgresql/data/pgdata
         volumeMounts:

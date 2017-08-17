@@ -41,7 +41,7 @@ data:
       dataSource:
         hostName: postgres.platform
         user: postgres
-        password: 1$93d02a3a074e5b6839703c00$bc0f9cfcad88457d$86e831ebece740d9c836878ab6588099
+        password: {{cluster.secrets.postgres_password}}
 
     url:
       port: 8200
