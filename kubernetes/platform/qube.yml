@@ -3,12 +3,12 @@ data:
   config.yml: |
     kubernetes:
       enable: true
-      namespace: bild
+      namespace: qube
       numConcurrentJobs: 4
       maxFailures: 5
       creationTimeoutSeconds: 60
       runTimeoutSeconds: 3600
-      backChannelEndpoint: "http://bild.platform:8200/api/backchannel/%s"
+      backChannelEndpoint: "http://qube.platform:8200/api/backchannel/%s"
       template:
         apiVersion: batch/v1
         kind: Job
@@ -50,15 +50,15 @@ data:
 kind: ConfigMap
 metadata:
   namespace: platform
-  name: bild-config
+  name: qube-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: bild
+  name: qube
   namespace: platform
   labels:
-    component: bild
+    component: qube
   annotations:
     quartic.io/healthcheck_path: /healthcheck
     quartic.io/healthcheck_port: "8201"
@@ -71,23 +71,23 @@ spec:
     protocol: TCP
     name: admin
   selector:
-    component: bild
+    component: qube
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: bild
+  name: qube
   namespace: platform
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: bild
+        component: qube
     spec:
       containers:
-        - name: bild
-          image: eu.gcr.io/quartictech/bild:{{cluster.platform_version}}
+        - name: qube
+          image: eu.gcr.io/quartictech/qube:{{cluster.platform_version}}
           ports:
             - containerPort: 8200
             - containerPort: 8201
@@ -107,4 +107,4 @@ spec:
       volumes:
         - name: "config"
           configMap:
-            name: "bild-config"
+            name: "qube-config"
