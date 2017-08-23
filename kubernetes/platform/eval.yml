@@ -8,8 +8,13 @@ data:
       container:
         image: eu.gcr.io/quartictech/jupyter:53
         command:
-          - "sleep"
-          - "1000"
+          - "sudo"
+          - "-E"
+          - "-u"
+          - "jovyan"
+          - "bash"
+          - "-c"
+          - "export PATH=/opt/conda/bin:$PATH; pip install $QUARTIC_RUNNER_ENDPOINT && python -u -m quarty.server"
 
     github:
       appId: 3853
