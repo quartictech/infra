@@ -1,73 +1,68 @@
 apiVersion: v1
 data:
   config.yml: |
-    kubernetes:
-      enable: true
-      namespace: qube
-      numConcurrentJobs: 4
-      jobTimeoutSeconds: 3600
-      podTemplate:
-        spec:
-          automountServiceAccountToken: false
-          containers:
-            - name: container
-          restartPolicy: Never
+    registryUrl: http://registry:8190/api
 
-    database:
-      runEmbedded: false
-      dataSource:
-        hostName: postgres.platform
-        user: postgres
-        password: {{cluster.secrets.postgres_password}}
+    qube:
+      url: ws://qube:8202
+      container:
+        image: eu.gcr.io/quartictech/jupyter:53
+        command:
+          - "sleep"
+          - "1000"
 
-    websocketPort: 8202
+    github:
+      appId: 3853
+      apiRootUrl: https://api.github.com
+      privateKeyEncrypted: {{cluster.secrets.github_private_key}}
+
     url:
-      port: 8200
+      port: 8210
    
 kind: ConfigMap
 metadata:
   namespace: platform
-  name: qube-config
+  name: eval-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: qube
+  name: eval
   namespace: platform
   labels:
-    component: qube
+    component: eval
   annotations:
     quartic.io/healthcheck_path: /healthcheck
-    quartic.io/healthcheck_port: "8201"
+    quartic.io/healthcheck_port: "8211"
 spec:
   ports:
-  - port: 8200
+  - port: 8170
     protocol: TCP
     name: default
-  - port: 8201
+  - port: 8171
     protocol: TCP
     name: admin
   selector:
-    component: qube
+    component: eval
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: qube
+  name: eval
   namespace: platform
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: qube
+        component: eval
     spec:
       containers:
-        - name: qube
-          image: eu.gcr.io/quartictech/qube:{{cluster.platform_version}}
+        - name: eval
+          image: eu.gcr.io/quartictech/eval:{{cluster.platform_version}}
           ports:
-            - containerPort: 8200
-            - containerPort: 8201
+            - containerPort: 8210
+            - containerPort: 8211
           env:
             - name: MASTER_KEY_BASE64
               valueFrom:
@@ -84,4 +79,4 @@ spec:
       volumes:
         - name: "config"
           configMap:
-            name: "qube-config"
+            name: "eval-config"
