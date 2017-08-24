@@ -6,6 +6,7 @@ data:
       namespace: qube
       numConcurrentJobs: 4
       jobTimeoutSeconds: 3600
+      deletePods: false
       podTemplate:
         spec:
           automountServiceAccountToken: false
@@ -17,6 +18,7 @@ data:
       runEmbedded: false
       dataSource:
         hostName: postgres.platform
+        databaseName: qube
         user: postgres
         password: {{cluster.secrets.postgres_password}}
 
@@ -47,6 +49,9 @@ spec:
   - port: 8201
     protocol: TCP
     name: admin
+  - port: 8202
+    protocol: TCP
+    name: websocket
   selector:
     component: qube
 ---
@@ -68,6 +73,7 @@ spec:
           ports:
             - containerPort: 8200
             - containerPort: 8201
+            - containerPort: 8202
           env:
             - name: MASTER_KEY_BASE64
               valueFrom:
