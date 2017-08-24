@@ -6,7 +6,7 @@ data:
       namespace: qube
       numConcurrentJobs: 4
       jobTimeoutSeconds: 3600
-      deletePods: false
+      #deletePods: false
       podTemplate:
         spec:
           automountServiceAccountToken: false
