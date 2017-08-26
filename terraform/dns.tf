@@ -38,7 +38,7 @@ variable "gsuite_domains" {
 }
 
 resource "google_dns_record_set" "gsuite" {
-    count           = 5
+    count           = "${length(var.gsuite_domains)}"
     name            = "${element(var.gsuite_domains, count.index)}${google_dns_managed_zone.prod.dns_name}"
     managed_zone    = "${google_dns_managed_zone.prod.name}"
     ttl             = "${var.dns_ttl}"
@@ -115,7 +115,7 @@ variable "www_domains" {
 }
 
 resource "google_dns_record_set" "www" {
-    count           = 3
+    count           = "${length(var.www_domains)}"
     name            = "${element(var.www_domains, count.index)}${google_dns_managed_zone.prod.dns_name}"
     managed_zone    = "${google_dns_managed_zone.prod.name}"
     ttl             = "${var.dns_ttl}"
