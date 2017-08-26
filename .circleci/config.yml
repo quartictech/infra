@@ -11,8 +11,19 @@ jobs:
       - checkout
 
       - run:
+          name: GCloud auth
+          command: gcloud-auth
+
+      - run:
           name: Validate Terraform
           working_directory: terraform
           command: |
             terraform init
             terraform validate
+
+workflows:
+  version: 2
+  just_do_it:
+    jobs:
+      - build:
+          context: org-global
