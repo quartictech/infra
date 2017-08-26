@@ -1,0 +1,18 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: quartic/uber-builder:96
+
+    working_directory: ~/infra
+
+    steps:
+      - checkout
+
+      - run:
+          name: Validate Terraform
+          working_directory: terraform
+          command: |
+            terraform init
+            terraform validate

@@ -1,14 +1,9 @@
-provider "google" {
-    project         = "quartictech"
-    region          = "${var.region}"
+resource "google_compute_address" "www" {
+    name            = "www-dummy"   # TODO - replace once happy
 }
 
-resource "google_compute_address" "gimp" {
-    name            = "gimp"
-}
-
-resource "google_compute_instance" "gimp" {
-    name            = "gimp"
+resource "google_compute_instance" "www" {
+    name            = "www-dummy"   # TODO - replace once happy
     machine_type    = "g1-small"
     zone            = "${var.zone}"
 
@@ -24,7 +19,7 @@ resource "google_compute_instance" "gimp" {
         network     = "default"
 
         access_config {
-            nat_ip  = "${google_compute_address.gimp.address}"
+            nat_ip  = "${google_compute_address.www.address}"
         }
     }
 
