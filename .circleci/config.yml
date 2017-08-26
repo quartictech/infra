@@ -14,22 +14,12 @@ jobs:
           name: GCloud auth
           command: gcloud-auth
 
-      - restore_cache:
-          keys:
-            - infra-{{ .Branch }}-terraform
-            - infra-develop-terraform
-
       - run:
           name: Validate Terraform
           working_directory: terraform
           command: |
             terraform init -backend=false # Because GCS backend needs default application credentials
             terraform validate
-
-      - save_cache:
-          key: infra-{{ .Branch }}-terraform
-          paths:
-            - terraform/.terraform
 
 workflows:
   version: 2
