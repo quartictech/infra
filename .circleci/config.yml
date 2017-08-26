@@ -18,7 +18,7 @@ jobs:
           name: Validate Terraform
           working_directory: terraform
           command: |
-            terraform init
+            terraform init -backend=false # Because GCS backend needs default application credentials
             terraform validate
 
 workflows:
