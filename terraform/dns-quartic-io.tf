@@ -103,6 +103,18 @@ resource "google_dns_record_set" "dmarc" {
 
 
 #-----------------------------------------------------------------------------#
+# Upload
+#-----------------------------------------------------------------------------#
+resource "google_dns_record_set" "upload" {
+    name            = "upload.${google_dns_managed_zone.prod.dns_name}"
+    managed_zone    = "${google_dns_managed_zone.prod.name}"
+    ttl             = "${var.dns_ttl}"
+    type            = "A"
+    rrdatas         = ["${google_compute_address.upload.address}"]
+}
+
+
+#-----------------------------------------------------------------------------#
 # WWW
 #-----------------------------------------------------------------------------#
 variable "www_domains" {

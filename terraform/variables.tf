@@ -1,9 +1,9 @@
 variable "region" {
-   default = "europe-west2"
+   default = "europe-west1"
 }
 
 variable "zone" {
-    default = "europe-west2-b"
+    default = "europe-west1-b"
 }
 
 variable "dns_ttl" {
