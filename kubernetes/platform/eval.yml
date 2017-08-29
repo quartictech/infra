@@ -3,6 +3,7 @@ data:
   config.yml: |
     registryUrl: http://registry:8190/api
     heyUrl: http://hey/
+    homeUrlFormat: "https://%s.quartic.io"
 
     qube:
       url: ws://qube:8202

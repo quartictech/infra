@@ -14,7 +14,7 @@ data:
         subdomain: magnolia
         namespace: magnolia
         githubOrgId: 30663321
-        githubRepoId: 556
+        githubRepoId: 78424428
       - id: 113
         name: Playground
         subdomain: playground
