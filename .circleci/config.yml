@@ -1,0 +1,29 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: quartic/uber-builder:96
+
+    working_directory: ~/infra
+
+    steps:
+      - checkout
+
+      - run:
+          name: GCloud auth
+          command: gcloud-auth
+
+      - run:
+          name: Validate Terraform
+          working_directory: terraform
+          command: |
+            terraform init -backend=false # Because GCS backend needs default application credentials
+            terraform validate
+
+workflows:
+  version: 2
+  just_do_it:
+    jobs:
+      - build:
+          context: org-global

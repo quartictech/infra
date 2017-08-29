@@ -1,3 +1,0 @@
-test:
-  override:
-    - echo "Nothing to do right now"
