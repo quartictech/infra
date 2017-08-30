@@ -25,12 +25,10 @@ data:
       privateKeyEncrypted: {{cluster.secrets.github_private_key}}
 
     database:
-      runEmbedded: false
-      dataSource:
-        hostName: postgres.platform
-        databaseName: eval
-        user: postgres
-        password: {{cluster.secrets.postgres_password}}
+      hostName: postgres.platform
+      databaseName: eval
+      user: postgres
+      password: {{cluster.secrets.postgres_password}}
 
     url:
       port: 8210

@@ -15,12 +15,10 @@ data:
           restartPolicy: Never
 
     database:
-      runEmbedded: false
-      dataSource:
-        hostName: postgres.platform
-        databaseName: qube
-        user: postgres
-        password: {{cluster.secrets.postgres_password}}
+      hostName: postgres.platform
+      databaseName: qube
+      user: postgres
+      password: {{cluster.secrets.postgres_password}}
 
     websocketPort: 8202
     url:
