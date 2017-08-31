@@ -8,3 +8,5 @@ dilectic:
     bucket: demo.prod.quartic.io
 cs:
   namespace: null
+playground:
+  namespace: null

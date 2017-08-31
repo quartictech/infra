@@ -14,11 +14,11 @@ data:
         subdomain: magnolia
         namespace: magnolia
         githubOrgId: 30663321
-        githubRepoId: 556
+        githubRepoId: 78424428
       - id: 113
-        name: Noobhole
-        subdomain: noobhole
-        namespace: noobhole
+        name: Playground
+        subdomain: playground
+        namespace: playground
         githubOrgId: 30663321
         githubRepoId: 99951423
 

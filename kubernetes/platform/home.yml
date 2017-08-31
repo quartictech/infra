@@ -4,7 +4,7 @@ data:
     catalogueUrl: http://catalogue:8090/api
     howlUrl: http://howl:8120/api
     registryUrl: http://registry:8190/api
-    qubeUrl: http://qube:8200/api
+    evalUrl: http://eval:8210/api
 
     github:
       clientId: "ab6d4546d3895f750518"

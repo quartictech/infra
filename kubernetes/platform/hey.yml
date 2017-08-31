@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hey
+  namespace: platform
+  labels:
+    component: hey
+  annotations:
+    quartic.io/healthcheck_path: /healthcheck
+    quartic.io/healthcheck_port: "8091"
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    name: default
+  selector:
+    component: hey
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: hey
+  namespace: platform
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: hey
+    spec:
+      containers:
+        - name: hey
+          image: eu.gcr.io/quartictech/hey:{{cluster.platform_version}}
+          ports:
+            - containerPort: 80
+          env:
+            - name: MASTER_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: master_key_base64
+            - name: DEV_MODE
+              value: "false"
+            - name: SLACK_TOKEN_ENCRYPTED
+              value: {{cluster.secrets.slack_token}}
+            - name: SLACK_USERNAME
+              value: Quartic Hey
+            - name: SLACK_CHANNEL
+              value: "#infrastructure"
+          resources:
+            requests:
+              cpu: 100m

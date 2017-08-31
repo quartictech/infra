@@ -1,7 +1,7 @@
 apiVersion: v1
 data:
   config.yml: |
-    qubeUrl: http://qube:8200/api
+    evalUrl: http://eval:8210/api
 
     webhookSecretEncrypted: {{cluster.secrets.github_webhook_secret}}
 

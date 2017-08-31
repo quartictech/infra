@@ -5,47 +5,24 @@ data:
       enable: true
       namespace: qube
       numConcurrentJobs: 4
-      maxFailures: 5
-      creationTimeoutSeconds: 60
-      runTimeoutSeconds: 3600
-      backChannelEndpoint: "http://qube.platform:8200/api/backchannel/%s"
-      template:
-        apiVersion: batch/v1
-        kind: Job
+      jobTimeoutSeconds: 3600
+      #deletePods: false
+      podTemplate:
         spec:
-          template:
-            spec:
-              automountServiceAccountToken: false
-              containers:
-                - name: jupyter
-                  image: eu.gcr.io/quartictech/jupyter:53
-                  command:
-                    - "sudo"
-                    - "-E"
-                    - "-u"
-                    - "jovyan"
-                    - "bash"
-                    - "-c"
-                    - "export PATH=/opt/conda/bin:$PATH; pip install $QUARTIC_RUNNER_ENDPOINT && python -u -m quarty"
-              restartPolicy: Never
-
-    registryUrl: http://registry:8190/api
-
-    github:
-      appId: 3853
-      apiRootUrl: https://api.github.com
-      privateKeyEncrypted: {{cluster.secrets.github_private_key}}
+          automountServiceAccountToken: false
+          containers:
+            - name: container
+          restartPolicy: Never
 
     database:
-      runEmbedded: false
-      dataSource:
-        hostName: postgres.platform
-        user: postgres
-        password: {{cluster.secrets.postgres_password}}
+      hostName: postgres.platform
+      databaseName: qube
+      user: postgres
+      password: {{cluster.secrets.postgres_password}}
 
+    websocketPort: 8202
     url:
       port: 8200
-
    
 kind: ConfigMap
 metadata:
@@ -70,6 +47,9 @@ spec:
   - port: 8201
     protocol: TCP
     name: admin
+  - port: 8202
+    protocol: TCP
+    name: websocket
   selector:
     component: qube
 ---
@@ -91,6 +71,7 @@ spec:
           ports:
             - containerPort: 8200
             - containerPort: 8201
+            - containerPort: 8202
           env:
             - name: MASTER_KEY_BASE64
               valueFrom:
