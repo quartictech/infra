@@ -147,3 +147,11 @@ fusermount -u ${LOCAL_FOLDER}         # Linux
 5. Delete old stateful set.
 6. Rename service for new stateful set.
 7. Start platform services.
+8. Delete PVC:
+
+   ```
+   kubectl get pv
+   kubectl delete pv ${PVC_NAME}
+   ```
+
+9. Delete disk via GCloud console.
