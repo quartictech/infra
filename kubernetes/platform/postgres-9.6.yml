@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres96
+  name: postgres
   namespace: platform
   labels:
     component: postgres

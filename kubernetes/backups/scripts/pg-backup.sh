@@ -14,11 +14,9 @@ GCS_URL="gs://${GCS_BUCKET}/postgres/postgres.$(date -u +"%Y-%m-%dT%H:%M:%SZ").$
 # Backup
 #----------------------------------------#
 
-# If we don't use --data-only, then we end up trying to restore e.g. "postgres" role, which causes errors on restore
-# We assume that users, etc. are created programmatically
 echo "Running pg_dumpall ..."
 export PGPASSWORD=${SOURCE_POSTGRES_PASSWORD}
-pg_dumpall -h ${SOURCE_POSTGRES_HOST} -U ${SOURCE_POSTGRES_USER} --clean --data-only | gzip > ${DUMP_FILE}
+pg_dumpall -h ${SOURCE_POSTGRES_HOST} -U ${SOURCE_POSTGRES_USER} --clean | gzip > ${DUMP_FILE}
 
 echo "Uploading to ${GCS_URL} ..."
 gsutil cp ${DUMP_FILE} ${GCS_URL}

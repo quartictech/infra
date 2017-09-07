@@ -126,3 +126,30 @@ To kick off the pipeline job:
 ```
 ./ktmpl -c prod bounce -f analysis/jobs/magnolia-pipeline.yml
 ```
+
+# Postgres major-version upgrades
+
+1. Spin up new stateful set.
+2. Stop platform services.
+3. Port-forward to both Postgres versions:
+
+   ```
+   kubectl port-forward -n platform ${POSTGRES_OLD_POD} 5432:5432 &
+   kubectl port-forward -n platform ${POSTGRES_NEW_POD} 5433:5432 &
+   ```
+
+3. Run database dump:
+
+    ```
+    pg_dumpall -h localhost -p 5432 -U postgres > dump.sql
+    ```
+
+4. Run database hydration:
+
+   ```
+   cat dumps/dump.sql | psql -h localhost -p 5433 -U postgres -d postgres -q
+   ```
+
+5. Delete old stateful set.
+6. Rename service for new stateful set.
+7. Start platform services.
