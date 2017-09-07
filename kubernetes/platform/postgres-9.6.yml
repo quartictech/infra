@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres96
+  namespace: platform
+  labels:
+    component: postgres
+    version: "9.6"
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+  selector:
+    component: postgres
+    version: "9.6"
+---
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: postgres96
+  namespace: platform
+  labels:
+    component: postgres
+    version: "9.6"
+spec:
+  serviceName: postgres96
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: postgres
+        version: "9.6"
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: postgres
+        image: postgres:9.6.5 # TODO - migrate this to {{cluster.postgres_version}}
+        ports:
+          - containerPort: 5432
+        env:
+          - name: POSTGRES_PASSWORD
+            # TODO: This needs to be encrypted or otherwise moved out of this file!
+            value: {{cluster.secrets.postgres_password_plaintext}}
+          - name: PGDATA
+            value: /var/lib/postgresql/data/pgdata
+        volumeMounts:
+          - name: postgres96-data
+            mountPath: /var/lib/postgresql/data
+        resources:
+          limits:
+            memory: 4Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres96-data
+      annotations:
+        volume.beta.kubernetes.io/storage-class: ssd
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 100Gi
