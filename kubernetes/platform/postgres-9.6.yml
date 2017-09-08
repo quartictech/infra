@@ -5,42 +5,36 @@ metadata:
   namespace: platform
   labels:
     component: postgres
+    version: "9.6"
 spec:
   ports:
   - port: 5432
     protocol: TCP
   selector:
     component: postgres
----
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: ssd
-  namespace: platform
-provisioner: kubernetes.io/gce-pd
-parameters:
-  type: pd-ssd
-  zones: {{cluster.zone}}
+    version: "9.6"
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: postgres
+  name: postgres96
   namespace: platform
   labels:
     component: postgres
+    version: "9.6"
 spec:
-  serviceName: "postgres"
+  serviceName: postgres96
   replicas: 1
   template:
     metadata:
       labels:
         component: postgres
+        version: "9.6"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: postgres
-        image: postgres:{{cluster.postgres_version}}
+        image: {{cluster.postgres_version}}
         ports:
           - containerPort: 5432
         env:
@@ -50,14 +44,14 @@ spec:
           - name: PGDATA
             value: /var/lib/postgresql/data/pgdata
         volumeMounts:
-          - name: postgres-data
+          - name: postgres96-data
             mountPath: /var/lib/postgresql/data
         resources:
           limits:
             memory: 4Gi
   volumeClaimTemplates:
   - metadata:
-      name: postgres-data
+      name: postgres96-data
       annotations:
         volume.beta.kubernetes.io/storage-class: ssd
     spec:
