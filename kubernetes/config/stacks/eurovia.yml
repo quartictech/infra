@@ -1,15 +1,6 @@
 ---
 name: eurovia
 
-weyl:
-  memory_gb: 7
-  cpu: 2
-  location:
-    lat: 51.4679
-    lng: -0.3548
-    zoom: 11.7
-  open_source_tags: ["small"]
-
 zeus:
   datasets: |
     assets:

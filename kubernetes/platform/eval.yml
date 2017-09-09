@@ -16,7 +16,7 @@ data:
           - "jovyan"
           - "bash"
           - "-c"
-          - "export PATH=/opt/conda/bin:$PATH; pip install git+git://github.com/quartictech/quartic-python.git; pip install http://qube.platform:8200/api/backchannel/runner && python -u -m quarty.server"
+          - "export PATH=/opt/conda/bin:$PATH; pip install git+git://github.com/quartictech/quartic-python.git@feature/error-handling; pip install http://qube.platform:8200/api/backchannel/runner && python -u -m quarty.server"
         port: 8080
 
     github:

@@ -21,7 +21,3 @@ spec:
             backend:
               serviceName: zeus-{{stack.name}}
               servicePort: 8160
-          - path: /map
-            backend:
-              serviceName: weyl-{{stack.name}}
-              servicePort: 8080
