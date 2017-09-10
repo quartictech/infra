@@ -7,18 +7,21 @@ data:
         name: CustomSell
         subdomain: cs
         namespace: cs
+        githubInstallationId: 999  # TODO
         githubOrgId: 30663321
         githubRepoId: 555
       - id: 112
         name: Magnolia
         subdomain: magnolia
         namespace: magnolia
+        githubInstallationId: 888  # TODO
         githubOrgId: 30663321
         githubRepoId: 78424428
       - id: 113
         name: Playground
         subdomain: playground
         namespace: playground
+        githubInstallationId: 777  # TODO
         githubOrgId: 30663321
         githubRepoId: 99951423
 
