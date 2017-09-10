@@ -12,7 +12,7 @@
         apiVersion: "v1",
         kind: "ConfigMap",
         metadata: {
-            name: $.name + "-config",
+            name: $.name,
             namespace: $.namespace
         },
         data: {
@@ -29,14 +29,14 @@
         kind: "Service",
         metadata: {
             name: $.name,
-            namespace: $.namespace
-        },
-        labels: {
-            component: $.name
-        },
-        annotations: {
-            "quartic.io/healthcheck_path": "/healthcheck",
-            "quartic.io/healthcheck_port": $.port + 1,
+            namespace: $.namespace,
+            labels: {
+                component: $.name
+            },
+            annotations: {
+                "quartic.io/healthcheck_path": "/healthcheck",
+                "quartic.io/healthcheck_port": $.port + 1,
+            },
         },
         spec: {
             ports: [
