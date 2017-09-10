@@ -41,6 +41,9 @@ metadata:
     quartic.io/healthcheck_port: "8101"
 spec:
   ports:
+  - port: 80
+    protocol: TCP
+    name: frontend
   - port: 8100
     protocol: TCP
     name: default
@@ -63,6 +66,10 @@ spec:
         component: home
     spec:
       containers:
+        - name: home-frontend
+          image: eu.gcr.io/quartictech/home-frontend:{{cluster.platform_version}}
+          ports:
+            - containerPort: 80
         - name: home
           image: eu.gcr.io/quartictech/home:{{cluster.platform_version}}
           ports:
