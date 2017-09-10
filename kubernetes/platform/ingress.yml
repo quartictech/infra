@@ -35,5 +35,9 @@ spec:
           - path: /
             backend:
               serviceName: home
+              servicePort: 80
+          - path: /api
+            backend:
+              serviceName: home
               servicePort: 8100
     {% endfor %}
