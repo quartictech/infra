@@ -10,6 +10,9 @@ metadata:
     quartic.io/healthcheck_port: "8161"
 spec:
   ports:
+  - port: 80
+    protocol: TCP
+    name: frontend
   - port: 8160
     protocol: TCP
     name: default
@@ -44,6 +47,10 @@ spec:
         component: zeus-{{stack.name}}
     spec:
       containers:
+        - name: zeus-frontend
+          image: eu.gcr.io/quartictech/zeus-frontend:{{cluster.platform_version}}
+          ports:
+            - containerPort: 80
         - name: zeus
           image: eu.gcr.io/quartictech/zeus:{{cluster.platform_version}}
           ports:
