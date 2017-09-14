@@ -1,8 +1,0 @@
-domain_name: dev.quartic.io
-disk_prefix: dev
-datastore_namespace_prefix: dev
-cpu_multiplier: 1.0
-memory_multiplier: 1.0
-static_ip: 104.155.89.104
-zone: europe-west1-b
-platform_version: "1393"
