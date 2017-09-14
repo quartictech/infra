@@ -8,7 +8,7 @@ data:
         subdomain: cs
         namespace: cs
         githubOrgId: 30663321
-        githubRepoId: 555
+        githubRepoId: 102881471
         githubInstallationId: 40737
       - id: 112
         name: Magnolia
