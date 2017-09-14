@@ -23,7 +23,7 @@ metadata:
     component: postgres
     version: "9.6"
 spec:
-  serviceName: postgres96
+  serviceName: postgres
   replicas: 1
   template:
     metadata:
@@ -34,7 +34,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: postgres
-        image: {{cluster.postgres_version}}
+        image: postgres:{{cluster.postgres_version}}
         ports:
           - containerPort: 5432
         env:

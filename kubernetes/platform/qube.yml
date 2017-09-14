@@ -4,23 +4,23 @@ data:
     kubernetes:
       enable: true
       namespace: qube
-      numConcurrentJobs: 4
-      jobTimeoutSeconds: 3600
-      #deletePods: false
-      podTemplate:
+      num_concurrent_jobs: 4
+      job_timeout_seconds: 3600
+      #delete_pods: false
+      pod_template:
         spec:
-          automountServiceAccountToken: false
+          automount_service_account_token: false
           containers:
             - name: container
-          restartPolicy: Never
+          restart_policy: Never
 
     database:
-      hostName: postgres.platform
-      databaseName: qube
+      host_name: postgres.platform
+      database_name: qube
       user: postgres
       password: {{cluster.secrets.postgres_password}}
 
-    websocketPort: 8202
+    websocket_port: 8202
     url:
       port: 8200
    

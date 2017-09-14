@@ -1,25 +1,25 @@
 apiVersion: v1
 data:
   config.yml: |
-    catalogueUrl: http://catalogue:8090/api
-    howlUrl: http://howl:8120/api
-    registryUrl: http://registry:8190/api
-    evalUrl: http://eval:8210/api
+    catalogue_url: http://catalogue:8090/api
+    howl_url: http://howl:8120/api
+    registry_url: http://registry:8190/api
+    eval_url: http://eval:8210/api
 
     github:
-      clientId: "ab6d4546d3895f750518"
-      clientSecretEncrypted: {{cluster.secrets.github_client_secret}}
-      trampolineUrl: "https://api.quartic.io/api/auth/gh/callback"
-      redirectHost: "https://%s.quartic.io"
+      client_id: "ab6d4546d3895f750518"
+      client_secret_encrypted: {{cluster.secrets.github_client_secret}}
+      trampoline_url: "https://api.quartic.io/api/auth/gh/callback"
+      redirect_host: "https://%s.quartic.io"
       scopes: [user]
 
     cookies:
       secure: true
-      maxAgeSeconds: 2592000 # 30 days
+      max_age_seconds: 2592000 # 30 days
 
     auth:
       type: token
-      keyEncryptedBase64: {{cluster.secrets.token_signing_key}}
+      key_encrypted_base64: {{cluster.secrets.token_signing_key}}
 
     url:
       port: 8100

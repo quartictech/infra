@@ -1,9 +1,9 @@
 apiVersion: v1
 data:
   config.yml: |
-    evalUrl: http://eval:8210/api
+    eval_url: http://eval:8210/api
 
-    webhookSecretEncrypted: {{cluster.secrets.github_webhook_secret}}
+    webhook_secret_encrypted: {{cluster.secrets.github_webhook_secret}}
 
     url:
       port: 8170

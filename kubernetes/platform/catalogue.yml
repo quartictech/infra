@@ -46,7 +46,7 @@ spec:
             - name: JAVA_OPTS
               value: >
                 -Ddw.backend.type=google_datastore
-                -Ddw.backend.projectId=quartictech
+                -Ddw.backend.project_id=quartictech
                 -Ddw.backend.namespace={{cluster.datastore_namespace_prefix}}-catalogue
           resources:
             requests:
