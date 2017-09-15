@@ -4,21 +4,21 @@ name: eurovia
 zeus:
   datasets: |
     assets:
-      prettyName: "RSL assets"
+      pretty_name: "RSL assets"
       url: http://howl.platform:8120/api/magnolia/zeus%2Froads
-      indexedAttributes: [ "RSL", "Road Name" ]
+      indexed_attributes: [ "RSL", "Road Name" ]
     jobs:
-      prettyName: "Jobs"
+      pretty_name: "Jobs"
       url: http://howl.platform:8120/api/magnolia/zeus%2Fjobs
-      indexedAttributes: [ "Number" ]
+      indexed_attributes: [ "Number" ]
     aom_treatments:
-      prettyName: "AOM treatments"
+      pretty_name: "AOM treatments"
       url: http://howl.platform:8120/api/magnolia/zeus%2Faom
-      indexedAttributes: [ ]
+      indexed_attributes: [ ]
     insights:
-      prettyName: "Insights"
+      pretty_name: "Insights"
       url: http://howl.platform:8120/api/magnolia/zeus%2Finsights
-      indexedAttributes: [ ]
+      indexed_attributes: [ ]
 auth_secret: |
   admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
   yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.

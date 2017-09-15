@@ -12,9 +12,9 @@ cs:
   namespace: |
     type: s3
     region: eu-west-2
-    bucketEncrypted: 1$d527d6a20bb0cfffeaa4ae4d$0e13b6b10395ad9ced2862e4295ce4edebbb8428c77dfe$1ab7aae54c7fe75b2c5b1e694e148ca2
-    roleArnEncrypted: 1$ca56f02fb06f32ce0c3089b4$9398fc9216d35092075d2c32cb20b6389250c5e8a9d15e076e84813e46c60acbb65674e478f76dcd2c182e60cc$70910ed7ca03bfbd9671eda942970b34
-    externalIdEncrypted: 1$8dacbc0a1651f9d5bd2abcb5$45893a5c4d738df6ac07a60360e447fb46e0187a948d54d738030e20b92f32421c17050f$4869da24d0c829ab3ba9ebd55fe9f7bb
+    bucket_encrypted: 1$d527d6a20bb0cfffeaa4ae4d$0e13b6b10395ad9ced2862e4295ce4edebbb8428c77dfe$1ab7aae54c7fe75b2c5b1e694e148ca2
+    role_arn_encrypted: 1$ca56f02fb06f32ce0c3089b4$9398fc9216d35092075d2c32cb20b6389250c5e8a9d15e076e84813e46c60acbb65674e478f76dcd2c182e60cc$70910ed7ca03bfbd9671eda942970b34
+    external_id_encrypted: 1$8dacbc0a1651f9d5bd2abcb5$45893a5c4d738df6ac07a60360e447fb46e0187a948d54d738030e20b92f32421c17050f$4869da24d0c829ab3ba9ebd55fe9f7bb
 
 playground:
   namespace: null

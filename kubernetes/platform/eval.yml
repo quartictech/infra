@@ -1,9 +1,9 @@
 apiVersion: v1
 data:
   config.yml: |
-    registryUrl: http://registry:8190/api
-    heyUrl: http://hey/
-    homeUrlFormat: "https://%s.quartic.io"
+    registry_url: http://registry:8190/api
+    hey_url: http://hey/
+    home_url_format: "https://%s.quartic.io"
 
     qube:
       url: ws://qube:8202
@@ -26,15 +26,14 @@ data:
             env:
               MYSQL_ROOT_PASSWORD: yep
 
-
     github:
-      appId: 3853
-      apiRootUrl: https://api.github.com
-      privateKeyEncrypted: {{cluster.secrets.github_private_key}}
+      app_id: 3853
+      api_root_url: https://api.github.com
+      private_key_encrypted: {{cluster.secrets.github_private_key}}
 
     database:
-      hostName: postgres.platform
-      databaseName: eval
+      host_name: postgres.platform
+      database_name: eval
       user: postgres
       password: {{cluster.secrets.postgres_password}}
 

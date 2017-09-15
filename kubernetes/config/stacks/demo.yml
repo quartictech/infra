@@ -4,17 +4,17 @@ name: demo
 zeus:
   datasets: |
     assets:
-      prettyName: "RSL assets"
+      pretty_name: "RSL assets"
       url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_roads_clean.json
-      indexedAttributes: [ "RSL", "Road Name" ]
+      indexed_attributes: [ "RSL", "Road Name" ]
     jobs:
-      prettyName: "Jobs"
+      pretty_name: "Jobs"
       url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_jobs_clean.json
-      indexedAttributes: [ "Number" ]
+      indexed_attributes: [ "Number" ]
     insights:
-      prettyName: "Insights"
+      pretty_name: "Insights"
       url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_insights_clean.json
-      indexedAttributes: [ ]
+      indexed_attributes: [ ]
 
 auth_secret: |
   admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
