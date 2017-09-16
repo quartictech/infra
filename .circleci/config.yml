@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: quartic/uber-builder:96
+      - image: hashicorp/terraform:0.10.4
 
     working_directory: ~/infra
 
@@ -11,19 +11,24 @@ jobs:
       - checkout
 
       - run:
-          name: GCloud auth
-          command: gcloud-auth
+          name: Terraform init
+          working_directory: terraform/staging
+          command: |
+            export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+            terraform init
 
       - run:
-          name: Validate Terraform
-          working_directory: terraform
+          name: Terraform plan
+          working_directory: terraform/staging
           command: |
-            terraform init -backend=false # Because GCS backend needs default application credentials
-            terraform validate
+            export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+            terraform plan
 
-workflows:
-  version: 2
-  just_do_it:
-    jobs:
-      - build:
-          context: org-global
+      - deploy:
+          name: Terraform apply
+          working_directory: terraform/staging
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+              terraform apply
+            fi
