@@ -3,8 +3,8 @@ data:
   config.yml: |
     aws:
       region: {{cluster.aws.region}}
-      accessKeyId: {{cluster.aws.access_key_id}}
-      secretAccessKeyEncrypted: {{cluster.secrets.aws_secret_access_key}}
+      access_key_id: {{cluster.aws.access_key_id}}
+      secret_access_key_encrypted: {{cluster.secrets.aws_secret_access_key}}
 
     namespaces:
     {% for customer in customers %}

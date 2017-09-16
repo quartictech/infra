@@ -1,32 +1,39 @@
 apiVersion: v1
 data:
   config.yml: |
-    registryUrl: http://registry:8190/api
-    heyUrl: http://hey/
-    homeUrlFormat: "https://%s.quartic.io"
+    registry_url: http://registry:8190/api
+    hey_url: http://hey/
+    home_url_format: "https://%s.quartic.io"
 
     qube:
       url: ws://qube:8202
-      container:
-        image: eu.gcr.io/quartictech/jupyter:53
-        command:
-          - "sudo"
-          - "-E"
-          - "-u"
-          - "jovyan"
-          - "bash"
-          - "-c"
-          - "export PATH=/opt/conda/bin:$PATH; pip install git+git://github.com/quartictech/quartic-python.git@feature/error-handling; pip install http://qube.platform:8200/api/backchannel/runner && python -u -m quarty.server"
-        port: 8080
+      pod:
+        containers:
+          - name: quarty
+            image: eu.gcr.io/quartictech/jupyter:53
+            command:
+              - "sudo"
+              - "-E"
+              - "-u"
+              - "jovyan"
+              - "bash"
+              - "-c"
+              - "set -eu; export PATH=/opt/conda/bin:$PATH; pip install git+git://github.com/quartictech/quartic-python.git; pip install http://qube.platform:8200/api/backchannel/runner; python -u -m quarty.server"
+            port: 8080
+          - name: mysql
+            image: mysql
+            port: 3306
+            env:
+              MYSQL_ROOT_PASSWORD: yep
 
     github:
-      appId: 3853
-      apiRootUrl: https://api.github.com
-      privateKeyEncrypted: {{cluster.secrets.github_private_key}}
+      app_id: 3853
+      api_root_url: https://api.github.com
+      private_key_encrypted: {{cluster.secrets.github_private_key}}
 
     database:
-      hostName: postgres.platform
-      databaseName: eval
+      host_name: postgres.platform
+      database_name: eval
       user: postgres
       password: {{cluster.secrets.postgres_password}}
 
