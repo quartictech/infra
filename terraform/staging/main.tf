@@ -4,6 +4,7 @@ variable "region"               {}
 variable "project_name"         {}
 variable "viewer_group"         {}
 variable "dns_name"             {}
+variable "cluster_node_count"   {}
 
 
 terraform {
@@ -43,14 +44,24 @@ data "google_compute_zones" "available" {
 #     zones               = "${data.google_compute_zones.available.names}"
 # }
 
+module "cluster" {
+    source              = "./modules/cluster"
+
+    project_id          = "${module.project.id}"
+    zones               = "${data.google_compute_zones.available.names}"
+    node_count          = "${var.cluster_node_count}"
+}
+
 module "dns" {
     source              = "./modules/dns"
 
     project_id          = "${module.project.id}"
     dns_name            = "${var.dns_name}"
-    addresses           = {}
-    # addresses           = {
-    #     www             = "${module.compute.address}"
-    # }
-    addresses_count     = 0
+    addresses           = {
+        cluster         = "${module.cluster.address}"   # TODO - subdomain
+    }
+    addresses_count     = 1
 }
+
+
+output "cluster_ip"             { value = "${module.cluster.address}" }
