@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: tls-platform-{{stack.name}}
       hosts:
-        - {{stack.name}}.{{cluster.domain_name}}
+        - {{stack.name}}.{{cluster.gcloud.domain_name}}
   rules:
-    - host: {{stack.name}}.{{cluster.domain_name}}
+    - host: {{stack.name}}.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /api

@@ -25,7 +25,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   gcePersistentDisk:
-    pdName: {{cluster.disk_prefix}}-postgres
+    pdName: {{cluster.gcloud.cluster_name}}-dilectic-postgres
     fsType: ext4
 ---
 kind: PersistentVolumeClaim

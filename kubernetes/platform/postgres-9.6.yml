@@ -34,13 +34,13 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: postgres
-        image: postgres:{{cluster.postgres_version}}
+        image: postgres:{{cluster.postgres.version}}
         ports:
           - containerPort: 5432
         env:
           - name: POSTGRES_PASSWORD
             # TODO: This needs to be encrypted or otherwise moved out of this file!
-            value: {{cluster.secrets.postgres_password_plaintext}}
+            value: {{cluster.postgres.password_plaintext}}
           - name: PGDATA
             value: /var/lib/postgresql/data/pgdata
         volumeMounts:

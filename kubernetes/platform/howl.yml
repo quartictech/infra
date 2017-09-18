@@ -4,7 +4,7 @@ data:
     aws:
       region: {{cluster.aws.region}}
       access_key_id: {{cluster.aws.access_key_id}}
-      secret_access_key_encrypted: {{cluster.secrets.aws_secret_access_key}}
+      secret_access_key_encrypted: {{cluster.aws.secret_access_key_encrypted}}
 
     namespaces:
     {% for customer in customers %}

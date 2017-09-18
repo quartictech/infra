@@ -11,13 +11,13 @@ spec:
     {% for customer in customers %}
     - secretName: tls-platform-{{customer}}
       hosts:
-        - {{customer}}.{{cluster.domain_name}}
+        - {{customer}}.{{cluster.gcloud.domain_name}}
     {% endfor %}
     - secretName: tls-platform-api
       hosts:
-        - api.{{cluster.domain_name}}
+        - api.{{cluster.gcloud.domain_name}}
   rules:
-    - host: api.{{cluster.domain_name}}
+    - host: api.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /api/auth/gh/callback
@@ -29,7 +29,7 @@ spec:
               serviceName: glisten
               servicePort: 8170
     {% for customer in customers %}
-    - host: {{customer}}.{{cluster.domain_name}}
+    - host: {{customer}}.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /

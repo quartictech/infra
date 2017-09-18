@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: tls-platform-docs
       hosts:
-        - docs.{{cluster.domain_name}}
+        - docs.{{cluster.gcloud.domain_name}}
   rules:
-    - host: docs.{{cluster.domain_name}}
+    - host: docs.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /

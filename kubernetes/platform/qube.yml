@@ -18,7 +18,7 @@ data:
       host_name: postgres.platform
       database_name: qube
       user: postgres
-      password: {{cluster.secrets.postgres_password}}
+      password: {{cluster.postgres.password_encrypted}}
 
     websocket_port: 8202
     url:

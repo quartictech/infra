@@ -29,13 +29,13 @@ data:
     github:
       app_id: 3853
       api_root_url: https://api.github.com
-      private_key_encrypted: {{cluster.secrets.github_private_key}}
+      private_key_encrypted: {{cluster.github.private_key_encrypted}}
 
     database:
       host_name: postgres.platform
       database_name: eval
       user: postgres
-      password: {{cluster.secrets.postgres_password}}
+      password: {{cluster.postgres.password_encrypted}}
 
     url:
       port: 8210
