@@ -47,7 +47,7 @@ spec:
               value: >
                 -Ddw.backend.type=google_datastore
                 -Ddw.backend.project_id=quartictech
-                -Ddw.backend.namespace={{cluster.gcloud.project_id}}-{{cluster.gcloud.cluster_name}}-catalogue
+                -Ddw.backend.namespace={{cluster.gcloud.cluster_name}}-catalogue
           resources:
             requests:
               cpu: 100m
