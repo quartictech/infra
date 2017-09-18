@@ -6,12 +6,11 @@ data:
       access_key_id: {{cluster.aws.access_key_id}}
       secret_access_key_encrypted: {{cluster.aws.secret_access_key_encrypted}}
 
+    # TODO: this is obviously nonsense in the long run
     namespaces:
     {% for cust_name, cust_details in cluster.customers.items() %}
-      {% if cust_details.namespace %}
       {{cust_name|indent(6)}}:
-        {{cust_details.namespace|indent(8)}}
-      {% endif %}
+        {{cust_details.howl|indent(8)}}
     {% endfor %}
 
     url:
