@@ -36,20 +36,21 @@ data "google_compute_zones" "available" {
     region              = "${var.region}"
 }
 
-module "compute" {
-    source              = "./modules/compute"
+# module "compute" {
+#     source              = "./modules/compute"
 
-    project_id          = "${module.project.id}"
-    zones               = "${data.google_compute_zones.available.names}"
-}
+#     project_id          = "${module.project.id}"
+#     zones               = "${data.google_compute_zones.available.names}"
+# }
 
 module "dns" {
     source              = "./modules/dns"
 
     project_id          = "${module.project.id}"
     dns_name            = "${var.dns_name}"
-    addresses           = {
-        www             = "${module.compute.address}"
-    }
-    addresses_count     = 1
+    addresses           = {}
+    # addresses           = {
+    #     www             = "${module.compute.address}"
+    # }
+    addresses_count     = 0
 }
