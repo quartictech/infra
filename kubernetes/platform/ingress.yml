@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/tls-acme: "true"
 spec:
   tls:
-    {% for customer in customers %}
+    {% for customer in cluster.customers %}
     - secretName: tls-platform-{{customer}}
       hosts:
         - {{customer}}.{{cluster.gcloud.domain_name}}
@@ -28,7 +28,7 @@ spec:
             backend:
               serviceName: glisten
               servicePort: 8170
-    {% for customer in customers %}
+    {% for customer in cluster.customers %}
     - host: {{customer}}.{{cluster.gcloud.domain_name}}
       http:
         paths:

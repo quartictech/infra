@@ -33,7 +33,7 @@ spec:
   template:
     metadata:
       labels:
-        component: dilectic
+        component: hydration
     spec:
       restartPolicy: Never
       containers:

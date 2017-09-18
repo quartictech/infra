@@ -7,11 +7,11 @@ data:
       secret_access_key_encrypted: {{cluster.aws.secret_access_key_encrypted}}
 
     namespaces:
-    {% for customer in customers %}
-    {% if customers[customer].namespace %}
-      {{customer|indent(6)}}:
-        {{customers[customer].namespace|indent(8)}}
-    {% endif %}
+    {% for cust_name, cust_details in cluster.customers.items() %}
+      {% if cust_details.namespace %}
+      {{cust_name|indent(6)}}:
+        {{cust_details.namespace|indent(8)}}
+      {% endif %}
     {% endfor %}
 
     url:

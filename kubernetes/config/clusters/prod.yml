@@ -26,3 +26,82 @@ slack:
   token_encrypted: 1$5d1ff3377a2ba3eb2ce7d0aa$a778530d8ec1533775c2ebd1031c9f012b98812a9b1d4570bcde11ebf5c2819cc09fd14495d369978bb12dcb$2035281e77f5ae2b620cefe2914251d6
 
 token_signing_key_encrypted: 1$2969f6d34d7486797acf1329$831d47ec4a3eb179a9bce5879d323acdbc20d19547135d9b5ca9c54e2e9b810c86c09567722a59411b7c3da74d28b03c1bb9c1036eec3050596c6542139498ed6c49447f877f4aedb082a19a6c609156de3fbf8cfc6fb62f$dd9a939f9ef26978f0f7248c257a7704
+
+
+#-----------------------------------------------------------------------------#
+# Customers
+#-----------------------------------------------------------------------------#
+customers:
+  magnolia:
+    namespace: |
+      type: gcs
+      bucket: magnolia.prod.quartic.io
+
+  dilectic:
+    namespace: |
+      type: gcs
+      bucket: demo.prod.quartic.io
+
+  cs:
+    namespace: |
+      type: s3
+      region: eu-west-2
+      bucket_encrypted: 1$d527d6a20bb0cfffeaa4ae4d$0e13b6b10395ad9ced2862e4295ce4edebbb8428c77dfe$1ab7aae54c7fe75b2c5b1e694e148ca2
+      role_arn_encrypted: 1$ca56f02fb06f32ce0c3089b4$9398fc9216d35092075d2c32cb20b6389250c5e8a9d15e076e84813e46c60acbb65674e478f76dcd2c182e60cc$70910ed7ca03bfbd9671eda942970b34
+      external_id_encrypted: 1$8dacbc0a1651f9d5bd2abcb5$45893a5c4d738df6ac07a60360e447fb46e0187a948d54d738030e20b92f32421c17050f$4869da24d0c829ab3ba9ebd55fe9f7bb
+
+  playground:
+    namespace: null
+
+
+#-----------------------------------------------------------------------------#
+# Fringe configuration
+#-----------------------------------------------------------------------------#
+fringe:
+  stacks:
+    demo:
+      zeus:
+        datasets: |
+          assets:
+            pretty_name: "RSL assets"
+            url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_roads_clean.json
+            indexed_attributes: [ "RSL", "Road Name" ]
+          jobs:
+            pretty_name: "Jobs"
+            url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_jobs_clean.json
+            indexed_attributes: [ "Number" ]
+          insights:
+            pretty_name: "Insights"
+            url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_insights_clean.json
+            indexed_attributes: [ ]
+
+      auth_secret: |
+        admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
+
+    eurovia:
+      zeus:
+        datasets: |
+          assets:
+            pretty_name: "RSL assets"
+            url: http://howl.platform:8120/api/magnolia/zeus%2Froads
+            indexed_attributes: [ "RSL", "Road Name" ]
+          jobs:
+            pretty_name: "Jobs"
+            url: http://howl.platform:8120/api/magnolia/zeus%2Fjobs
+            indexed_attributes: [ "Number" ]
+          aom_treatments:
+            pretty_name: "AOM treatments"
+            url: http://howl.platform:8120/api/magnolia/zeus%2Faom
+            indexed_attributes: [ ]
+          insights:
+            pretty_name: "Insights"
+            url: http://howl.platform:8120/api/magnolia/zeus%2Finsights
+            indexed_attributes: [ ]
+      auth_secret: |
+        admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
+        yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.
+        sebastien.magat:$apr1$MCsVbqHi$.FYsHBJUUZUCr7HmmRhBh/
+        tim.hurley:$apr1$O7bJA1J.$egy3al/ZO4XlFk62qa33g.
+        satbir.gill:$apr1$WNioQJc9$R0hvgqArHZw1d93PDgJxF.
+        damon.pass:$apr1$/UwftpFh$RKz05KyJ8ieTe2AvE5bKO1
+        karim.hamza:$apr1$Bj/Xo6Sw$WncEeXg4MMkPsQgbq.VUO1

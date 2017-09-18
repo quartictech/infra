@@ -33,28 +33,15 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 ./ktmpl -c ${CLUSTER} apply -f dilectic
 ./ktmpl -c ${CLUSTER} apply -f analysis
 ./ktmpl -c ${CLUSTER} apply -f platform
-./ktmpl -c ${CLUSTER} apply -f fringe config/stacks/*
+./ktmpl -c ${CLUSTER} apply -f fringe
 ```
 
-# Dilectic hydration
+# Dilectic hydration and imports
 
 ```
-./ktmpl -c ${CLUSTER} apply -f dilectic/hydration
-```
-
-# Stack imports
-
-```
-./ktmpl -c ${CLUSTER} apply -f fringe/import config/stacks/*
-```
-
-# Per-stack operations
-
-Any of the multi-stack operations above can be applied in a more granular way by providing specific stack definitions.
-For example:
-
-```
-./ktmpl -c ${CLUSTER} apply -f fringe/import config/stacks/alpha.yml
+./ktmpl -c ${CLUSTER} apply -f dilectic/deploy-key-secret.yml
+./ktmpl -c ${CLUSTER} apply -f dilectic/hydration.yml
+./ktmpl -c ${CLUSTER} apply -f dilectic/import.yml
 ```
 
 # Creating basic-auth passwords
