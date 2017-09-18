@@ -5,19 +5,19 @@ zeus:
   datasets: |
     assets:
       pretty_name: "RSL assets"
-      url: http://howl.platform:8120/api/magnolia/zeus%2Froads
+      url: http://howl.platform:8120/api/magnolia/managed/magnolia/zeus%2Froads
       indexed_attributes: [ "RSL", "Road Name" ]
     jobs:
       pretty_name: "Jobs"
-      url: http://howl.platform:8120/api/magnolia/zeus%2Fjobs
+      url: http://howl.platform:8120/api/magnolia/managed/magnolia/zeus%2Fjobs
       indexed_attributes: [ "Number" ]
     aom_treatments:
       pretty_name: "AOM treatments"
-      url: http://howl.platform:8120/api/magnolia/zeus%2Faom
+      url: http://howl.platform:8120/api/magnolia/managed/magnolia/zeus%2Faom
       indexed_attributes: [ ]
     insights:
       pretty_name: "Insights"
-      url: http://howl.platform:8120/api/magnolia/zeus%2Finsights
+      url: http://howl.platform:8120/api/magnolia/managed/magnolia/zeus%2Finsights
       indexed_attributes: [ ]
 auth_secret: |
   admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.

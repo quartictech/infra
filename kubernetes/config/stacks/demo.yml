@@ -5,15 +5,15 @@ zeus:
   datasets: |
     assets:
       pretty_name: "RSL assets"
-      url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_roads_clean.json
+      url: http://howl.platform:8120/api/dilectic/managed/demo/zeus%2Fzeus_roads_clean.json
       indexed_attributes: [ "RSL", "Road Name" ]
     jobs:
       pretty_name: "Jobs"
-      url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_jobs_clean.json
+      url: http://howl.platform:8120/api/dilectic/managed/demo/zeus%2Fzeus_jobs_clean.json
       indexed_attributes: [ "Number" ]
     insights:
       pretty_name: "Insights"
-      url: http://howl.platform:8120/api/dilectic/demo/zeus%2Fzeus_insights_clean.json
+      url: http://howl.platform:8120/api/dilectic/managed/demo/zeus%2Fzeus_insights_clean.json
       indexed_attributes: [ ]
 
 auth_secret: |
