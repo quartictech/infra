@@ -2,6 +2,7 @@
 
 import argparse
 import base64
+import json
 import os
 import subprocess
 import sys
@@ -59,28 +60,42 @@ def read_from_file(template_path, relative_path):
         return file.read()
 
 
-def run_from_template(operation, dry_run, template_path, config):
-    env = Environment(undefined=StrictUndefined)
-    env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
-    with open(template_path, "rt") as file:
-        template = env.from_string(file.read())
+def run_jsonnet(path):
+    process = subprocess.Popen(["jsonnet", path], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    out, err = process.communicate()
+    rc = process.poll()
+    if rc != 0:
+        raise EnvironmentError("jsonnet failed")
+    return json.loads(out.decode())
 
-    print("--- {} [{}] ---".format(operation.upper(), template_path))
 
-    config["from"] = lambda relative_path: read_from_file(template_path, relative_path)
-    
-    rendered = template.render(config)
-
+def run_kubectl(dry_run, operation, stdin):
     if (dry_run):
         print(rendered)
     else:
         rc = run_command(
             ["kubectl", operation, "-f", "-"],
-            env={"KUBECONFIG": CONFIG_PATH},
-            stdin=rendered
+            env={"KUBECONFIG": CONFIG_PATH}
+            stdin=stdin
         )
         if rc != 0:
             raise EnvironmentError("kubectl failed")
+
+
+def run_from_template(operation, dry_run, template_path, config):
+    env = Environment(undefined=StrictUndefined)
+    env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
+    with open(template_path, "rt") as file:
+        template = env.from_string(file.read())
+    config["from"] = lambda relative_path: read_from_file(template_path, relative_path)
+    
+    rendered = template.render(config)
+    run_kubectl(dry_run, operation, rendered)
+
+
+def run_from_jsonnet(operation, dry_run, template_path):
+    rendered = json.dumps(run_jsonnet(template_path), indent=2)
+    run_kubectl(dry_run, operation, rendered)
 
 
 def switch_context(dry_run, gcloud):
@@ -165,5 +180,9 @@ if __name__ == "__main__":
         
     for operation in get_operations(args.operation):
         for template_path in get_filenames(args.filename):
-            run_from_template(operation, args.dry_run, template_path, 
-                              {"cluster": cluster_config, "environment": environment})
+            print("--- {} [{}] ---".format(operation.upper(), template_path))
+            if template_path.endswith(".yml"):
+                run_from_template(operation, args.dry_run, template_path, 
+                                  {"cluster": cluster_config, "environment": environment})
+            else:
+                run_from_jsonnet(operation, args.dry_run, template_path)

@@ -1,12 +1,12 @@
 {
+    config:: error "config must be specified",
+
     name:: error "name must be specified",
     namespace:: error "namespace must be specified",
     version:: error "version must be specified",
     port:: error "port must be specified",
     dropwizardConfig:: {},
     javaOpts:: [],
-
-    config:: import "../config.jsonnet",
 
     local configMap = {
         apiVersion: "v1",
@@ -35,7 +35,7 @@
             },
             annotations: {
                 "quartic.io/healthcheck_path": "/healthcheck",
-                "quartic.io/healthcheck_port": $.port + 1,
+                "quartic.io/healthcheck_port": std.toString($.port + 1),
             },
         },
         spec: {
@@ -59,7 +59,7 @@
 
     local container = {
         name: $.name,
-        image: "eu.gcr.io/quartictech/" + $.name + ":" + $.config.platformVersion,
+        image: "eu.gcr.io/quartictech/" + $.name + ":" + $.config.platform_version,
         ports: [
             { containerPort: $.port },
             { containerPort: $.port + 1 }
