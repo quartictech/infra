@@ -1,7 +1,9 @@
+{% for stack_name, stack_details in cluster.fringe.stacks.items() %}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: zeus-{{stack.name}}
+  name: zeus-{{stack_name}}
   namespace: fringe
   labels:
     component: zeus
@@ -20,31 +22,31 @@ spec:
     protocol: TCP
     name: admin
   selector:
-    component: zeus-{{stack.name}}
+    component: zeus-{{stack_name}}
 ---
 apiVersion: v1
 data:
   config.yml: |
     datasets:
-      {{stack.zeus.datasets | indent(6)}}
+      {{stack_details.zeus.datasets | indent(6)}}
     url:
       port: 8160
 kind: ConfigMap
 metadata:
   namespace: fringe
-  name: zeus-config-{{stack.name}}
+  name: zeus-config-{{stack_name}}
 ---
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: zeus-{{stack.name}}
+  name: zeus-{{stack_name}}
   namespace: fringe
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        component: zeus-{{stack.name}}
+        component: zeus-{{stack_name}}
     spec:
       containers:
         - name: zeus-frontend
@@ -71,4 +73,5 @@ spec:
       volumes:
         - name: "config"
           configMap:
-            name: "zeus-config-{{stack.name}}"
+            name: "zeus-config-{{stack_name}}"
+{% endfor %}

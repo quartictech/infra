@@ -5,7 +5,7 @@ metadata:
   namespace: core
 spec:
   type: LoadBalancer
-  loadBalancerIP: {{cluster.static_ip}}
+  loadBalancerIP: {{cluster.gcloud.static_ip}}
   ports:
     - port: 80
       name: http

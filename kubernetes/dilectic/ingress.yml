@@ -10,19 +10,19 @@ spec:
   tls:
     - secretName: tls-tracker
       hosts:
-        - tracker.{{cluster.domain_name}}
+        - tracker.{{cluster.gcloud.domain_name}}
     - secretName: tls-mock-tracker
       hosts:
-        - mock-tracker.{{cluster.domain_name}}
+        - mock-tracker.{{cluster.gcloud.domain_name}}
   rules:
-    - host: tracker.{{cluster.domain_name}}
+    - host: tracker.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /upload
             backend:
               serviceName: btraced-tracker
               servicePort: 8080
-    - host: mock-tracker.{{cluster.domain_name}}
+    - host: mock-tracker.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /upload

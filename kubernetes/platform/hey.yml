@@ -42,7 +42,7 @@ spec:
             - name: DEV_MODE
               value: "false"
             - name: SLACK_TOKEN_ENCRYPTED
-              value: {{cluster.secrets.slack_token}}
+              value: {{cluster.slack.token_encrypted}}
             - name: SLACK_USERNAME
               value: Quartic Hey
             - name: SLACK_CHANNEL

@@ -1,0 +1,11 @@
+{% for stack_name, stack_details in cluster.fringe.stacks.items() %}
+---
+apiVersion: v1
+data:
+  auth: {{stack_details.auth_secret | b64encode}}
+kind: Secret
+metadata:
+  name: basic-auth-{{stack_name}}
+  namespace: fringe
+type: Opaque
+{% endfor %}

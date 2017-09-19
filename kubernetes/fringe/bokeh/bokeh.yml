@@ -1,3 +1,5 @@
+{% for stack_name, stack_details in cluster.fringe.stacks.items() %}
+---
 apiVersion: v1
 data:
   start.sh: |
@@ -22,7 +24,7 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bokeh-{{stack.name}}
+  name: bokeh-{{stack_name}}
   namespace: fringe
   labels:
     component: bokeh
@@ -37,7 +39,7 @@ spec:
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: bokeh-{{stack.name}}
+  name: bokeh-{{stack_name}}
   namespace: fringe
 spec:
   replicas: 1
@@ -63,4 +65,4 @@ spec:
         - name: config-volume
           configMap:
             name: start
-
+{% endfor %}

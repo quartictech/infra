@@ -8,7 +8,7 @@ data:
 
     github:
       client_id: "ab6d4546d3895f750518"
-      client_secret_encrypted: {{cluster.secrets.github_client_secret}}
+      client_secret_encrypted: {{cluster.github.client_secret_encrypted}}
       trampoline_url: "https://api.quartic.io/api/auth/gh/callback"
       redirect_host: "https://%s.quartic.io"
       scopes: [user]
@@ -19,7 +19,7 @@ data:
 
     auth:
       type: token
-      key_encrypted_base64: {{cluster.secrets.token_signing_key}}
+      key_encrypted_base64: {{cluster.token_signing_key_encrypted}}
 
     url:
       port: 8100

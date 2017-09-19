@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:{{cluster.postgres_version}}
+          image: postgres:{{cluster.postgres.version}}
           ports:
             - containerPort: 5432
           resources:

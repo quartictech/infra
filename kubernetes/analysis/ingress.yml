@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: tls-core
       hosts:
-        - analysis.{{cluster.domain_name}}
+        - analysis.{{cluster.gcloud.domain_name}}
   rules:
-    - host: analysis.{{cluster.domain_name}}
+    - host: analysis.{{cluster.gcloud.domain_name}}
       http:
         paths:
           - path: /

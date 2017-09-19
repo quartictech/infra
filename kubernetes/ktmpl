@@ -47,13 +47,13 @@ def read_from_file(template_path, relative_path):
     with open(os.path.join(os.path.dirname(template_path), relative_path), "rt") as file:
         return file.read()
 
-def run_from_template(operation, dry_run, stack_name, template_path, config):
+def run_from_template(operation, dry_run, template_path, config):
     env = Environment(undefined=StrictUndefined)
     env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
     with open(template_path, "rt") as file:
         template = env.from_string(file.read())
 
-    print("--- {} [{}] [{}] ---".format(operation.upper(), stack_name, template_path))
+    print("--- {} [{}] ---".format(operation.upper(), template_path))
 
     config["from"] = lambda relative_path: read_from_file(template_path, relative_path)
     
@@ -69,7 +69,7 @@ def run_from_template(operation, dry_run, stack_name, template_path, config):
 def check_cluster(cluster_name):
     current_context = subprocess.check_output(["kubectl", "config", "current-context"]).decode("utf-8").strip()
     if not current_context.endswith(cluster_name):
-        raise ValueError("stack name mismatch. configured {0} but specified {1}".format(current_context, cluster_name))
+        raise ValueError("Cluster name mismatch. configured {0} but specified {1}".format(current_context, cluster_name))
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
@@ -96,7 +96,6 @@ def parse_args():
                                help="Additional variables for template expansion")
         subparser.add_argument("-d", "--dry-run", action="store_true",
                                help="Enable dry-run mode (just prints rendered templates, no actions are taken)")
-        subparser.add_argument("stack_file", nargs="*", help="Stack config files (YAML)")
 
     return parser.parse_args()
 
@@ -107,9 +106,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     check_cluster(args.cluster)
-    stack_configs = {path: load_config(path) for path in args.stack_file}
     cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
-    customers = load_config(os.path.join("config", "customers.yml"))
     environment = {}
     for var in args.environment:
         bits = var[0].split("=")
@@ -120,12 +117,5 @@ if __name__ == "__main__":
         
     for operation in get_operations(args.operation):
         for template_path in get_filenames(args.filename):
-            if template_path.endswith(".stack.yml"):
-                for stack_path, stack_config in stack_configs.items():
-                    run_from_template(operation, args.dry_run, stack_config["name"], 
-                                      template_path, 
-                                      {"cluster": cluster_config, "stack": stack_config, "environment": environment})
-            else:
-                run_from_template(operation, args.dry_run, "global",
-                                  template_path, 
-                                  {"cluster": cluster_config, "environment": environment, "customers": customers})
+            run_from_template(operation, args.dry_run, template_path, 
+                              {"cluster": cluster_config, "environment": environment})
