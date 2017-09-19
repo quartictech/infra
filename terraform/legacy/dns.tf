@@ -147,3 +147,14 @@ resource "google_dns_record_set" "gke" {
     rrdatas         = ["${google_compute_address.gke.address}"]
 }
 
+
+#-----------------------------------------------------------------------------#
+# Staging
+#-----------------------------------------------------------------------------#
+resource "google_dns_record_set" "staging" {
+    name            = "*.staging.${google_dns_managed_zone.prod.dns_name}"
+    managed_zone    = "${google_dns_managed_zone.prod.name}"
+    ttl             = "${var.dns_ttl}"
+    type            = "A"
+    rrdatas         = ["35.197.222.152"]  # TODO - this is gross (need to modularise legacy/)
+}

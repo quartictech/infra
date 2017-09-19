@@ -7,10 +7,10 @@ data:
     eval_url: http://eval:8210/api
 
     github:
-      client_id: "ab6d4546d3895f750518"
+      client_id: {{cluster.github.client_id}}
       client_secret_encrypted: {{cluster.github.client_secret_encrypted}}
-      trampoline_url: "https://api.quartic.io/api/auth/gh/callback"
-      redirect_host: "https://%s.quartic.io"
+      trampoline_url: "https://api.{{cluster.gcloud.domain_name}}/api/auth/gh/callback"
+      redirect_host: "https://%s.{{cluster.gcloud.domain_name}}"
       scopes: [user]
 
     cookies:
