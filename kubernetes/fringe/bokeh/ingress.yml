@@ -1,0 +1,26 @@
+{% for stack_name, stack_details in cluster.fringe.stacks.items() %}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-bokeh-{{stack_name}}
+  namespace: fringe
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/auth-type: basic
+    ingress.kubernetes.io/auth-secret: basic-auth-{{stack_name}}
+spec:
+  tls:
+    - secretName: tls-platform-{{stack_name}}
+      hosts:
+        - {{stack_name}}.{{cluster.gcloud.domain_name}}
+  rules:
+    - host: {{stack_name}}.{{cluster.gcloud.domain_name}}
+      http:
+        paths:
+          - path: /dashboards
+            backend:
+              serviceName: bokeh-{{stack_name}}
+              servicePort: 5006
+{% endfor %}

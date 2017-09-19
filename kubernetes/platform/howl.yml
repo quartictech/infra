@@ -4,14 +4,13 @@ data:
     aws:
       region: {{cluster.aws.region}}
       access_key_id: {{cluster.aws.access_key_id}}
-      secret_access_key_encrypted: {{cluster.secrets.aws_secret_access_key}}
+      secret_access_key_encrypted: {{cluster.aws.secret_access_key_encrypted}}
 
+    # TODO: this is obviously nonsense in the long run
     namespaces:
-    {% for customer in customers %}
-    {% if customers[customer].namespace %}
-      {{customer|indent(6)}}:
-        {{customers[customer].namespace|indent(8)}}
-    {% endif %}
+    {% for cust_name, cust_details in cluster.customers.items() %}
+      {{cust_name|indent(6)}}:
+        {{cust_details.howl|indent(8)}}
     {% endfor %}
 
     url:

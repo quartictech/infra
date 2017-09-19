@@ -3,27 +3,9 @@ data:
   config.yml: |
     # TODO: this is obviously nonsense in the long run
     customers:
-      - id: 111
-        name: CustomSell
-        subdomain: cs
-        namespace: cs
-        github_org_id: 30663321
-        github_repo_id: 102881471
-        github_installation_id: 40737
-      - id: 112
-        name: Magnolia
-        subdomain: magnolia
-        namespace: magnolia
-        github_org_id: 30663321
-        github_repo_id: 78424428
-        github_installation_id: 40737
-      - id: 113
-        name: Playground
-        subdomain: playground
-        namespace: playground
-        github_org_id: 30663321
-        github_repo_id: 99951423
-        github_installation_id: 40737
+    {% for cust_name, cust_details in cluster.customers.items() %}
+      {{cust_details.registry|indent(6)}}
+    {% endfor %}
 
     url:
       port: 8190
