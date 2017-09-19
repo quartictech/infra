@@ -18,9 +18,12 @@ resource "google_project" "project" {
 resource "google_project_services" "project" {
     project             = "${google_project.project.project_id}"
 
+    # Note - ensure these are all reflected in the list in bootstrapping.tf
     services            = [
         "compute.googleapis.com",
+        "container.googleapis.com",
         "dns.googleapis.com",
+        "storage-api.googleapis.com",
     ]
 }
 

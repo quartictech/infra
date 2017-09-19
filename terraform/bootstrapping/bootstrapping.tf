@@ -39,6 +39,7 @@ resource "google_project_services" "admin" {
         "servicemanagement.googleapis.com",     # So we can manage APIs/services on the project
         # Whilst services will be enabled on the target project, we still need the corresponding APIs to be enabled
         # on *this* project, as we'll be performing the actions via this project.
+        "container.googleapis.com",
         "dns.googleapis.com",
     ]
 }
