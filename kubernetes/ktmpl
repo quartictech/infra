@@ -9,9 +9,16 @@ import yaml
 
 from jinja2 import Environment, Template, StrictUndefined
 
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), ".kube/config")
+
 # Modified http://blog.endpoint.com/2015/01/getting-realtime-output-using-python.html for Python3 and stdin
-def run_command(command, stdin):
-    process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+def run_command(command, stdin="", env={}):
+    process = subprocess.Popen(
+        command,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        env=dict(os.environ, **env)
+    )
     process.stdin.write(str.encode(stdin))
     process.stdin.close()
     while True:
@@ -23,6 +30,7 @@ def run_command(command, stdin):
     rc = process.poll()
     return rc
 
+
 def get_filenames(path):
     if os.path.isdir(path):
         return filter(
@@ -32,10 +40,12 @@ def get_filenames(path):
     else:
         return [path]
 
+
 def load_config(path):
     with open(path, "r", encoding='utf-8') as stream:
         config = yaml.load(stream)
     return config
+
 
 def get_operations(operation):
     if (operation == "bounce"):
@@ -43,9 +53,11 @@ def get_operations(operation):
     else:
         return [operation]
 
+
 def read_from_file(template_path, relative_path):
     with open(os.path.join(os.path.dirname(template_path), relative_path), "rt") as file:
         return file.read()
+
 
 def run_from_template(operation, dry_run, template_path, config):
     env = Environment(undefined=StrictUndefined)
@@ -62,14 +74,45 @@ def run_from_template(operation, dry_run, template_path, config):
     if (dry_run):
         print(rendered)
     else:
-        rc = run_command(["kubectl", operation, "-f", "-"], stdin=rendered)
+        rc = run_command(
+            ["kubectl", operation, "-f", "-"],
+            env={"KUBECONFIG": CONFIG_PATH},
+            stdin=rendered
+        )
         if rc != 0:
             raise EnvironmentError("kubectl failed")
 
-def check_cluster(cluster_name):
-    current_context = subprocess.check_output(["kubectl", "config", "current-context"]).decode("utf-8").strip()
-    if not current_context.endswith(cluster_name):
-        raise ValueError("Cluster name mismatch. configured {0} but specified {1}".format(current_context, cluster_name))
+
+def switch_context(dry_run, gcloud):
+    if (not dry_run):
+        rc = run_command(
+            [
+                "gcloud",
+                "container",
+                "clusters",
+                "get-credentials",
+                gcloud["cluster_name"],
+                "--project",
+                gcloud["project_id"],
+                "--zone",
+                gcloud["zone"]
+            ],
+            env={"KUBECONFIG": CONFIG_PATH}
+        )
+        if rc != 0:
+            raise EnvironmentError("Switching context failed")
+
+
+def extract_environment_map(from_args):
+    environment = {}
+    for var in from_args:
+        bits = var[0].split("=")
+        if len(bits) != 2:
+            print("Malformed variable option: {}".format(var))
+            sys.exit(1)
+        environment[bits[0]] = bits[1]
+    return environment
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
@@ -99,21 +142,18 @@ def parse_args():
 
     return parser.parse_args()
 
+
 if __name__ == "__main__":
     args = parse_args()
 
     if not args.operation:
         sys.exit(1)
 
-    check_cluster(args.cluster)
+    #check_cluster(args.cluster)
     cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
-    environment = {}
-    for var in args.environment:
-        bits = var[0].split("=")
-        if len(bits) != 2:
-            print("Malformed variable option: {}".format(var))
-            sys.exit(1)
-        environment[bits[0]] = bits[1]
+    environment = extract_environment_map(args.environment)
+
+    switch_context(args.dry_run, cluster_config["gcloud"])
         
     for operation in get_operations(args.operation):
         for template_path in get_filenames(args.filename):

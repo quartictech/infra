@@ -44,9 +44,9 @@ spec:
             - name: SLACK_TOKEN_ENCRYPTED
               value: {{cluster.slack.token_encrypted}}
             - name: SLACK_USERNAME
-              value: Quartic Hey
+              value: {{cluster.slack.username}}
             - name: SLACK_CHANNEL
-              value: "#infrastructure"
+              value: {{cluster.slack.channel}}
           resources:
             requests:
               cpu: 100m
