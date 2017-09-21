@@ -48,6 +48,8 @@ spec:
       labels:
         component: catalogue
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: catalogue
           image: eu.gcr.io/quartictech/catalogue:{{cluster.platform_version}}

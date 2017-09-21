@@ -65,6 +65,8 @@ spec:
       labels:
         component: home
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: home-frontend
           image: eu.gcr.io/quartictech/home-frontend:{{cluster.platform_version}}
