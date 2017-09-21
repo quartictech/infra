@@ -1,10 +1,12 @@
-variable "org_id"               {}
-variable "billing_account"      {}
-variable "region"               {}
-variable "project_name"         {}
-variable "viewer_group"         {}
-variable "dns_name"             {}
-variable "cluster_node_count"   {}
+variable "org_id"                       {}
+variable "billing_account"              {}
+variable "region"                       {}
+variable "project_name"                 {}
+variable "viewer_group"                 {}
+variable "dns_name"                     {}
+variable "cluster_name"                 {}
+variable "cluster_core_node_count"      {}
+variable "cluster_worker_node_count"    {}
 
 
 terraform {
@@ -49,7 +51,9 @@ module "cluster" {
 
     project_id          = "${module.project.id}"
     zones               = "${data.google_compute_zones.available.names}"
-    node_count          = "${var.cluster_node_count}"
+    name                = "${var.cluster_name}"
+    core_node_count     = "${var.cluster_core_node_count}"
+    worker_node_count   = "${var.cluster_worker_node_count}"
 }
 
 module "dns" {
