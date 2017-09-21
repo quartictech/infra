@@ -16,6 +16,9 @@ spec:
     - secretName: tls-platform-api
       hosts:
         - api.{{cluster.gcloud.domain_name}}
+    - secretName: tls-platform-docs
+      hosts:
+        - docs.{{cluster.gcloud.domain_name}}
   rules:
     - host: api.{{cluster.gcloud.domain_name}}
       http:
@@ -28,6 +31,13 @@ spec:
             backend:
               serviceName: glisten
               servicePort: 8170
+    - host: docs.{{cluster.gcloud.domain_name}}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: docs
+              servicePort: 80
     {% for customer in cluster.customers %}
     - host: {{customer}}.{{cluster.gcloud.domain_name}}
       http:

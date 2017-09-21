@@ -1,4 +1,26 @@
 apiVersion: v1
+data:
+  config.yml: |
+    backend:
+      type: google_datastore
+      project_id: {{cluster.gcloud.project_id}}
+      namespace: {{cluster.gcloud.cluster_name}}-catalogue
+
+    database:
+      host_name: postgres.platform
+      database_name: catalogue
+      user: postgres
+      password: {{cluster.postgres.password_encrypted}}
+
+    url:
+      port: 8090
+   
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: catalogue-config
+---
+apiVersion: v1
 kind: Service
 metadata:
   name: catalogue
@@ -43,11 +65,14 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: master_key_base64
-            - name: JAVA_OPTS
-              value: >
-                -Ddw.backend.type=google_datastore
-                -Ddw.backend.project_id={{cluster.gcloud.project_id}}
-                -Ddw.backend.namespace={{cluster.gcloud.cluster_name}}-catalogue
+          volumeMounts:
+            - name: config
+              mountPath: /service/config.yml
+              subPath: config.yml
           resources:
             requests:
               cpu: 100m
+      volumes:
+        - name: config
+          configMap:
+            name: catalogue-config
