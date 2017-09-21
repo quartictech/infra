@@ -25,7 +25,7 @@ spec:
         component: postgres
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: postgres
           image: postgres:{{cluster.postgres.version}}

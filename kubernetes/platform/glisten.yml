@@ -47,7 +47,7 @@ spec:
         component: glisten
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: glisten
           image: eu.gcr.io/quartictech/glisten:{{cluster.platform_version}}

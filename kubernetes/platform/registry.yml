@@ -49,7 +49,7 @@ spec:
         component: registry
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: registry
           image: eu.gcr.io/quartictech/registry:{{cluster.platform_version}}

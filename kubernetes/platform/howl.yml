@@ -55,7 +55,7 @@ spec:
         component: howl
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: howl
           image: eu.gcr.io/quartictech/howl:{{cluster.platform_version}}

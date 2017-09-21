@@ -26,7 +26,7 @@ spec:
         component: docs
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: docs
           image: eu.gcr.io/quartictech/docs:{{cluster.platform_version}}

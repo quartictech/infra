@@ -36,7 +36,7 @@ spec:
         component: jupyter
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: jupyter
           image: eu.gcr.io/quartictech/jupyter:54

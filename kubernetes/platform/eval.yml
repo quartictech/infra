@@ -27,7 +27,7 @@ data:
               MYSQL_ROOT_PASSWORD: yep
 
     github:
-      app_id: 3853
+      app_id: {{cluster.github.app_id}}
       api_root_url: https://api.github.com
       private_key_encrypted: {{cluster.github.private_key_encrypted}}
 
@@ -79,7 +79,7 @@ spec:
         component: eval
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: eval
           image: eu.gcr.io/quartictech/eval:{{cluster.platform_version}}

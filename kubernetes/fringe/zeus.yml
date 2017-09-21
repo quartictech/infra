@@ -49,7 +49,7 @@ spec:
         component: zeus-{{stack_name}}
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: zeus-frontend
           image: eu.gcr.io/quartictech/zeus-frontend:{{cluster.platform_version}}

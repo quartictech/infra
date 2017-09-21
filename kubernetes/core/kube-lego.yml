@@ -20,10 +20,10 @@ spec:
         app: kube-lego
     spec:
       nodeSelector:
-        cloud.google.com/gke-nodepool: default-pool
+        cloud.google.com/gke-nodepool: core
       containers:
       - name: kube-lego
-        image: jetstack/kube-lego:0.1.3
+        image: jetstack/kube-lego:0.1.5
         imagePullPolicy: Always
         ports:
           - containerPort: 8080
