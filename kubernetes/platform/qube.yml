@@ -65,6 +65,8 @@ spec:
       labels:
         component: qube
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: qube
           image: eu.gcr.io/quartictech/qube:{{cluster.platform_version}}

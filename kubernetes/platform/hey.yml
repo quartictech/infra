@@ -28,6 +28,8 @@ spec:
       labels:
         component: hey
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: hey
           image: eu.gcr.io/quartictech/hey:{{cluster.platform_version}}
