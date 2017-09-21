@@ -10,7 +10,7 @@ data:
       pod:
         containers:
           - name: quarty
-            image: eu.gcr.io/quartictech/jupyter:78
+            image: eu.gcr.io/quartictech/jupyter:80
             command:
               - "sudo"
               - "-E"
@@ -20,11 +20,14 @@ data:
               - "-c"
               - "set -eu; export PATH=/opt/conda/bin:$PATH; pip install git+git://github.com/quartictech/quartic-python.git; pip install http://qube.platform:8200/api/backchannel/runner; python -u -m quarty.server"
             port: 8080
+            env:
+              # TODO: "This is clearly noob" - OC
+              MYSQL_ROOT_PASSWORD: aiCh7Yie
           - name: mysql
             image: mysql
             port: 3306
             env:
-              MYSQL_ROOT_PASSWORD: yep
+              MYSQL_ROOT_PASSWORD: aiCh7Yie
 
     github:
       app_id: {{cluster.github.app_id}}
