@@ -5,7 +5,7 @@ gcloud:
   static_ip: 35.197.222.152
   domain_name: staging.quartic.io
 
-platform_version: 2638
+platform_version: 2641
 
 postgres:
   version: 9.6.5
