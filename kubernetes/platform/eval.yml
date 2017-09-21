@@ -78,6 +78,8 @@ spec:
       labels:
         component: eval
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
       containers:
         - name: eval
           image: eu.gcr.io/quartictech/eval:{{cluster.platform_version}}

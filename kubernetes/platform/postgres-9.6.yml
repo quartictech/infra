@@ -32,6 +32,8 @@ spec:
         version: "9.6"
     spec:
       terminationGracePeriodSeconds: 10
+      nodeSelector:
+        cloud.google.com/gke-nodepool: default-pool
       containers:
       - name: postgres
         image: postgres:{{cluster.postgres.version}}
