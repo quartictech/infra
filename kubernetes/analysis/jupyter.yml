@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: jupyter
-          image: eu.gcr.io/quartictech/jupyter:54
+          image: eu.gcr.io/quartictech/jupyter:80
           ports:
             - containerPort: 8888
           resources:
