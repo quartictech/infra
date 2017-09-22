@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: bokeh
-          image: eu.gcr.io/quartictech/jupyter:46
+          image: eu.gcr.io/quartictech/jupyter:{{cluster.jupyter.version}}
           ports:
             - containerPort: 5006
           resources:

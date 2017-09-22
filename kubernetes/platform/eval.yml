@@ -10,7 +10,7 @@ data:
       pod:
         containers:
           - name: quarty
-            image: eu.gcr.io/quartictech/jupyter:80
+            image: eu.gcr.io/quartictech/jupyter:{{cluster.jupyter.version}}
             command:
               - "sudo"
               - "-E"
