@@ -103,6 +103,13 @@ def switch_context(dry_run, gcloud):
             raise EnvironmentError("Switching context failed")
 
 
+def maybe_get_confirmation(dry_run, require_confirmation):
+    if (require_confirmation and not dry_run):
+        s = input("Type 'yes' to confirm: ")
+        if s != "yes":
+            sys.exit(0)
+
+
 def extract_environment_map(from_args):
     environment = {}
     for var in from_args:
@@ -149,9 +156,10 @@ if __name__ == "__main__":
     if not args.operation:
         sys.exit(1)
 
-    #check_cluster(args.cluster)
     cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
     environment = extract_environment_map(args.environment)
+
+    maybe_get_confirmation(args.dry_run, cluster_config["require_confirmation"])
 
     switch_context(args.dry_run, cluster_config["gcloud"])
         
