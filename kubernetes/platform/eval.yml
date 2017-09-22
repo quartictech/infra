@@ -18,7 +18,13 @@ data:
               - "jovyan"
               - "bash"
               - "-c"
-              - "set -eu; export PATH=/opt/conda/bin:$PATH; pip install git+git://github.com/quartictech/quartic-python.git; pip install http://qube.platform:8200/api/backchannel/runner; python -u -m quarty.server"
+              - | 
+                set -eu 
+                export PATH=/opt/conda/bin:$PATH 
+                pip install git+git://github.com/quartictech/quartic-python.git@{{cluster.quartic_python_version}}
+                pip install http://qube.platform:8200/api/backchannel/runner
+                python -u -m quarty.server
+
             port: 8080
             env:
               # TODO: "This is clearly noob" - OC

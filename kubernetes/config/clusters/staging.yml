@@ -8,6 +8,7 @@ gcloud:
   domain_name: staging.quartic.io
 
 platform_version: 2666
+quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
   version: 86
