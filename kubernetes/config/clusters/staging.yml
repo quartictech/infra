@@ -1,3 +1,5 @@
+require_confirmation: false
+
 gcloud:
   project_id: quartic-79680f42
   cluster_name: staging

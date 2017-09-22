@@ -1,3 +1,5 @@
+require_confirmation: true
+
 gcloud:
   project_id: quartictech
   cluster_name: prod
