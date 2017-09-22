@@ -7,10 +7,7 @@ gcloud:
   static_ip: 104.199.28.27
   domain_name: quartic.io
 
-platform_version: 2666
-
-jupyter:
-  version: 86
+platform_version: 2664
 
 postgres:
   version: 9.6.5
