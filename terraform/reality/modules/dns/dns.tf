@@ -128,3 +128,8 @@ resource "google_dns_record_set" "dmarc" {
     type            = "TXT"
     rrdatas         = ["\"v=DMARC1; p=none; rua=mailto:postmaster@quartic.io\""]
 }
+
+
+output "name_servers" {
+    value = "${google_dns_managed_zone.zone.name_servers}"
+}

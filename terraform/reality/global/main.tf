@@ -1,19 +1,16 @@
 variable "org_id"                       {}
 variable "billing_account"              {}
 variable "region"                       {}
-variable "project_name"                 {}
 variable "project_id_prefix"            {}
+variable "project_name"                 {}
 variable "viewer_group"                 {}
 variable "dns_name"                     {}
-variable "cluster_name"                 {}
-variable "cluster_core_node_count"      {}
-variable "cluster_worker_node_count"    {}
 
 
 terraform {
     backend "gcs" {
         bucket          = "administration.quartic.io"
-        path            = "staging/terraform.tfstate"
+        path            = "global/terraform.tfstate"
     }
 }
 
@@ -41,26 +38,14 @@ data "google_compute_zones" "available" {
     region              = "${var.region}"
 }
 
-module "cluster" {
-    source              = "../modules/cluster"
-
-    project_id          = "${module.project.id}"
-    zones               = "${data.google_compute_zones.available.names}"
-    name                = "${var.cluster_name}"
-    core_node_count     = "${var.cluster_core_node_count}"
-    worker_node_count   = "${var.cluster_worker_node_count}"
-}
-
 module "dns" {
     source              = "../modules/dns"
 
     project_id          = "${module.project.id}"
     dns_name            = "${var.dns_name}"
-    addresses           = {
-        cluster         = "${module.cluster.address}"   # TODO - subdomain
-    }
-    addresses_count     = 1
+    addresses           = {}
+    addresses_count     = 0
 }
 
 
-output "cluster_ip"             { value = "${module.cluster.address}" }
+output "name_servers"       { value = "${module.dns.name_servers}" }

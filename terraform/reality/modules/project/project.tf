@@ -24,7 +24,6 @@ resource "google_project_services" "project" {
         "container.googleapis.com",
         "dns.googleapis.com",
         "storage-api.googleapis.com",
-        "datastore.googleapis.com",     # TODO - this can go away
     ]
 }
 
