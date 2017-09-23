@@ -19,7 +19,7 @@ provider "google" {
 }
 
 module "project" {
-    source              = "../modules/project"
+    source              = "../_modules/project"
 
     org_id              = "${var.org_id}"
     billing_account     = "${var.billing_account}"
@@ -28,7 +28,7 @@ module "project" {
 }
 
 module "iam" {
-    source              = "../modules/iam"
+    source              = "../_modules/iam"
 
     project_id          = "${module.project.id}"
     viewer_group        = "${var.viewer_group}"
@@ -39,7 +39,7 @@ data "google_compute_zones" "available" {
 }
 
 module "dns" {
-    source              = "../modules/dns"
+    source              = "../_modules/dns"
 
     project_id          = "${module.project.id}"
     dns_name            = "${var.dns_name}"

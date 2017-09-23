@@ -10,6 +10,8 @@ jobs:
     steps:
       - checkout
 
+      # TODO - all of this now needs to run in multiple workspace folders
+
       - run:
           name: Terraform init
           working_directory: terraform/staging
