@@ -40,6 +40,12 @@ data "google_compute_zones" "available" {
     region              = "${var.region}"
 }
 
+module "network" {
+    source              = "../_modules/network"
+    
+    project_id          = "${module.project.id}"
+}
+
 module "www" {
     source              = "../_modules/www"
 
