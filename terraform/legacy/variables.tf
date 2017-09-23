@@ -21,5 +21,5 @@ variable "project_name" {
 }
 
 variable "dns_ttl" {
-    default = 3600
+    default = 60
 }

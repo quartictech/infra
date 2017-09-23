@@ -51,6 +51,8 @@ module "cluster" {
     worker_node_count   = "${var.cluster_worker_node_count}"
 }
 
+# TODO - Need something that adds an NS record to the global project
+# TODO - This needs to be a different DNS module that current only has an A record for the cluster
 module "dns" {
     source              = "../_modules/dns"
 
