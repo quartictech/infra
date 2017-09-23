@@ -22,6 +22,13 @@
     mode=0775
   become: true
 
+- name: Install python-setuptools
+  apt: >
+    name=python-setuptools
+    state=present
+    update_cache=yes
+  become: true
+
 # Installing via APT leads to all sorts of weirdness (http://stackoverflow.com/questions/27341064/)
 - name: Install pip
   easy_install: >

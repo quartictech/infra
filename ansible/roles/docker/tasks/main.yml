@@ -55,10 +55,3 @@
     version=1.9.0
     state=present
   become: true
-
-- name: Install docker-compose
-  pip: >
-    name=docker-compose
-    version=1.8.1
-    state=present
-  become: true

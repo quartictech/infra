@@ -40,14 +40,14 @@
   register: cert
   become: true
 
-- name: Obtain cert
-  command: >
-    certbot certonly --webroot
-    -w /var/www/html {{ all_domains_for_certbot }}
-    --email={{ email }}
-    --agree-tos
-  when: cert.stat.exists == False
-  become: true
+# - name: Obtain cert
+#   command: >
+#     certbot certonly --webroot
+#     -w /var/www/html {{ all_domains_for_certbot }}
+#     --email={{ email }}
+#     --agree-tos
+#   when: cert.stat.exists == False
+#   become: true
 
 - name: Add cert-renewal cron job
   cron: >
