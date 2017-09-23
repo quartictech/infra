@@ -21,7 +21,7 @@ provider "google" {
 }
 
 module "project" {
-    source              = "./modules/project"
+    source              = "../modules/project"
 
     org_id              = "${var.org_id}"
     billing_account     = "${var.billing_account}"
@@ -29,7 +29,7 @@ module "project" {
 }
 
 module "iam" {
-    source              = "./modules/iam"
+    source              = "../modules/iam"
 
     project_id          = "${module.project.id}"
     viewer_group        = "${var.viewer_group}"
@@ -39,15 +39,8 @@ data "google_compute_zones" "available" {
     region              = "${var.region}"
 }
 
-# module "compute" {
-#     source              = "./modules/compute"
-
-#     project_id          = "${module.project.id}"
-#     zones               = "${data.google_compute_zones.available.names}"
-# }
-
 module "cluster" {
-    source              = "./modules/cluster"
+    source              = "../modules/cluster"
 
     project_id          = "${module.project.id}"
     zones               = "${data.google_compute_zones.available.names}"
@@ -57,7 +50,7 @@ module "cluster" {
 }
 
 module "dns" {
-    source              = "./modules/dns"
+    source              = "../modules/dns"
 
     project_id          = "${module.project.id}"
     dns_name            = "${var.dns_name}"
