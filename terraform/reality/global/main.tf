@@ -10,26 +10,32 @@ variable "dns_name"                     {}
 
 terraform {
     backend "gcs" {
-        bucket          = "administration.quartic.io"
-        path            = "global/terraform.tfstate"
+        bucket              = "administration.quartic.io"
+        path                = "global/terraform.tfstate"
     }
 }
 
 provider "google" {
-    region              = "${var.region}"
+    region                  = "${var.region}"
 }
 
 module "project" {
-    source              = "../_modules/project"
+    source                  = "../_modules/project"
 
-    org_id              = "${var.org_id}"
-    billing_account     = "${var.billing_account}"
-    name                = "${var.project_name}"
-    id_prefix           = "${var.project_id_prefix}"
+    org_id                  = "${var.org_id}"
+    billing_account         = "${var.billing_account}"
+    name                    = "${var.project_name}"
+    id_prefix               = "${var.project_id_prefix}"
+    services                = [
+        "compute.googleapis.com",
+        "containerregistry.googleapis.com",
+        "dns.googleapis.com",
+        "storage-api.googleapis.com",
+    ]
 }
 
 module "iam" {
-    source              = "../_modules/iam"
+    source                  = "../_modules/iam"
 
     project_id              = "${module.project.id}"
     viewer_group            = "${var.viewer_group}"
@@ -37,35 +43,33 @@ module "iam" {
 }
 
 data "google_compute_zones" "available" {
-    region              = "${var.region}"
+    region                  = "${var.region}"
 }
 
 module "network" {
-    source              = "../_modules/network"
+    source                  = "../_modules/network"
     
-    project_id          = "${module.project.id}"
+    project_id              = "${module.project.id}"
 }
 
 module "www" {
-    source              = "../_modules/www"
+    source                  = "../_modules/www"
 
-    project_id          = "${module.project.id}"
-    zones               = "${data.google_compute_zones.available.names}"
+    project_id              = "${module.project.id}"
+    zones                   = "${data.google_compute_zones.available.names}"
 }
 
 module "dns" {
-    source              = "../_modules/dns"
+    source                  = "../_modules/dns"
 
-    project_id          = "${module.project.id}"
-    dns_name            = "${var.dns_name}"
-    addresses           = {
-        www             = "${module.www.address}"
+    project_id              = "${module.project.id}"
+    dns_name                = "${var.dns_name}"
+    addresses               = {
+        www                 = "${module.www.address}"
     }
-    addresses_count     = 1
+    addresses_count         = 1
 }
 
-# TODO - firewall rule for TCP 80 -> http-server, TCP 443 -> https-server
-# TODO - alternatively, a forwarding rule
 
 output "project_id"         { value = "${module.project.id}" }
 output "name_servers"       { value = "${module.dns.name_servers}" }

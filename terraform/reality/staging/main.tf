@@ -28,6 +28,12 @@ module "project" {
     billing_account     = "${var.billing_account}"
     name                = "${var.project_name}"
     id_prefix           = "${var.project_id_prefix}"
+    services            = [
+        "compute.googleapis.com",
+        "container.googleapis.com",
+        "dns.googleapis.com",
+        "storage-api.googleapis.com",
+    ]
 }
 
 module "iam" {
