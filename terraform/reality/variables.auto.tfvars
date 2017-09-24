@@ -1,5 +1,5 @@
 org_id                      = "2425379824"
 billing_account             = "00798C-5FD4EC-188617"
-region                      = "europe-west2"
+region                      = "europe-west1"
 viewer_group                = "core@quartic.io"
 instance_admin_group        = "core@quartic.io"

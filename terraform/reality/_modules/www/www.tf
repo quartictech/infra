@@ -1,5 +1,6 @@
-variable "project_id"           {}
-variable "zones"                { type = "list" }
+variable "project_id"               {}
+variable "zones"                    { type = "list" }
+variable "service_account_email"    {}
 
 
 resource "google_compute_address" "www" {
@@ -27,8 +28,14 @@ resource "google_compute_instance" "www" {
             nat_ip      = "${google_compute_address.www.address}"
         }
     }
+
+    # We control access through service-account IAM
+    # (see https://cloud.google.com/compute/docs/access/service-accounts#service_account_permissions)
+    service_account {
+        email           = "${var.service_account_email}"
+        scopes          = [ "https://www.googleapis.com/auth/cloud-platform" ]
+    }
 }
 
-output "address" {
-    value = "${google_compute_address.www.address}"
-}
+
+output "address"                    { value = "${google_compute_address.www.address}" }
