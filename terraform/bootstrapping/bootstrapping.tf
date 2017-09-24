@@ -41,6 +41,7 @@ resource "google_project_services" "admin" {
         # on *this* project, as we'll be performing the actions via this project.
         "container.googleapis.com",
         "dns.googleapis.com",
+        "iam.googleapis.com",
     ]
 }
 

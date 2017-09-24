@@ -34,12 +34,19 @@ module "project" {
     ]
 }
 
+module "circleci" {
+    source                  = "../_modules/circleci"
+
+    project_id              = "${module.project.id}"
+}
+
 module "iam" {
     source                  = "../_modules/iam"
 
     project_id              = "${module.project.id}"
-    viewer_group            = "${var.viewer_group}"
-    instance_admin_group    = "${var.instance_admin_group}"
+    viewer_member           = "group:${var.viewer_group}"
+    instance_admin_member   = "group:${var.instance_admin_group}"
+    storage_admin_member    = "serviceAccount:${module.circleci.email}"
 }
 
 data "google_compute_zones" "available" {
@@ -71,6 +78,7 @@ module "dns" {
 }
 
 
-output "project_id"         { value = "${module.project.id}" }
-output "name_servers"       { value = "${module.dns.name_servers}" }
-output "www_address"        { value = "${module.www.address}" }
+output "project_id"                     { value = "${module.project.id}" }
+output "name_servers"                   { value = "${module.dns.name_servers}" }
+output "www_address"                    { value = "${module.www.address}" }
+output "circleci_service_account_email" { value = "${module.circleci.email}" }
