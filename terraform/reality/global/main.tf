@@ -65,10 +65,7 @@ module "dns" {
 
     project_id              = "${module.project.id}"
     dns_name                = "${var.dns_name}"
-    addresses               = {
-        www                 = "${module.www.address}"
-    }
-    addresses_count         = 1
+    www_address             = "${module.www.address}"
 }
 
 

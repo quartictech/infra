@@ -1,7 +1,6 @@
 variable "project_id"           {}
 variable "dns_name"             {}
-variable "addresses"            { type = "map" }
-variable "addresses_count"      {}                      # Workaround for https://github.com/hashicorp/terraform/issues/10857 etc.
+variable "www_address"          {}
 variable "ttl"                  { default = "21400" }
 
 
@@ -12,19 +11,26 @@ resource "google_dns_managed_zone" "zone" {
 }
 
 
-# TODO - www addresses
+#-----------------------------------------------------------------------------#
+# A records for www
+#-----------------------------------------------------------------------------#
+variable "www_domains" {
+    default = [
+        "",
+        "www.",
+        "www-test.",
+        "tools."
+    ]
+}
 
-#-----------------------------------------------------------------------------#
-# A records
-#-----------------------------------------------------------------------------#
-resource "google_dns_record_set" "address" {
-    count           = "${var.addresses_count}"
+resource "google_dns_record_set" "www" {
+    count           = "${length(var.www_domains)}"
     project         = "${var.project_id}"
-    name            = "${element(keys(var.addresses), count.index)}.${google_dns_managed_zone.zone.dns_name}"
+    name            = "${element(var.www_domains, count.index)}${google_dns_managed_zone.zone.dns_name}"
     managed_zone    = "${google_dns_managed_zone.zone.name}"
     ttl             = "${var.ttl}"
     type            = "A"
-    rrdatas         = ["${element(values(var.addresses), count.index)}"]
+    rrdatas         = ["${var.www_address}"]
 }
 
 

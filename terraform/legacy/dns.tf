@@ -161,7 +161,7 @@ resource "google_dns_record_set" "staging" {
 
 
 #-----------------------------------------------------------------------------#
-# New global stuff
+# New global stuff - TODO - do this without hardcoding
 #-----------------------------------------------------------------------------#
 resource "google_dns_record_set" "global" {
     name            = "global.${google_dns_managed_zone.prod.dns_name}"
