@@ -1,6 +1,7 @@
 ---
 - hosts: all
   vars:
+    domain: global.quartic.io
     gcloud_project_id: quartic-global-c39fc822
   roles:
     - { role: common, tags: "common" }
