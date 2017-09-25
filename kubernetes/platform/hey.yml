@@ -47,8 +47,8 @@ spec:
               value: {{cluster.slack.token_encrypted}}
             - name: SLACK_USERNAME
               value: {{cluster.slack.username}}
-            - name: SLACK_CHANNEL
-              value: "{{cluster.slack.channel}}"
+            - name: DEFAULT_SLACK_CHANNEL
+              value: "{{cluster.slack.default_channel}}"
           resources:
             requests:
               cpu: 100m

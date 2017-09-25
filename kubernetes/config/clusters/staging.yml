@@ -7,7 +7,7 @@ gcloud:
   static_ip: 35.197.222.152
   domain_name: staging.quartic.io
 
-platform_version: 2666
+platform_version: 2705
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
@@ -32,7 +32,7 @@ github:
 
 slack:
   username: "Quartic Hey (Staging)"
-  channel: "#pipelines-staging"
+  default_channel: "#pipelines-staging"
   token_encrypted: 1$5bd3fdf36ede55771d526900$4ceb1b730ec90548e2bb8182b3aa0a8a6aab108006ede272d315d0cc4339f6886ff589885e00c909c9080f52$fb39c510411ff0da0e6ab01e067e84e9
 
 token_signing_key_encrypted: 1$8cb8d49e9ab56a56954b406a$8fcf6405f06b5c962602fdccf9c2c00b2f6ae0161c4e4d3ce8155d46fb01f16b1eab5d1446f823ac2dbd74f80ae9f557cb64e43a1c6b9a8b82748005a04ae56a2b10d09b0a503ca81ea01906f119dab079649429dfa54257$e55515f4392896321dd6ecca03dd05d6
@@ -55,6 +55,8 @@ customers:
     howl: |
       type: gcs
       bucket: hammer.staging.quartic.io
+      credentials:
+        type: application_default
 
 
 #-----------------------------------------------------------------------------#
