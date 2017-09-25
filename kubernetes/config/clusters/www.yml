@@ -1,0 +1,11 @@
+require_confirmation: false # TODO - should probably set this to true
+
+gcloud:
+  project_id: quartic-global-c39fc822
+  cluster_name: www
+  zone: europe-west1-b
+  static_ip: 35.195.252.108
+  domain_name: global.quartic.io  # TODO - set this to "quartic.io" once everything looks good
+  docker_repository: eu.gcr.io/quartic-global-c39fc822
+
+formistry_version: XXXX # TODO

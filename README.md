@@ -1,6 +1,10 @@
 # Quartic infrastructure
 
-This repo contains our infrastructure stuff - Ansible configuration for hosts, Kubernetes config, scheduled jobs.
+This repo contains our infrastructure stuff:
+
+- Ansible configuration for hosts,
+- Kubernetes config for platform and website clusters,
+- Terraform for GCloud resource management.
 
 ## Ansible
 

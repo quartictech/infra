@@ -1,0 +1,26 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - secretName: tls-www
+      hosts:
+        - www.{{cluster.gcloud.domain_name}}
+  rules:
+    - host: www.{{cluster.gcloud.domain_name}}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: www
+              servicePort: 80
+          - path: /post
+            backend:
+              serviceName: formistry
+              servicePort: 8080
+    # TODO - www-test (with basic auth)
+    # TODO - permanent redirect @ to www (worst-case we can do this inside the website Nginx conf)
