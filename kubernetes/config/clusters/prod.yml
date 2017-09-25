@@ -7,11 +7,11 @@ gcloud:
   static_ip: 104.199.28.27
   domain_name: quartic.io
 
-platform_version: 2666
+platform_version: 2686
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
-  version: 86
+  version: 87
 
 postgres:
   version: 9.6.5
@@ -72,6 +72,8 @@ customers:
     howl: |
       type: gcs
       bucket: magnolia.prod.quartic.io
+      credentials:
+        type: application_default
 
   playground:
     registry: |
