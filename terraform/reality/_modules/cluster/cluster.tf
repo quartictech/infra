@@ -57,7 +57,7 @@ resource "google_container_cluster" "cluster" {
     }
 }
 
-
+# TODO - we need to add write access to GCS for Jupyter to work
 resource "google_container_node_pool" "core" {
     project             = "${var.project_id}"
     zone                = "${var.zones[0]}"
