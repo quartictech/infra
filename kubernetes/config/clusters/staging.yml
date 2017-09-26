@@ -58,7 +58,7 @@ customers:
       credentials:
         type: application_default
 
-  playground:
+  quartic-python:
     registry: |
       - id: 223
         name: Quartic-Python
