@@ -7,8 +7,8 @@ gcloud:
   static_ip: 104.199.28.27
   domain_name: quartic.io
 
-platform_version: 2705
-quartic_python_version: "$QUARTIC_PYTHON_VERSION"
+platform_version: 2758
+quartic_python_version: 0.6.0 #"$QUARTIC_PYTHON_VERSION"
 
 jupyter:
   version: 87

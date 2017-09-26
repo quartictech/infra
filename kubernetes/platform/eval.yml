@@ -21,7 +21,7 @@ data:
               - | 
                 set -eu 
                 export PATH=/opt/conda/bin:$PATH 
-                pip install git+git://github.com/quartictech/quartic-python.git@{{cluster.quartic_python_version}}
+                pip install --upgrade git+git://github.com/quartictech/quartic-python.git@{{cluster.quartic_python_version}}
                 pip install http://qube.platform:8200/api/backchannel/runner
                 python -u -m quarty.server
 
