@@ -10,10 +10,14 @@ resource "google_dns_managed_zone" "zone" {
     dns_name        = "${var.dns_name}"
 }
 
+variable "cluster_domains" {
+    default = ["*.", ""]
+}
 
 resource "google_dns_record_set" "cluster" {
+    count           = "${length(var.cluster_domains)}"
     project         = "${var.project_id}"
-    name            = "*.${google_dns_managed_zone.zone.dns_name}"
+    name            = "${element(var.cluster_domains, count.index)}${google_dns_managed_zone.zone.dns_name}"
     managed_zone    = "${google_dns_managed_zone.zone.name}"
     ttl             = "${var.ttl}"
     type            = "A"

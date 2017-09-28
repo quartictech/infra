@@ -6,7 +6,6 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-    ingress.kubernetes.io/from-to-www-redirect: "true"
     # TODO - only have basic-auth on staging
     ingress.kubernetes.io/auth-type: basic
     ingress.kubernetes.io/auth-secret: basic-auth
@@ -27,4 +26,29 @@ spec:
             backend:
               serviceName: formistry
               servicePort: 8080
-    # TODO - permanent redirect @ to www (worst-case we can do this inside the website Nginx conf)
+---
+# We can't use ingress.kubernetes.io/from-to-www-redirect because it doesn't interact with Kube-Lego (see
+# https://github.com/kubernetes/ingress/issues/605).
+# So we use this extra ingress resource with a rewrite configuration-snippet.
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-redirect
+  namespace: www
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    ingress.kubernetes.io/configuration-snippet: "return 301 $scheme://www.{{cluster.gcloud.domain_name}}$request_uri;"
+spec:
+  tls:
+    - secretName: tls
+      hosts:
+        - {{cluster.gcloud.domain_name}}
+  rules:
+    - host: {{cluster.gcloud.domain_name}}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: www
+              servicePort: 80
