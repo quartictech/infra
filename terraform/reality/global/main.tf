@@ -33,14 +33,14 @@ module "project" {
 }
 
 module "iam" {
-    source                      = "../_modules/iam"
+    source                      = "_modules/iam"
 
     project_id                  = "${module.project.id}"
     viewer_member               = "group:${var.viewer_group}"
 }
 
 module "dns" {
-    source                  = "../_modules/dns"
+    source                  = "_modules/dns"
 
     project_id              = "${module.project.id}"
     dns_name                = "${var.dns_name}"
