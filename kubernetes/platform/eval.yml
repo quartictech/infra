@@ -2,8 +2,10 @@ apiVersion: v1
 data:
   config.yml: |
     registry_url: http://registry:8190/api
+    catalogue_url: "http://catalogue:8090/api"
+    howl_url: "http://howl:8120/api"
     hey_url: http://hey/
-    home_url_format: "https://%s.quartic.io"
+    home_url_format: "https://%s.{{cluster.gcloud.domain_name}}"
 
     qube:
       url: ws://qube:8202

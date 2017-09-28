@@ -5,10 +5,10 @@ gcloud:
   cluster_name: staging
   zone: europe-west2-a
   static_ip: 35.197.222.152
-  domain_name: staging.quartic.io
+  domain_name: staging.global.quartic.io   # TODO - remove "global"
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
-platform_version: 2758
+platform_version: 2784
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
