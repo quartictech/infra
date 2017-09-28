@@ -4,16 +4,14 @@
   file:
     path: /var/forms
     state: directory
-
 - name: Docker login
   become: true
-  shell: docker login -u oauth2accesstoken -p "$(gcloud auth print-access-token)" https://eu.gcr.io
-
+  shell: docker login -e 1234@5678.com -u oauth2accesstoken -p "$(gcloud auth print-access-token)" https://eu.gcr.io
 - name: Container present
   docker_container:
     name: formistry-test
     state: started
-    image: eu.gcr.io/{{ gcloud_project_id }}/formistry:17
+    image: eu.gcr.io/quartictech/formistry:8
     volumes:
       - "/var/forms:/var/formistry"
     ports:

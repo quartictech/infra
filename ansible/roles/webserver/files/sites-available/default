@@ -13,11 +13,11 @@ map $sent_http_content_type $expires {
 # Tools HTTPS site
 #-----------------------------------------#
 server {
-    server_name                 tools.{{ domain }};
+    server_name                 tools.quartic.io;
     listen                      443 ssl http2;
     listen                      [::]:443 ssl http2;
 
-    #include                     /etc/nginx/ssl.conf;
+    include                     /etc/nginx/ssl.conf;
 
     root                        /opt/quartic/tools.quartic.io;
 
@@ -37,11 +37,11 @@ server {
 # Production HTTPS site
 #-----------------------------------------#
 server {
-    server_name                 www.{{ domain }};
+    server_name                 www.quartic.io;
     listen                      443 ssl http2 default_server;
     listen                      [::]:443 ssl http2 default_server;
 
-    #include                     /etc/nginx/ssl.conf;
+    include                     /etc/nginx/ssl.conf;
 
     root                        /opt/quartic/www.quartic.io;
     index                       index.html;
@@ -71,17 +71,17 @@ server {
 # Non-www (both HTTP and HTTPS)
 #-----------------------------------------#
 server {
-    server_name                 {{ domain }};
+    server_name                 quartic.io;
     listen                      80;
     listen                      [::]:80;
     listen                      443 ssl http2;
     listen                      [::]:443 ssl http2;
 
-    #include                     /etc/nginx/ssl.conf;
+    include                     /etc/nginx/ssl.conf;
     include                     /etc/nginx/letsencrypt.conf;
 
     location / {
-      return                    301 https://www.{{ domain }}$request_uri;
+      return                    301 https://www.quartic.io$request_uri;
     }
 }
 
@@ -89,25 +89,25 @@ server {
 # Non-HTTPS
 #-----------------------------------------#
 server {
-    server_name                 www.{{ domain }};
+    server_name                 www.quartic.io;
     listen                      80;
     listen                      [::]:80;
 
     include                     /etc/nginx/letsencrypt.conf;
     
     location / {
-      return                    301 https://www.{{ domain }}$request_uri;
+      return                    301 https://www.quartic.io$request_uri;
     }
 }
 server {
-    server_name                 tools.{{ domain }};
+    server_name                 tools.quartic.io;
     listen                      80;
     listen                      [::]:80;
 
     include                     /etc/nginx/letsencrypt.conf;
     
     location / {
-      return                    301 https://tools.{{ domain }}$request_uri;
+      return                    301 https://tools.quartic.io$request_uri;
     }
 }
 
@@ -115,7 +115,7 @@ server {
 # Test site
 #-----------------------------------------#
 server {
-    server_name                 www-test.{{ domain }};
+    server_name                 www-test.quartic.io;
     listen                      80;
     listen                      [::]:80;
 

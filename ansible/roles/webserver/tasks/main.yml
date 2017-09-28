@@ -23,7 +23,7 @@
   become: true
 
 - name: Create Nginx configuration
-  template: >
+  copy: >
     src={{ item }}
     dest=/etc/nginx/{{ item }}
   with_items:
