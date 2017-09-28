@@ -25,19 +25,15 @@ variable "basic_gke_oauth_scopes" {
 resource "google_container_cluster" "www" {
     project             = "${var.project_id}"
     zone                = "${var.zones[0]}"
-    name                = "${var.name}"
+    name                = "www"
 
     node_version        = "1.7.5"
 
     initial_node_count  = "1"
     node_config {
-        machine_type    = "g1-small"
-
-        # We control access through service-account IAM
-        # (see https://cloud.google.com/compute/docs/access/service-accounts#service_account_permissions)
-
-        # TODO - hook up to service account email
-        oauth_scopes    = [ "https://www.googleapis.com/auth/cloud-platform" ]
+        machine_type    = "n1-standard-1"
+        service_account = "${var.service_account_email}"
+        oauth_scopes    = "${var.basic_gke_oauth_scopes}"
     }
 }
 

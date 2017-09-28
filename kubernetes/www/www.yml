@@ -26,7 +26,10 @@ spec:
       containers:
         - name: www
           # CI is deploying latest via specific version tag, but if we ever reprovision then just grab "latest"
-          image: {{cluster.gcloud_docker_repository}}/website:latest
+          image: {{cluster.gcloud.docker_repository}}/website:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          resources:
+            limits:
+              cpu: 50m
