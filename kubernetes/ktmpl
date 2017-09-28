@@ -49,7 +49,7 @@ def load_config(path):
 
 def get_operations(operation):
     if (operation == "bounce"):
-        return ["delete", "create"]
+        return ["delete", "apply"]
     else:
         return [operation]
 

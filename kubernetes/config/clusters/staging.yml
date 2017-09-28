@@ -8,7 +8,7 @@ gcloud:
   domain_name: staging.quartic.io
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
-platform_version: 2666
+platform_version: 2758
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
@@ -33,7 +33,7 @@ github:
 
 slack:
   username: "Quartic Hey (Staging)"
-  channel: "#pipelines-staging"
+  default_channel: "#pipelines-staging"
   token_encrypted: 1$5bd3fdf36ede55771d526900$4ceb1b730ec90548e2bb8182b3aa0a8a6aab108006ede272d315d0cc4339f6886ff589885e00c909c9080f52$fb39c510411ff0da0e6ab01e067e84e9
 
 token_signing_key_encrypted: 1$8cb8d49e9ab56a56954b406a$8fcf6405f06b5c962602fdccf9c2c00b2f6ae0161c4e4d3ce8155d46fb01f16b1eab5d1446f823ac2dbd74f80ae9f557cb64e43a1c6b9a8b82748005a04ae56a2b10d09b0a503ca81ea01906f119dab079649429dfa54257$e55515f4392896321dd6ecca03dd05d6
@@ -56,7 +56,25 @@ customers:
     howl: |
       type: gcs
       bucket: hammer.staging.quartic.io
+      credentials:
+        type: application_default
 
+  quartic-python:
+    registry: |
+      - id: 223
+        name: Quartic-Python
+        subdomain: quartic-python
+        namespace: quartic-python
+        github_org_id: 22931189
+        github_repo_id: 100040858
+        github_installation_id: 54057
+
+    howl: |
+      type: s3
+      region: eu-west-2
+      bucket_encrypted: 1$3c100570122ef131e12ad379$e78a2e6076e97375f3051f023aa0082255a2d946e45a1cdac4$81e094796c40bdb10c54e3e9f9c0d270
+      role_arn_encrypted: 1$f994aa1fcc4d348b39a9dee5$a626f1bfea0e962f147bbd2c4df44db59c1080ac29e618b70385c458b4854853ca4eccbe1b8c3458596b608ea1894e1a39edeca2ed46$47966e061e3bd85f739e96cc8bd2476d
+      external_id_encrypted: 1$cb710ce9b2dd6cda46dde55d$f47f79577a8d8194ca556d4ee57e9cb34dda29c4f8222c6f2df9f85f0455ebb1462a84c927a9ccdfc01b6893c75a6b0fd3e1c1b438f1885cdf8ab9669e9ceb67c565c9a8cf4d9184b1fed5d9308fd63505c1860815257803c3f5e551c8d4fad69b6325eb50e8bc2dc295b875b29bf28acc74c72f2e1455c7ef5cf78a1104ae91eff161e1fdb928000e5ff0efc6d9181e803849db2d412d943451c8b32101aceb87f1318ee74aad93$936bc7200943e41ba4557977f4f2be49
 
 #-----------------------------------------------------------------------------#
 # Fringe configuration

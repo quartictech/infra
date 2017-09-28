@@ -7,11 +7,11 @@ gcloud:
   static_ip: 104.199.28.27
   domain_name: quartic.io
 
-platform_version: 2666
-quartic_python_version: "$QUARTIC_PYTHON_VERSION"
+platform_version: 2758
+quartic_python_version: 0.6.0 #"$QUARTIC_PYTHON_VERSION"
 
 jupyter:
-  version: 86
+  version: 87
 
 postgres:
   version: 9.6.5
@@ -32,7 +32,7 @@ github:
 
 slack:
   username: "Quartic Hey"
-  channel: "#pipelines-prod"
+  default_channel: "#pipelines-prod"
   token_encrypted: 1$5d1ff3377a2ba3eb2ce7d0aa$a778530d8ec1533775c2ebd1031c9f012b98812a9b1d4570bcde11ebf5c2819cc09fd14495d369978bb12dcb$2035281e77f5ae2b620cefe2914251d6
 
 token_signing_key_encrypted: 1$2969f6d34d7486797acf1329$831d47ec4a3eb179a9bce5879d323acdbc20d19547135d9b5ca9c54e2e9b810c86c09567722a59411b7c3da74d28b03c1bb9c1036eec3050596c6542139498ed6c49447f877f4aedb082a19a6c609156de3fbf8cfc6fb62f$dd9a939f9ef26978f0f7248c257a7704
@@ -48,6 +48,7 @@ customers:
         name: CustomSell
         subdomain: cs
         namespace: cs
+        slack_channel: "#kiwi"
         github_org_id: 22931189
         github_repo_id: 102881471
         github_installation_id: 40737
@@ -65,6 +66,7 @@ customers:
         name: Magnolia
         subdomain: magnolia
         namespace: magnolia
+        slack_channel: "#dozers"
         github_org_id: 22931189
         github_repo_id: 78424428
         github_installation_id: 40737
@@ -72,6 +74,8 @@ customers:
     howl: |
       type: gcs
       bucket: magnolia.prod.quartic.io
+      credentials:
+        type: application_default
 
   playground:
     registry: |
@@ -94,6 +98,8 @@ customers:
     howl: |
       type: gcs
       bucket: demo.prod.quartic.io
+      credentials:
+        type: application_default
 
     registry: |
       - id: 114
