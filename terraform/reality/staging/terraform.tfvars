@@ -1,6 +1,6 @@
 project_name                = "Quartic - Staging env"
-project_id_prefix           = "quartic"                     # TODO - this should become "quartic-staging"
-region                      = "europe-west2"                # TODO - make this "europe-west1"
+project_id_prefix           = "quartic-staging"
+region                      = "europe-west1"
 dns_name                    = "staging.global.quartic.io."  # TODO - remove "global"
 dns_ttl                     = 60
 cluster_name                = "staging"

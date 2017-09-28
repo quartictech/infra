@@ -1,6 +1,7 @@
 variable "project_id"           {}
 variable "dns_name"             {}
 variable "ttl"                  {}
+variable "staging_name_servers" { type = "list" }
 
 
 resource "google_dns_managed_zone" "zone" {
@@ -19,12 +20,7 @@ resource "google_dns_record_set" "staging" {
     managed_zone    = "${google_dns_managed_zone.zone.name}"
     ttl             = "${var.ttl}"
     type            = "NS"
-    rrdatas         = [
-        "ns-cloud-d1.googledomains.com.",
-        "ns-cloud-d2.googledomains.com.",
-        "ns-cloud-d3.googledomains.com.",
-        "ns-cloud-d4.googledomains.com.",
-    ]
+    rrdatas         = "${var.staging_name_servers}"
 }
 
 

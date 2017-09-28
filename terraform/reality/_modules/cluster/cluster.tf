@@ -1,8 +1,9 @@
-variable "project_id"           {}
-variable "zones"                { type = "list" }
-variable "name"                 {}
-variable "core_node_count"      {}
-variable "worker_node_count"    {}
+variable "project_id"               {}
+variable "zones"                    { type = "list" }
+variable "name"                     {}
+variable "service_account_email"    {}
+variable "core_node_count"          {}
+variable "worker_node_count"        {}
 
 # TODO - alpha/network-policy
 # TODO - pre-emptible nodes
@@ -51,7 +52,7 @@ resource "google_container_cluster" "cluster" {
     zone                = "${var.zones[0]}"
     name                = "${var.name}"
 
-    node_version        = "1.7.5"
+    node_version        = "1.7.6"
 
     lifecycle {
         ignore_changes  = ["node_pools"]
@@ -61,6 +62,7 @@ resource "google_container_cluster" "cluster" {
     initial_node_count  = "1"
     node_config {
         machine_type    = "g1-small"
+        service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
     }
 }
@@ -75,6 +77,7 @@ resource "google_container_node_pool" "core" {
     initial_node_count  = "${var.core_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
+        service_account = "${var.service_account_email}"
         oauth_scopes    = "${concat(var.basic_gke_oauth_scopes, var.core_node_pool_extra_scopes)}"
     }
 
@@ -93,6 +96,7 @@ resource "google_container_node_pool" "worker" {
     initial_node_count  = "${var.worker_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
+        service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
     }
 
