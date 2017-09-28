@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: hashicorp/terraform:0.10.4
+      - image: hashicorp/terraform:0.10.6
 
     working_directory: ~/infra
 
