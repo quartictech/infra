@@ -1,12 +1,30 @@
 variable "project_id"           {}
 variable "dns_name"             {}
-variable "ttl"                  { default = "60" }
+variable "ttl"                  {}
 
 
 resource "google_dns_managed_zone" "zone" {
     project         = "${var.project_id}"
     name            = "primary-zone"
     dns_name        = "${var.dns_name}"
+}
+
+
+#-----------------------------------------------------------------------------#
+# Staging - TODO - do this without hardcoding
+#-----------------------------------------------------------------------------#
+resource "google_dns_record_set" "staging" {
+    project         = "${var.project_id}"
+    name            = "staging.${google_dns_managed_zone.zone.dns_name}"
+    managed_zone    = "${google_dns_managed_zone.zone.name}"
+    ttl             = "${var.ttl}"
+    type            = "NS"
+    rrdatas         = [
+        "ns-cloud-d1.googledomains.com.",
+        "ns-cloud-d2.googledomains.com.",
+        "ns-cloud-d3.googledomains.com.",
+        "ns-cloud-d4.googledomains.com.",
+    ]
 }
 
 
@@ -114,6 +132,4 @@ resource "google_dns_record_set" "dmarc" {
 }
 
 
-output "name_servers" {
-    value = "${google_dns_managed_zone.zone.name_servers}"
-}
+output "name_servers"           { value = "${google_dns_managed_zone.zone.name_servers}" }

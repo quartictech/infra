@@ -5,27 +5,28 @@ variable "project_id_prefix"            {}
 variable "project_name"                 {}
 variable "viewer_group"                 {}
 variable "dns_name"                     {}
+variable "dns_ttl"                      {}
 
 
 terraform {
     backend "gcs" {
-        bucket              = "administration.quartic.io"
-        path                = "global/terraform.tfstate"
+        bucket                  = "administration.quartic.io"
+        path                    = "global/terraform.tfstate"
     }
 }
 
 provider "google" {
-    region                  = "${var.region}"
+    region                      = "${var.region}"
 }
 
 module "project" {
-    source                  = "../_modules/project"
+    source                      = "../_modules/project"
 
-    org_id                  = "${var.org_id}"
-    billing_account         = "${var.billing_account}"
-    name                    = "${var.project_name}"
-    id_prefix               = "${var.project_id_prefix}"
-    services                = [
+    org_id                      = "${var.org_id}"
+    billing_account             = "${var.billing_account}"
+    name                        = "${var.project_name}"
+    id_prefix                   = "${var.project_id_prefix}"
+    services                    = [
         "containerregistry.googleapis.com",
         "dns.googleapis.com",
         "storage-api.googleapis.com",
@@ -40,10 +41,11 @@ module "iam" {
 }
 
 module "dns" {
-    source                  = "_modules/dns"
+    source                      = "_modules/dns"
 
-    project_id              = "${module.project.id}"
-    dns_name                = "${var.dns_name}"
+    project_id                  = "${module.project.id}"
+    dns_name                    = "${var.dns_name}"
+    ttl                         = "${var.dns_ttl}"
 }
 
 

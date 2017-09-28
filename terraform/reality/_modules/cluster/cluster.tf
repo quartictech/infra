@@ -29,6 +29,14 @@ variable "basic_gke_oauth_scopes" {
 }
 
 
+# We need this for Howl to be able to write to GCS buckets
+variable "core_node_pool_extra_scopes" {
+    default = [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+    ]
+}
+
+
 # Management of node pools is somewhat raging right now, see:
 #
 #  - https://github.com/terraform-providers/terraform-provider-google/issues/285
@@ -67,7 +75,11 @@ resource "google_container_node_pool" "core" {
     initial_node_count  = "${var.core_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
-        oauth_scopes    = "${var.basic_gke_oauth_scopes}"
+        oauth_scopes    = "${concat(var.basic_gke_oauth_scopes, var.core_node_pool_extra_scopes)}"
+    }
+
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
@@ -82,6 +94,10 @@ resource "google_container_node_pool" "worker" {
     node_config {
         machine_type    = "n1-standard-2"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
+    }
+
+    lifecycle {
+        create_before_destroy = true
     }
 }
 

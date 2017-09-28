@@ -1,6 +1,9 @@
 project_name                = "Quartic - Staging env"
-project_id_prefix           = "quartic-staging"
-dns_name                    = "quartic.io."
+project_id_prefix           = "quartic"                     # TODO - this should become "quartic-staging"
+region                      = "europe-west2"                # TODO - make this "europe-west1"
+dns_name                    = "staging.global.quartic.io."  # TODO - remove "global"
+dns_ttl                     = 60
 cluster_name                = "staging"
 cluster_core_node_count     = 1
 cluster_worker_node_count   = 1
+container_developer_group   = "core@quartic.io"             # TODO - this can't be true long-term
