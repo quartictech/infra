@@ -26,7 +26,6 @@ module "project" {
     name                    = "${var.project_name}"
     id_prefix               = "${var.project_id_prefix}"
     services                = [
-        "compute.googleapis.com",
         "containerregistry.googleapis.com",
         "dns.googleapis.com",
         "storage-api.googleapis.com",
@@ -38,10 +37,6 @@ module "iam" {
 
     project_id                  = "${module.project.id}"
     viewer_member               = "group:${var.viewer_group}"
-}
-
-data "google_compute_zones" "available" {
-    region                  = "${var.region}"
 }
 
 module "dns" {
