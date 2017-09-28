@@ -14,17 +14,33 @@ jobs:
 
       - run:
           name: Terraform init
-          working_directory: terraform/staging
+          working_directory: terraform
           command: |
             export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+
+            cd global
             terraform init
+            cd -
+
+            cd staging
+            terraform init
+            cd -
+
 
       - run:
           name: Terraform plan
           working_directory: terraform/staging
           command: |
             export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+
+            cd global
             terraform plan
+            cd -
+
+            cd staging
+            terraform init
+            cd -
+
 
       - deploy:
           name: Terraform apply
@@ -32,5 +48,12 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+
+              cd global
               terraform apply
+              cd -
+
+              cd staging
+              terraform apply
+              cd -
             fi
