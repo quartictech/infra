@@ -6,6 +6,7 @@ gcloud:
   zone: europe-west2-a
   static_ip: 35.197.222.152
   domain_name: staging.quartic.io
+  docker_repository: eu.gcr.io/quartic-global-c39fc822
 
 platform_version: 2666
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"

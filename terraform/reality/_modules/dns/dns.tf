@@ -1,36 +1,12 @@
 variable "project_id"           {}
 variable "dns_name"             {}
-variable "www_address"          {}
-variable "ttl"                  { default = "21400" }
+variable "ttl"                  { default = "60" }
 
 
 resource "google_dns_managed_zone" "zone" {
     project         = "${var.project_id}"
     name            = "primary-zone"
     dns_name        = "${var.dns_name}"
-}
-
-
-#-----------------------------------------------------------------------------#
-# A records for www
-#-----------------------------------------------------------------------------#
-variable "www_domains" {
-    default = [
-        "",
-        "www.",
-        "www-test.",
-        "tools."
-    ]
-}
-
-resource "google_dns_record_set" "www" {
-    count           = "${length(var.www_domains)}"
-    project         = "${var.project_id}"
-    name            = "${element(var.www_domains, count.index)}${google_dns_managed_zone.zone.dns_name}"
-    managed_zone    = "${google_dns_managed_zone.zone.name}"
-    ttl             = "${var.ttl}"
-    type            = "A"
-    rrdatas         = ["${var.www_address}"]
 }
 
 

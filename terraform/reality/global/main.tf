@@ -4,7 +4,6 @@ variable "region"                       {}
 variable "project_id_prefix"            {}
 variable "project_name"                 {}
 variable "viewer_group"                 {}
-variable "container_developer_group"    {}
 variable "dns_name"                     {}
 
 
@@ -28,7 +27,6 @@ module "project" {
     id_prefix               = "${var.project_id_prefix}"
     services                = [
         "compute.googleapis.com",
-        "container.googleapis.com",
         "containerregistry.googleapis.com",
         "dns.googleapis.com",
         "storage-api.googleapis.com",
@@ -40,25 +38,10 @@ module "iam" {
 
     project_id                  = "${module.project.id}"
     viewer_member               = "group:${var.viewer_group}"
-    container_developer_member  = "group:${var.container_developer_group}"
 }
 
 data "google_compute_zones" "available" {
     region                  = "${var.region}"
-}
-
-module "network" {
-    source                  = "../_modules/network"
-    
-    project_id              = "${module.project.id}"
-}
-
-module "www" {
-    source                  = "../_modules/www"
-
-    project_id              = "${module.project.id}"
-    zones                   = "${data.google_compute_zones.available.names}"
-    service_account_email   = "${module.iam.www_service_account_email}"
 }
 
 module "dns" {
@@ -66,11 +49,9 @@ module "dns" {
 
     project_id              = "${module.project.id}"
     dns_name                = "${var.dns_name}"
-    www_address             = "${module.www.address}"
 }
 
 
 output "project_id"                     { value = "${module.project.id}" }
 output "name_servers"                   { value = "${module.dns.name_servers}" }
-output "www_address"                    { value = "${module.www.address}" }
 output "circleci_service_account_email" { value = "${module.iam.circleci_service_account_email}" }
