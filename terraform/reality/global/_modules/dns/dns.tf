@@ -1,8 +1,7 @@
 variable "project_id"           {}
 variable "dns_name"             {}
-variable "addresses"            { type = "map" }
-variable "addresses_count"      {}                      # Workaround for https://github.com/hashicorp/terraform/issues/10857 etc.
-variable "ttl"                  { default = "21400" }
+variable "ttl"                  {}
+variable "staging_name_servers" { type = "list" }
 
 
 resource "google_dns_managed_zone" "zone" {
@@ -13,16 +12,15 @@ resource "google_dns_managed_zone" "zone" {
 
 
 #-----------------------------------------------------------------------------#
-# A records
+# Staging - TODO - do this without hardcoding
 #-----------------------------------------------------------------------------#
-resource "google_dns_record_set" "address" {
-    count           = "${var.addresses_count}"
+resource "google_dns_record_set" "staging" {
     project         = "${var.project_id}"
-    name            = "${element(keys(var.addresses), count.index)}.${google_dns_managed_zone.zone.dns_name}"
+    name            = "staging.${google_dns_managed_zone.zone.dns_name}"
     managed_zone    = "${google_dns_managed_zone.zone.name}"
     ttl             = "${var.ttl}"
-    type            = "A"
-    rrdatas         = ["${element(values(var.addresses), count.index)}"]
+    type            = "NS"
+    rrdatas         = "${var.staging_name_servers}"
 }
 
 
@@ -128,3 +126,6 @@ resource "google_dns_record_set" "dmarc" {
     type            = "TXT"
     rrdatas         = ["\"v=DMARC1; p=none; rua=mailto:postmaster@quartic.io\""]
 }
+
+
+output "name_servers"           { value = "${google_dns_managed_zone.zone.name_servers}" }

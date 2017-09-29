@@ -158,3 +158,20 @@ resource "google_dns_record_set" "staging" {
     type            = "A"
     rrdatas         = ["35.197.222.152"]  # TODO - this is gross (need to modularise legacy/)
 }
+
+
+#-----------------------------------------------------------------------------#
+# New global stuff - TODO - do this without hardcoding
+#-----------------------------------------------------------------------------#
+resource "google_dns_record_set" "global" {
+    name            = "global.${google_dns_managed_zone.prod.dns_name}"
+    managed_zone    = "${google_dns_managed_zone.prod.name}"
+    ttl             = "${var.dns_ttl}"
+    type            = "NS"
+    rrdatas         = [
+        "ns-cloud-a1.googledomains.com.",
+        "ns-cloud-a2.googledomains.com.",
+        "ns-cloud-a3.googledomains.com.",
+        "ns-cloud-a4.googledomains.com.",
+    ]
+}

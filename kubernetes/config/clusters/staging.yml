@@ -1,13 +1,15 @@
 require_confirmation: false
 
 gcloud:
-  project_id: quartic-79680f42
+  project_id: quartic-staging-79680f42
   cluster_name: staging
-  zone: europe-west2-a
-  static_ip: 35.197.222.152
-  domain_name: staging.quartic.io
+  zone: europe-west1-b
+  static_ip: 35.195.123.150
+  domain_name: staging.global.quartic.io   # TODO - remove "global"
+  docker_repository: eu.gcr.io/quartic-global-c39fc822
 
-platform_version: 2758
+platform_version: 2784
+formistry_version: 17
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:

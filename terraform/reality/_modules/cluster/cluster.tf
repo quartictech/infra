@@ -1,8 +1,9 @@
-variable "project_id"           {}
-variable "zones"                { type = "list" }
-variable "name"                 {}
-variable "core_node_count"      {}
-variable "worker_node_count"    {}
+variable "project_id"               {}
+variable "zones"                    { type = "list" }
+variable "name"                     {}
+variable "service_account_email"    {}
+variable "core_node_count"          {}
+variable "worker_node_count"        {}
 
 # TODO - alpha/network-policy
 # TODO - pre-emptible nodes
@@ -29,6 +30,14 @@ variable "basic_gke_oauth_scopes" {
 }
 
 
+# We need this for Howl to be able to write to GCS buckets
+variable "core_node_pool_extra_scopes" {
+    default = [
+        "https://www.googleapis.com/auth/devstorage.read_write",
+    ]
+}
+
+
 # Management of node pools is somewhat raging right now, see:
 #
 #  - https://github.com/terraform-providers/terraform-provider-google/issues/285
@@ -43,7 +52,7 @@ resource "google_container_cluster" "cluster" {
     zone                = "${var.zones[0]}"
     name                = "${var.name}"
 
-    node_version        = "1.7.5"
+    node_version        = "1.7.6"
 
     lifecycle {
         ignore_changes  = ["node_pools"]
@@ -53,11 +62,12 @@ resource "google_container_cluster" "cluster" {
     initial_node_count  = "1"
     node_config {
         machine_type    = "g1-small"
+        service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
     }
 }
 
-
+# TODO - we need to add write access to GCS for Jupyter to work
 resource "google_container_node_pool" "core" {
     project             = "${var.project_id}"
     zone                = "${var.zones[0]}"
@@ -67,7 +77,12 @@ resource "google_container_node_pool" "core" {
     initial_node_count  = "${var.core_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
-        oauth_scopes    = "${var.basic_gke_oauth_scopes}"
+        service_account = "${var.service_account_email}"
+        oauth_scopes    = "${concat(var.basic_gke_oauth_scopes, var.core_node_pool_extra_scopes)}"
+    }
+
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
@@ -81,7 +96,12 @@ resource "google_container_node_pool" "worker" {
     initial_node_count  = "${var.worker_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
+        service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
+    }
+
+    lifecycle {
+        create_before_destroy = true
     }
 }
 
