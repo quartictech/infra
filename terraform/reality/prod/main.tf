@@ -15,7 +15,7 @@ variable "cluster_worker_node_count"    {}
 terraform {
     backend "gcs" {
         bucket                  = "administration.quartic.io"
-        path                    = "staging/terraform.tfstate"
+        path                    = "prod/terraform.tfstate"
     }
 }
 
