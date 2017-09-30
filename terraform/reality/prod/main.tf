@@ -49,7 +49,7 @@ resource "google_dns_record_set" "hack" {
     managed_zone    = "${module.env.global_zone_name}"
     ttl             = "${var.dns_ttl}"
     type            = "A"
-    rrdatas         = ["${module.env.cluster_ip}"]
+    rrdatas         = ["104.199.28.27"] # Legacy cluster
 }
 
 
