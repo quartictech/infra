@@ -8,4 +8,6 @@ gcloud:
   domain_name: global.quartic.io
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
-formistry_version: 17
+www:
+  basic_auth_enabled: false
+  formistry_version: 17
