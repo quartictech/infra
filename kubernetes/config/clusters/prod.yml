@@ -5,7 +5,7 @@ gcloud:
   cluster_name: prod
   zone: europe-west1-b
   static_ip: 35.195.96.231
-  domain_name: quartic.io
+  domain_name: global.quartic.io
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
 formistry_version: 17
