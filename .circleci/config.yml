@@ -4,13 +4,13 @@ jobs:
   build:
     docker:
       - image: hashicorp/terraform:0.10.6
+        environment:
+          TF_IN_AUTOMATION: 1
 
     working_directory: ~/infra
 
     steps:
       - checkout
-
-      # TODO - all of this now needs to run in multiple workspace folders
 
       - run:
           name: Terraform init
@@ -18,14 +18,11 @@ jobs:
           command: |
             export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
-            cd global
-            terraform init
-            cd -
-
-            cd staging
-            terraform init
-            cd -
-
+            for cfg in global staging prod; do
+              cd ${cfg}
+              terraform init
+              cd -
+            done
 
       - run:
           name: Terraform plan
@@ -33,13 +30,11 @@ jobs:
           command: |
             export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
-            cd global
-            terraform plan
-            cd -
-
-            cd staging
-            terraform init
-            cd -
+            for cfg in global staging prod; do
+              cd ${cfg}
+              terraform plan
+              cd -
+            done
 
 
       - deploy:
@@ -49,11 +44,9 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
-              cd global
-              terraform apply
-              cd -
-
-              cd staging
-              terraform apply
-              cd -
+              for cfg in global staging prod; do
+                cd ${cfg}
+                terraform apply
+                cd -
+              done
             fi

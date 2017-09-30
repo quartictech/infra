@@ -54,7 +54,7 @@ resource "google_container_cluster" "cluster" {
     zone                = "${var.zones[0]}"
     name                = "${var.name}"
 
-    node_version        = "1.7.6"
+    node_version        = "1.7.6" # TODO - note the current "-gke.1" weirdness in https://github.com/terraform-providers/terraform-provider-google/issues/492
 
     lifecycle {
         ignore_changes  = ["node_pools"]

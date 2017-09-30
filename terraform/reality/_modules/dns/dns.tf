@@ -2,16 +2,13 @@ variable "project_id"           {}
 variable "dns_name"             {}
 variable "ttl"                  {}
 variable "cluster_address"      {}
+variable "cluster_domains"      { default = ["*.", ""] }
 
 
 resource "google_dns_managed_zone" "zone" {
     project         = "${var.project_id}"
     name            = "primary-zone"
     dns_name        = "${var.dns_name}"
-}
-
-variable "cluster_domains" {
-    default = ["*.", ""]
 }
 
 resource "google_dns_record_set" "cluster" {
@@ -25,4 +22,5 @@ resource "google_dns_record_set" "cluster" {
 }
 
 
+output "zone_name"              { value = "${google_dns_managed_zone.zone.name}" }      # TODO - remove this hack
 output "name_servers"           { value = "${google_dns_managed_zone.zone.name_servers}" }

@@ -10,6 +10,7 @@ variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
 variable "cluster_core_node_count"      {}
 variable "cluster_worker_node_count"    {}
+variable "cluster_domains"              { default = ["*.", ""] }    # TODO - remove this hack
 
 
 data "terraform_remote_state" "global" {
@@ -32,6 +33,14 @@ module "project" {
         "container.googleapis.com",
         "dns.googleapis.com",
         "storage-api.googleapis.com",
+
+        # Some noobhole stuff that the above APIs transitively enable (see https://github.com/hashicorp/terraform/issues/13004)
+        "pubsub.googleapis.com",
+        "containerregistry.googleapis.com",
+        "deploymentmanager.googleapis.com",
+        "replicapool.googleapis.com",
+        "replicapoolupdater.googleapis.com",
+        "resourceviews.googleapis.com",
     ]
 }
 
@@ -70,6 +79,7 @@ module "dns" {
     dns_name                    = "${var.dns_name}"
     ttl                         = "${var.dns_ttl}"
     cluster_address             = "${module.cluster.address}"
+    cluster_domains             = "${var.cluster_domains}"  # TODO - remove this hack
 }
 
 
@@ -79,3 +89,4 @@ output "cluster_ip"                     { value = "${module.cluster.address}" }
 output "cluster_zone"                   { value = "${module.cluster.zone}" }
 output "cluster_name"                   { value = "${var.cluster_name}" }
 output "cluster_service_account_email"  { value = "${module.iam.cluster_service_account_email}" }
+output "zone_name"                      { value = "${module.dns.zone_name}" }       # TODO - remove this hack

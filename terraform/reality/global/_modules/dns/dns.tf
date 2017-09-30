@@ -64,7 +64,7 @@ resource "google_dns_record_set" "gsuite" {
     name            = "${element(var.gsuite_domains, count.index)}${google_dns_managed_zone.zone.dns_name}"
     managed_zone    = "${google_dns_managed_zone.zone.name}"
     ttl             = "${var.ttl}"
-    type            = "CNAME"    
+    type            = "CNAME"
     rrdatas         = ["ghs.googlehosted.com."]
 }
 

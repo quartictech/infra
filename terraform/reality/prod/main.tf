@@ -38,6 +38,18 @@ module "env" {
     cluster_name                = "${var.cluster_name}"
     cluster_core_node_count     = "${var.cluster_core_node_count}"
     cluster_worker_node_count   = "${var.cluster_worker_node_count}"
+
+    cluster_domains             = ["www.", ""]  # TODO - remove this hack
+}
+
+# TODO - remove this hack
+resource "google_dns_record_set" "hack" {
+    project         = "${module.env.project_id}"
+    name            = "*.${var.dns_name}"
+    managed_zone    = "${module.env.zone_name}"
+    ttl             = "${var.dns_ttl}"
+    type            = "A"
+    rrdatas         = ["${module.env.cluster_ip}"]
 }
 
 
