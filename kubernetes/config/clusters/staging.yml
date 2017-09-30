@@ -13,6 +13,7 @@ quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 www:
   basic_auth_enabled: true
+  default_website_tag: develop
   formistry_version: 17
 
 jupyter:

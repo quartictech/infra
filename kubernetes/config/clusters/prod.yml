@@ -10,4 +10,5 @@ gcloud:
 
 www:
   basic_auth_enabled: false
+  default_website_tag: master
   formistry_version: 17
