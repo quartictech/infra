@@ -1,26 +1,12 @@
 variable "project_id"           {}
-variable "dns_name"             {}
+variable "domain_name"          {}
 variable "ttl"                  {}
-variable "staging_name_servers" { type = "list" }
 
 
 resource "google_dns_managed_zone" "zone" {
     project         = "${var.project_id}"
     name            = "primary-zone"
-    dns_name        = "${var.dns_name}"
-}
-
-
-#-----------------------------------------------------------------------------#
-# Staging - TODO - do this without hardcoding
-#-----------------------------------------------------------------------------#
-resource "google_dns_record_set" "staging" {
-    project         = "${var.project_id}"
-    name            = "staging.${google_dns_managed_zone.zone.dns_name}"
-    managed_zone    = "${google_dns_managed_zone.zone.name}"
-    ttl             = "${var.ttl}"
-    type            = "NS"
-    rrdatas         = "${var.staging_name_servers}"
+    dns_name        = "${var.domain_name}"
 }
 
 
@@ -48,7 +34,7 @@ resource "google_dns_record_set" "gmail" {
 # CNAME records for GSuite
 #   - see https://support.google.com/a/answer/53340?hl=en
 #-----------------------------------------------------------------------------#
-variable "gsuite_domains" {
+variable "gsuite_subdomains" {
     default = [
         "calendar.",
         "drive.",
@@ -60,11 +46,11 @@ variable "gsuite_domains" {
 
 resource "google_dns_record_set" "gsuite" {
     project         = "${var.project_id}"
-    count           = "${length(var.gsuite_domains)}"
-    name            = "${element(var.gsuite_domains, count.index)}${google_dns_managed_zone.zone.dns_name}"
+    count           = "${length(var.gsuite_subdomains)}"
+    name            = "${element(var.gsuite_subdomains, count.index)}${google_dns_managed_zone.zone.dns_name}"
     managed_zone    = "${google_dns_managed_zone.zone.name}"
     ttl             = "${var.ttl}"
-    type            = "CNAME"    
+    type            = "CNAME"
     rrdatas         = ["ghs.googlehosted.com."]
 }
 
@@ -128,4 +114,5 @@ resource "google_dns_record_set" "dmarc" {
 }
 
 
+output "zone_name"              { value = "${google_dns_managed_zone.zone.name}" }
 output "name_servers"           { value = "${google_dns_managed_zone.zone.name_servers}" }

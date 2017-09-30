@@ -1,4 +1,5 @@
 variable "project_id"               {}
+variable "region"                   {}
 variable "zones"                    { type = "list" }
 variable "name"                     {}
 variable "service_account_email"    {}
@@ -15,6 +16,7 @@ variable "worker_node_count"        {}
 # Note that this isn't actually hooked up to the cluster here - it has to be done in k8s config
 resource "google_compute_address" "cluster" {
     project             = "${var.project_id}"
+    region              = "${var.region}"
     name                = "cluster"
 }
 
@@ -52,7 +54,7 @@ resource "google_container_cluster" "cluster" {
     zone                = "${var.zones[0]}"
     name                = "${var.name}"
 
-    node_version        = "1.7.6"
+    node_version        = "1.7.6" # TODO - note the current "-gke.1" weirdness in https://github.com/terraform-providers/terraform-provider-google/issues/492
 
     lifecycle {
         ignore_changes  = ["node_pools"]
@@ -106,6 +108,5 @@ resource "google_container_node_pool" "worker" {
 }
 
 
-output "address" {
-    value = "${google_compute_address.cluster.address}"
-}
+output "address"        { value = "${google_compute_address.cluster.address}" }
+output "zone"           { value = "${google_container_cluster.cluster.zone}" }
