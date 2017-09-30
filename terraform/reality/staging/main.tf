@@ -19,6 +19,14 @@ terraform {
     }
 }
 
+data "terraform_remote_state" "global" {
+    backend                     = "gcs"
+    config {
+        bucket                  = "administration.quartic.io"
+        path                    = "global/terraform.tfstate"
+    }
+}
+
 provider "google" {
     region                      = "${var.region}"
 }
@@ -41,9 +49,12 @@ module "project" {
 module "iam" {
     source                      = "../_modules/iam"
 
-    project_id                  = "${module.project.id}"
-    viewer_member               = "group:${var.viewer_group}"
-    container_developer_member  = "group:${var.container_developer_group}"
+    project_id                      = "${module.project.id}"
+    viewer_member                   = "group:${var.viewer_group}"
+    container_developer_members     = [
+        "group:${var.container_developer_group}",
+        "serviceAccount:${data.terraform_remote_state.global.circleci_service_account_email}",  // In order to deploy website
+    ]
 }
 
 data "google_compute_zones" "available" {
