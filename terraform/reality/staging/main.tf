@@ -19,6 +19,14 @@ terraform {
     }
 }
 
+data "terraform_remote_state" "global" {
+    backend                     = "gcs"
+    config {
+        bucket                  = "administration.quartic.io"
+        path                    = "global/terraform.tfstate"
+    }
+}
+
 provider "google" {
     region                      = "${var.region}"
 }
@@ -43,7 +51,10 @@ module "iam" {
 
     project_id                  = "${module.project.id}"
     viewer_member               = "group:${var.viewer_group}"
-    container_developer_member  = "group:${var.container_developer_group}"
+    container_developer_members = [
+        "group:${var.container_developer_group}",
+        "serviceAccount:${data.terraform_remote_state.global.circleci_service_account_email}",  // In order to deploy website
+    ]
 }
 
 data "google_compute_zones" "available" {
@@ -54,6 +65,7 @@ module "cluster" {
     source                      = "../_modules/cluster"
 
     project_id                  = "${module.project.id}"
+    region                      = "${var.region}"
     zones                       = "${data.google_compute_zones.available.names}"
     name                        = "${var.cluster_name}"
     service_account_email       = "${module.iam.cluster_service_account_email}"
@@ -75,4 +87,6 @@ module "dns" {
 output "project_id"                     { value = "${module.project.id}" }
 output "name_servers"                   { value = "${module.dns.name_servers}" }
 output "cluster_ip"                     { value = "${module.cluster.address}" }
+output "cluster_zone"                   { value = "${module.cluster.zone}" }
+output "cluster_name"                   { value = "${var.cluster_name}" }
 output "cluster_service_account_email"  { value = "${module.iam.cluster_service_account_email}" }

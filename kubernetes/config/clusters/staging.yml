@@ -4,7 +4,7 @@ gcloud:
   project_id: quartic-staging-79680f42
   cluster_name: staging
   zone: europe-west1-b
-  static_ip: 35.195.123.150
+  static_ip: 35.189.193.108
   domain_name: staging.global.quartic.io   # TODO - remove "global"
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
