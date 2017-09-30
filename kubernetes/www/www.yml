@@ -25,6 +25,8 @@ spec:
       labels:
         component: www
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: www
           # CI is deploying latest via specific version tag, but if we ever reprovision then just grab latest as a fallback

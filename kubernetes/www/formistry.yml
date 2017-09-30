@@ -25,6 +25,8 @@ spec:
       labels:
         component: formistry
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: formistry
           image: {{cluster.gcloud.docker_repository}}/formistry:{{cluster.www.formistry_version}}
