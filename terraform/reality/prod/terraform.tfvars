@@ -1,7 +1,7 @@
 project_name                = "Quartic - Production env"
 project_id_prefix           = "quartic-prod"
 region                      = "europe-west1"
-dns_name                    = "quartic.io."
+dns_name                    = "global.quartic.io."          # TODO - remove "global"
 dns_ttl                     = 60
 cluster_name                = "prod"
 cluster_core_node_count     = 1

@@ -1,6 +1,6 @@
-variable "project_id"                   {}
-variable "viewer_member"                {}
-variable "storage_object_viewer_member" {}
+variable "project_id"                       {}
+variable "viewer_member"                    {}
+variable "storage_object_viewer_members"    { type = "list" }
 
 
 resource "google_service_account" "circleci" {
@@ -23,10 +23,11 @@ resource "google_project_iam_member" "storage_admin" {
 }
 
 # TODO - can we lock this down to the specific bucket?
-resource "google_project_iam_member" "storage_object_viewer" {
+resource "google_project_iam_member" "storage_object_viewers" {
+    count               = "${length(var.storage_object_viewer_members)}"
     project             = "${var.project_id}"
     role                = "roles/storage.objectViewer"
-    member              = "${var.storage_object_viewer_member}"
+    member              = "${element(var.storage_object_viewer_members, count.index)}"
 }
 
 

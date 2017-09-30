@@ -1,7 +1,7 @@
 variable "project_id"           {}
 variable "dns_name"             {}
 variable "ttl"                  {}
-variable "staging_name_servers" { type = "list" }
+variable "staging_name_servers" { type = "list" }   # TODO - get rid of this
 
 
 resource "google_dns_managed_zone" "zone" {
