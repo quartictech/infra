@@ -65,6 +65,7 @@ module "cluster" {
     source                      = "../_modules/cluster"
 
     project_id                  = "${module.project.id}"
+    region                      = "${var.region}"
     zones                       = "${data.google_compute_zones.available.names}"
     name                        = "${var.cluster_name}"
     service_account_email       = "${module.iam.cluster_service_account_email}"
@@ -86,4 +87,6 @@ module "dns" {
 output "project_id"                     { value = "${module.project.id}" }
 output "name_servers"                   { value = "${module.dns.name_servers}" }
 output "cluster_ip"                     { value = "${module.cluster.address}" }
+output "cluster_zone"                   { value = "${module.cluster.zone}" }
+output "cluster_name"                   { value = "${var.cluster_name}" }
 output "cluster_service_account_email"  { value = "${module.iam.cluster_service_account_email}" }

@@ -29,9 +29,18 @@ module "project" {
     name                        = "${var.project_name}"
     id_prefix                   = "${var.project_id_prefix}"
     services                    = [
+        "container.googleapis.com",         # The CircleCI account is used to kubectl operations against other envs
         "containerregistry.googleapis.com",
         "dns.googleapis.com",
         "storage-api.googleapis.com",
+
+        # Some noobhole stuff that the above APIs transitively enable (see https://github.com/hashicorp/terraform/issues/13004)
+        "pubsub.googleapis.com",
+        "compute.googleapis.com",
+        "deploymentmanager.googleapis.com",
+        "replicapool.googleapis.com",
+        "replicapoolupdater.googleapis.com",
+        "resourceviews.googleapis.com",
     ]
 }
 
