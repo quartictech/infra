@@ -1,7 +1,7 @@
 project_name                = "Quartic - Staging env"
 project_id_prefix           = "quartic-staging"
 region                      = "europe-west1"
-dns_name                    = "staging.global.quartic.io."  # TODO - remove "global"
+domain_name                 = "staging.global.quartic.io."  # TODO - remove "global"
 dns_ttl                     = 60
 cluster_name                = "staging"
 cluster_core_node_count     = 1

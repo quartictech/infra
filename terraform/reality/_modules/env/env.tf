@@ -5,12 +5,12 @@ variable "project_name"                 {}
 variable "project_id_prefix"            {}
 variable "viewer_group"                 {}
 variable "container_developer_group"    {}
-variable "dns_name"                     {}
+variable "domain_name"                  {}
 variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
 variable "cluster_core_node_count"      {}
 variable "cluster_worker_node_count"    {}
-variable "cluster_domains"              { default = ["*.", ""] }    # TODO - remove this hack
+variable "cluster_subdomains"           { default = ["*.", ""] }    # TODO - remove this hack
 
 
 data "terraform_remote_state" "global" {
@@ -48,6 +48,7 @@ module "iam" {
     source                      = "../iam"
 
     project_id                  = "${module.project.id}"
+    global_project_id           = "${data.terraform_remote_state.global.project_id}"
     viewer_member               = "group:${var.viewer_group}"
     container_developer_members = [
         "group:${var.container_developer_group}",
@@ -75,18 +76,21 @@ module "cluster" {
 module "dns" {
     source                      = "../dns"
 
-    project_id                  = "${module.project.id}"
-    dns_name                    = "${var.dns_name}"
+    global_project_id           = "${data.terraform_remote_state.global.project_id}"
+    global_zone_name            = "${data.terraform_remote_state.global.zone_name}"
+    domain_name                 = "${var.domain_name}"
     ttl                         = "${var.dns_ttl}"
     cluster_address             = "${module.cluster.address}"
-    cluster_domains             = "${var.cluster_domains}"  # TODO - remove this hack
+    cluster_subdomains          = "${var.cluster_subdomains}"  # TODO - remove this hack
 }
 
 
 output "project_id"                     { value = "${module.project.id}" }
-output "name_servers"                   { value = "${module.dns.name_servers}" }
 output "cluster_ip"                     { value = "${module.cluster.address}" }
 output "cluster_zone"                   { value = "${module.cluster.zone}" }
 output "cluster_name"                   { value = "${var.cluster_name}" }
 output "cluster_service_account_email"  { value = "${module.iam.cluster_service_account_email}" }
-output "zone_name"                      { value = "${module.dns.zone_name}" }       # TODO - remove this hack
+
+# TODO - remove these
+output "global_project_id"              { value = "${data.terraform_remote_state.global.project_id}" }
+output "global_zone_name"               { value = "${data.terraform_remote_state.global.zone_name}" }

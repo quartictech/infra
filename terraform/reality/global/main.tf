@@ -4,12 +4,8 @@ variable "region"                           {}
 variable "project_id_prefix"                {}
 variable "project_name"                     {}
 variable "viewer_group"                     {}
-variable "dns_name"                         {}
+variable "domain_name"                      {}
 variable "dns_ttl"                          {}
-variable "staging_service_account_email"    {}
-variable "staging_name_servers"             { type = "list" }
-variable "prod_service_account_email"       {}
-variable "prod_name_servers"                { type = "list" }
 
 
 terraform {
@@ -51,23 +47,18 @@ module "iam" {
 
     project_id                      = "${module.project.id}"
     viewer_member                   = "group:${var.viewer_group}"
-    storage_object_viewer_members   = [
-        "serviceAccount:${var.staging_service_account_email}",
-        "serviceAccount:${var.prod_service_account_email}",
-    ]
 }
 
 module "dns" {
     source                      = "_modules/dns"
 
     project_id                  = "${module.project.id}"
-    dns_name                    = "${var.dns_name}"
+    domain_name                 = "${var.domain_name}"
     ttl                         = "${var.dns_ttl}"
-    staging_name_servers        = "${var.staging_name_servers}"
-    prod_name_servers           = "${var.prod_name_servers}"
 }
 
 
 output "project_id"                     { value = "${module.project.id}" }
+output "zone_name"                      { value = "${module.dns.zone_name}" }
 output "name_servers"                   { value = "${module.dns.name_servers}" }
 output "circleci_service_account_email" { value = "${module.iam.circleci_service_account_email}" }

@@ -1,4 +1,5 @@
 variable "project_id"                       {}
+variable "global_project_id"                {}
 variable "viewer_member"                    {}
 variable "container_developer_members"      { type = "list" }
 
@@ -20,6 +21,14 @@ resource "google_project_iam_member" "container_developer" {
     project             = "${var.project_id}"
     role                = "roles/container.developer"
     member              = "${element(var.container_developer_members, count.index)}"
+}
+
+# NOTE - this is a modification to global env
+# TODO - can we lock this down to the specific bucket?
+resource "google_project_iam_member" "storage_object_viewer" {
+    project             = "${var.global_project_id}"
+    role                = "roles/storage.objectViewer"
+    member              = "serviceAccount:${google_service_account.cluster.email}"
 }
 
 

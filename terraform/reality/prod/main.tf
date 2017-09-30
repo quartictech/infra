@@ -5,7 +5,7 @@ variable "project_name"                 {}
 variable "project_id_prefix"            {}
 variable "viewer_group"                 {}
 variable "container_developer_group"    {}
-variable "dns_name"                     {}
+variable "domain_name"                  {}
 variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
 variable "cluster_core_node_count"      {}
@@ -33,20 +33,20 @@ module "env" {
     project_id_prefix           = "${var.project_id_prefix}"
     viewer_group                = "${var.viewer_group}"
     container_developer_group   = "${var.container_developer_group}"
-    dns_name                    = "${var.dns_name}"
+    domain_name                 = "${var.domain_name}"
     dns_ttl                     = "${var.dns_ttl}"
     cluster_name                = "${var.cluster_name}"
     cluster_core_node_count     = "${var.cluster_core_node_count}"
     cluster_worker_node_count   = "${var.cluster_worker_node_count}"
 
-    cluster_domains             = ["www.", ""]  # TODO - remove this hack
+    cluster_subdomains          = ["www.", ""]  # TODO - remove this hack
 }
 
 # TODO - remove this hack
 resource "google_dns_record_set" "hack" {
-    project         = "${module.env.project_id}"
-    name            = "*.${var.dns_name}"
-    managed_zone    = "${module.env.zone_name}"
+    project         = "${module.env.global_project_id}"
+    name            = "*.${var.domain_name}"
+    managed_zone    = "${module.env.global_zone_name}"
     ttl             = "${var.dns_ttl}"
     type            = "A"
     rrdatas         = ["${module.env.cluster_ip}"]
@@ -54,7 +54,6 @@ resource "google_dns_record_set" "hack" {
 
 
 output "project_id"                     { value = "${module.env.project_id}" }
-output "name_servers"                   { value = "${module.env.name_servers}" }
 output "cluster_ip"                     { value = "${module.env.cluster_ip}" }
 output "cluster_zone"                   { value = "${module.env.cluster_zone}" }
 output "cluster_name"                   { value = "${module.env.cluster_name}" }
