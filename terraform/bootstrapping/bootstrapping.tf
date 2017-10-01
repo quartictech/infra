@@ -1,10 +1,11 @@
-variable "org_id"               { default = 2425379824 }
-variable "billing_account"      { default = "00798C-5FD4EC-188617" }
-variable "region"               { default = "europe-west2" }
-variable "project_name"         { default = "quartic-admin" }
-variable "service_account_name" { default = "terraform" }
-variable "bucket_name"          { default = "administration.quartic.io" }
-variable "viewer_group"         { default = "core@quartic.io" }
+variable "org_id"                           {}
+variable "billing_account"                  {}
+variable "region"                           {}
+variable "project_id_prefix"                {}
+variable "project_name"                     {}
+variable "viewer_group"                     {}
+variable "service_account_name"             {}
+variable "bucket_name"                      {}
 
 
 terraform {
@@ -24,7 +25,7 @@ resource "random_id" "id" {
 
 resource "google_project" "admin" {
     name                = "Quartic - Admin"
-    project_id          = "${var.project_name}-${random_id.id.hex}"
+    project_id          = "${var.project_id_prefix}-${random_id.id.hex}"
     billing_account     = "${var.billing_account}"
     org_id              = "${var.org_id}"
 }
