@@ -109,13 +109,13 @@ workflows:
   build_and_deploy:
     jobs:
       - plan
-      - deploy_staging:
-          requires:
-            - plan
       - hold:
           type: approval
           requires:
             - plan
+      - deploy_staging:
+          requires:
+            - hold
       - deploy_global_and_prod:
           requires:
             - hold
