@@ -10,61 +10,97 @@ references:
           TF_IN_AUTOMATION: 1
 
   tf_init: &tf_init
-    run:
-      name: Terraform init
-      working_directory: terraform
-      command: |
-        export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+    command: |
+      export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+      terraform init
 
-        for cfg in global staging prod; do
-          cd ${cfg}
-          terraform init
-          cd -
-        done
+  tf_plan: &tf_plan
+    command: |
+      export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+      terraform plan
+
+  tf_apply: &tf_apply
+    command: |
+      export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+      terraform apply
 
 
 jobs:
-  build:
+  plan:
     <<: *defaults
 
     steps:
       - checkout
-      - *tf_init
 
       - run:
-          name: Terraform plan
-          working_directory: terraform
-          command: |
-            export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+          name: Init (global)
+          working_directory: terraform/global
+          <<: *tf_init
+      - run:
+          name: Init (staging)
+          working_directory: terraform/staging
+          <<: *tf_init
+      - run:
+          name: Init (prod)
+          working_directory: terraform/prod
+          <<: *tf_init
 
-            for cfg in global staging prod; do
-              cd ${cfg}
-              terraform plan
-              cd -
-            done
+      - run:
+          name: Plan (global)
+          working_directory: terraform/global
+          <<: *tf_plan
+      - run:
+          name: Plan (staging)
+          working_directory: terraform/staging
+          <<: *tf_plan
+      - run:
+          name: Plan (prod)
+          working_directory: terraform/prod
+          <<: *tf_plan
 
-  deploy:
+  # TODO - generate plan files
+
+  deploy_staging:
     <<: *defaults
 
     steps:
       - checkout
-      - *tf_init
+
+      - run:
+          name: Init (staging)
+          working_directory: terraform/staging
+          <<: *tf_init
 
       - deploy:
-          name: Terraform apply
-          working_directory: terraform
-          command: |
-            echo "I'm a noob"
-            ls -l
-            # if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            #   export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+          name: Apply (staging)
+          working_directory: terraform/staging
+          <<: *tf_apply
 
-            #   for cfg in global staging prod; do
-            #     cd ${cfg}
-            #     terraform apply
-            #     cd -
-            #   done
-            # fi
+
+  deploy_global_and_prod:
+    <<: *defaults
+
+    steps:
+      - checkout
+      
+      - run:
+          name: Init (global)
+          working_directory: terraform/global
+          <<: *tf_init
+      - run:
+          name: Init (prod)
+          working_directory: terraform/prod
+          <<: *tf_init
+
+      - deploy:
+          name: Apply (global)
+          working_directory: terraform/global
+          <<: *tf_apply
+      - deploy:
+          name: Apply (prod)
+          working_directory: terraform/prod
+          <<: *tf_apply
+
 
 workflows:
   version: 2
@@ -72,11 +108,14 @@ workflows:
   # TODO - add filtering
   build_and_deploy:
     jobs:
-      - build
+      - plan
+      - deploy_staging:
+          requires:
+            - plan
       - hold:
           type: approval
           requires:
-            - build
-      - deploy:
+            - plan
+      - deploy_global_and_prod:
           requires:
             - hold
