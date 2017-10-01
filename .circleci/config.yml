@@ -1,13 +1,15 @@
 version: 2
 
+defaults: &defaults
+  working_directory: ~/infra
+  docker:
+    - image: hashicorp/terraform:0.10.6
+      environment:
+        TF_IN_AUTOMATION: 1
+
 jobs:
   build:
-    docker:
-      - image: hashicorp/terraform:0.10.6
-        environment:
-          TF_IN_AUTOMATION: 1
-
-    working_directory: ~/infra
+    <<: *defaults
 
     steps:
       - checkout
@@ -36,17 +38,36 @@ jobs:
               cd -
             done
 
+  deploy:
+    <<: *defaults
 
+    steps:
       - deploy:
           name: Terraform apply
           working_directory: terraform
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+            echo "I'm a noob"
+            # if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            #   export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
-              for cfg in global staging prod; do
-                cd ${cfg}
-                terraform apply
-                cd -
-              done
-            fi
+            #   for cfg in global staging prod; do
+            #     cd ${cfg}
+            #     terraform apply
+            #     cd -
+            #   done
+            # fi
+
+workflows:
+  version: 2
+
+  # TODO - add filtering
+  build_and_deploy:
+    jobs:
+      - build
+      - hold:
+          type: approval
+          requires:
+            - build
+      - deploy:
+          requires:
+            - hold
