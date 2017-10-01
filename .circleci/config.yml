@@ -127,20 +127,32 @@ jobs:
 workflows:
   version: 2
 
-  # TODO - add filtering
   plan_and_apply:
     jobs:
       - plan
+ 
       - hold:
           type: approval
           requires:
             - plan
-      - apply_global:
-          requires:
-            - hold
+
       - apply_staging:
           requires:
             - plan
+          filters:
+            branches:
+              only: develop
+
+      - apply_global:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: master
+
       - apply_prod:
           requires:
             - apply_global
+          filters:
+            branches:
+              only: master
