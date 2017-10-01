@@ -38,18 +38,6 @@ module "env" {
     cluster_name                = "${var.cluster_name}"
     cluster_core_node_count     = "${var.cluster_core_node_count}"
     cluster_worker_node_count   = "${var.cluster_worker_node_count}"
-
-    cluster_subdomains          = ["www.", ""]  # TODO - remove this hack
-}
-
-# TODO - remove this hack
-resource "google_dns_record_set" "hack" {
-    project         = "${module.env.global_project_id}"
-    name            = "*.${var.domain_name}"
-    managed_zone    = "${module.env.global_zone_name}"
-    ttl             = "${var.dns_ttl}"
-    type            = "A"
-    rrdatas         = ["104.199.28.27"] # Legacy cluster
 }
 
 
