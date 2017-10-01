@@ -69,7 +69,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: qube
-          image: eu.gcr.io/quartictech/qube:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/qube:{{cluster.platform_version}}
           ports:
             - containerPort: 8200
             - containerPort: 8201

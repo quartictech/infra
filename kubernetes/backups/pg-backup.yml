@@ -21,7 +21,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: master
-          image: quartic/backer-upper:4
+          image: {{cluster.gcloud.docker_repository}}/backer-upper:10
           command: ["bash", "/scripts/pg-backup.sh"]
           env:
             - name: VERSION

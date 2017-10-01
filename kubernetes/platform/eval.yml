@@ -12,7 +12,7 @@ data:
       pod:
         containers:
           - name: quarty
-            image: eu.gcr.io/quartictech/jupyter:{{cluster.jupyter.version}}
+            image: {{cluster.gcloud.docker_repository}}/jupyter:{{cluster.jupyter.version}}
             command:
               - "sudo"
               - "-E"
@@ -93,7 +93,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: eval
-          image: eu.gcr.io/quartictech/eval:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/eval:{{cluster.platform_version}}
           ports:
             - containerPort: 8210
             - containerPort: 8211

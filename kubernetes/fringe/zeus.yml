@@ -52,11 +52,11 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: zeus-frontend
-          image: eu.gcr.io/quartictech/zeus-frontend:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/zeus-frontend:{{cluster.platform_version}}
           ports:
             - containerPort: 80
         - name: zeus
-          image: eu.gcr.io/quartictech/zeus:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/zeus:{{cluster.platform_version}}
           ports:
             - containerPort: 8160
             - containerPort: 8161

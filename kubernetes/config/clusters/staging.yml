@@ -17,7 +17,7 @@ www:
   formistry_version: 17
 
 jupyter:
-  version: 86
+  version: 100
 
 postgres:
   version: 9.6.5
