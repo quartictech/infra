@@ -131,13 +131,7 @@ workflows:
     jobs:
       - plan
  
-      - hold:
-          type: approval
-          requires:
-            - plan
-          filters:
-            branches:
-              only: [develop, master]
+      # No approval needed for staging - triggered by merge to develop
 
       - apply_staging:
           requires:
@@ -145,6 +139,16 @@ workflows:
           filters:
             branches:
               only: develop
+
+      # Approval needed for prod - triggered by merge to master
+
+      - hold:
+          type: approval
+          requires:
+            - plan
+          filters:
+            branches:
+              only: master
 
       - apply_global:
           requires:
