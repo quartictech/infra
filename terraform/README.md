@@ -2,7 +2,7 @@
 
 This is a work in progress.
 
-![Project layout](../diagrams/project-layout.png)
+![Project layout](https://github.com/quartictech/infra/blob/feature/cleanup/diagrams/infra-layout.png)
 
 ## Execution
 
