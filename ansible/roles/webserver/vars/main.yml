@@ -1,5 +1,0 @@
----
-cert_directory: quartic.io
-all_domains: quartic.io www.quartic.io tools.quartic.io
-all_domains_for_certbot: -d quartic.io -d www.quartic.io -d tools.quartic.io
-email: contact@quartic.io
