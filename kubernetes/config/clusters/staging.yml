@@ -8,14 +8,13 @@ gcloud:
   domain_name: staging.quartic.io
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
-platform_version: 2840
-quartic_python_version: "$QUARTIC_PYTHON_VERSION"
-
 www:
   basic_auth_enabled: true
   default_website_tag: develop
   formistry_version: 17
 
+platform_version: 2853
+quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 jupyter:
   version: 100
 
