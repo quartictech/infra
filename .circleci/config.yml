@@ -60,6 +60,23 @@ jobs:
 
   # TODO - generate plan files
 
+  deploy_global:
+    <<: *defaults
+
+    steps:
+      - checkout
+      
+      - run:
+          name: Init (global)
+          working_directory: terraform/global
+          <<: *tf_init
+
+      - deploy:
+          name: Apply (global)
+          working_directory: terraform/global
+          <<: *tf_apply
+
+
   deploy_staging:
     <<: *defaults
 
@@ -77,25 +94,17 @@ jobs:
           <<: *tf_apply
 
 
-  deploy_global_and_prod:
+  deploy_prod:
     <<: *defaults
 
     steps:
       - checkout
       
       - run:
-          name: Init (global)
-          working_directory: terraform/global
-          <<: *tf_init
-      - run:
           name: Init (prod)
           working_directory: terraform/prod
           <<: *tf_init
 
-      - deploy:
-          name: Apply (global)
-          working_directory: terraform/global
-          <<: *tf_apply
       - deploy:
           name: Apply (prod)
           working_directory: terraform/prod
@@ -113,9 +122,12 @@ workflows:
           type: approval
           requires:
             - plan
+      - deploy_global:
+          requires:
+            - hold
       - deploy_staging:
           requires:
-            - hold
-      - deploy_global_and_prod:
+            - plan
+      - deploy_prod:
           requires:
-            - hold
+            - deploy_global
