@@ -12,17 +12,17 @@ references:
   tf_init: &tf_init
     command: |
       export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-      terraform init
+      terraform init -input=false
 
   tf_plan: &tf_plan
     command: |
       export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-      terraform plan
+      terraform plan -input=false -out=tfplan
 
   tf_apply: &tf_apply
     command: |
       export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-      terraform apply
+      terraform apply -input=false tfplan
 
 
 jobs:
@@ -58,13 +58,20 @@ jobs:
           working_directory: terraform/prod
           <<: *tf_plan
 
-  # TODO - generate plan files
+      - persist_to_workspace:
+          root: terraform/
+          paths:
+            - "**/tfplan"
 
-  deploy_global:
+
+  apply_global:
     <<: *defaults
 
     steps:
       - checkout
+
+      - attach_workspace:
+          at: terraform/
       
       - run:
           name: Init (global)
@@ -77,11 +84,14 @@ jobs:
           <<: *tf_apply
 
 
-  deploy_staging:
+  apply_staging:
     <<: *defaults
 
     steps:
       - checkout
+
+      - attach_workspace:
+          at: terraform/
 
       - run:
           name: Init (staging)
@@ -94,11 +104,14 @@ jobs:
           <<: *tf_apply
 
 
-  deploy_prod:
+  apply_prod:
     <<: *defaults
 
     steps:
       - checkout
+
+      - attach_workspace:
+          at: terraform/
       
       - run:
           name: Init (prod)
@@ -115,19 +128,19 @@ workflows:
   version: 2
 
   # TODO - add filtering
-  build_and_deploy:
+  plan_and_apply:
     jobs:
       - plan
       - hold:
           type: approval
           requires:
             - plan
-      - deploy_global:
+      - apply_global:
           requires:
             - hold
-      - deploy_staging:
+      - apply_staging:
           requires:
             - plan
-      - deploy_prod:
+      - apply_prod:
           requires:
-            - deploy_global
+            - apply_global
