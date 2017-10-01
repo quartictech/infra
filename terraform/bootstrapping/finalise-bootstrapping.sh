@@ -43,7 +43,7 @@ function set_env_var() {
     "${CIRCLECI_URL_ROOT}/envvar?circle-token=${CIRCLECI_API_TOKEN}" \
     -d '{"name": "'"${1}"'", "value": "'"${2}"'"}'
 }
-set_env_var GOOGLE_PROJECT              "${PROJECT_ID}"
-set_env_var GOOGLE_CREDENTIALS_BASE64   "$(base64 ${CREDS_FILE})"
+set_env_var GOOGLE_PROJECT            "${PROJECT_ID}"
+set_env_var GOOGLE_CREDENTIALS        "$(cat ${CREDS_FILE})"
 
 rm ${CREDS_FILE}

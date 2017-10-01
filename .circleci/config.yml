@@ -9,20 +9,9 @@ references:
         environment:
           TF_IN_AUTOMATION: 1
 
-  tf_init: &tf_init
-    command: |
-      export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-      terraform init -input=false
-
-  tf_plan: &tf_plan
-    command: |
-      export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-      terraform plan -input=false -out=tfplan
-
-  tf_apply: &tf_apply
-    command: |
-      export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-      terraform apply -input=false tfplan
+  tf_init: &tf_init terraform init -input=false
+  tf_plan: &tf_plan terraform plan -input=false -out=tfplan
+  tf_apply: &tf_apply terraform apply -input=false tfplan
 
 
 jobs:
@@ -35,28 +24,28 @@ jobs:
       - run:
           name: Init (global)
           working_directory: terraform/global
-          <<: *tf_init
+          command: *tf_init
       - run:
           name: Init (staging)
           working_directory: terraform/staging
-          <<: *tf_init
+          command: *tf_init
       - run:
           name: Init (prod)
           working_directory: terraform/prod
-          <<: *tf_init
+          command: *tf_init
 
       - run:
           name: Plan (global)
           working_directory: terraform/global
-          <<: *tf_plan
+          command: *tf_plan
       - run:
           name: Plan (staging)
           working_directory: terraform/staging
-          <<: *tf_plan
+          command: *tf_plan
       - run:
           name: Plan (prod)
           working_directory: terraform/prod
-          <<: *tf_plan
+          command: *tf_plan
 
       - persist_to_workspace:
           root: terraform/
@@ -76,12 +65,12 @@ jobs:
       - run:
           name: Init (global)
           working_directory: terraform/global
-          <<: *tf_init
+          command: *tf_init
 
       - deploy:
           name: Apply (global)
           working_directory: terraform/global
-          <<: *tf_apply
+          command: *tf_apply
 
 
   apply_staging:
@@ -96,12 +85,12 @@ jobs:
       - run:
           name: Init (staging)
           working_directory: terraform/staging
-          <<: *tf_init
+          command: *tf_init
 
       - deploy:
           name: Apply (staging)
           working_directory: terraform/staging
-          <<: *tf_apply
+          command: *tf_apply
 
 
   apply_prod:
@@ -116,12 +105,12 @@ jobs:
       - run:
           name: Init (prod)
           working_directory: terraform/prod
-          <<: *tf_init
+          command: *tf_init
 
       - deploy:
           name: Apply (prod)
           working_directory: terraform/prod
-          <<: *tf_apply
+          command: *tf_apply
 
 
 workflows:
