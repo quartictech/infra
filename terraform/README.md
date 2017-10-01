@@ -2,6 +2,8 @@
 
 This is a work in progress.
 
+![Project layout](../diagrams/project-layout.png)
+
 ## Execution
 
 Terraform runs as a dedicated `terraform` service account under a dedicated `Quartic - Admin` project.
