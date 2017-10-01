@@ -135,6 +135,9 @@ workflows:
           type: approval
           requires:
             - plan
+          filters:
+            branches:
+              only: [develop, master]
 
       - apply_staging:
           requires:
