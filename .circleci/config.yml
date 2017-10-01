@@ -38,15 +38,24 @@ jobs:
               cd -
             done
 
+      - persist_to_workspace:
+          root: .
+          paths:
+            - terraform/
+
   deploy:
     <<: *defaults
 
     steps:
+      - attach_workspace:
+          at: .
+
       - deploy:
           name: Terraform apply
           working_directory: terraform
           command: |
             echo "I'm a noob"
+            ls -l
             # if [ "${CIRCLE_BRANCH}" == "master" ]; then
             #   export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
@@ -64,10 +73,11 @@ workflows:
   build_and_deploy:
     jobs:
       - build
-      - hold:
-          type: approval
-          requires:
-            - build
+      # - hold:
+      #     type: approval
+      #     requires:
+      #       - build
       - deploy:
           requires:
-            - hold
+            - build
+            # - hold
