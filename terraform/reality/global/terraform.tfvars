@@ -1,5 +1,5 @@
 project_name                    = "Quartic - Global env"
 project_id_prefix               = "quartic-global"
 region                          = "europe-west1"
-domain_name                     = "global.quartic.io."  # TODO - switch this back
+domain_name                     = "quartic.io."
 dns_ttl                         = 60
