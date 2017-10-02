@@ -1,7 +1,0 @@
----
-- hosts: all
-  roles:
-    - { role: common, tags: "common" }
-    - { role: webserver, tags: "webserver" }
-    - { role: docker, tags: "webserver" }
-    - { role: forms, tags: "webserver" }

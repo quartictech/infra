@@ -1,0 +1,5 @@
+project_name                    = "Quartic - Admin"
+project_id_prefix               = "quartic-admin"
+region                          = "europe-west2"
+service_account_name            = "terraform"
+bucket_name                     = "administration.quartic.io"

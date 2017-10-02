@@ -14,7 +14,7 @@ jobs:
 
       - run:
           name: Terraform init
-          working_directory: terraform/reality
+          working_directory: terraform
           command: |
             export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
@@ -26,7 +26,7 @@ jobs:
 
       - run:
           name: Terraform plan
-          working_directory: terraform/reality
+          working_directory: terraform
           command: |
             export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
 
@@ -39,7 +39,7 @@ jobs:
 
       - deploy:
           name: Terraform apply
-          working_directory: terraform/reality
+          working_directory: terraform
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
