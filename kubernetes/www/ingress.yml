@@ -6,9 +6,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-    # TODO - only have basic-auth on staging
+    {% if cluster.www.basic_auth_enabled %}
     ingress.kubernetes.io/auth-type: basic
     ingress.kubernetes.io/auth-secret: basic-auth
+    {% endif %}
 spec:
   tls:
     - secretName: tls-www

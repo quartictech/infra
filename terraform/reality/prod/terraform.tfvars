@@ -1,9 +1,9 @@
-project_name                = "Quartic - Staging env"
-project_id_prefix           = "quartic-staging"
+project_name                = "Quartic - Production env"
+project_id_prefix           = "quartic-prod"
 region                      = "europe-west1"
-domain_name                 = "staging.quartic.io."
+domain_name                 = "quartic.io."
 dns_ttl                     = 60
-cluster_name                = "staging"
+cluster_name                = "prod"
 cluster_core_node_count     = 1
 cluster_worker_node_count   = 1
 container_developer_group   = "core@quartic.io"             # TODO - this can't be true long-term

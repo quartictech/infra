@@ -25,10 +25,12 @@ spec:
       labels:
         component: www
     spec:
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: www
-          # CI is deploying latest via specific version tag, but if we ever reprovision then just grab "latest"
-          image: {{cluster.gcloud.docker_repository}}/website:latest
+          # CI is deploying latest via specific version tag, but if we ever reprovision then just grab latest as a fallback
+          image: {{cluster.gcloud.docker_repository}}/website:{{cluster.www.default_website_tag}}
           imagePullPolicy: Always
           ports:
             - containerPort: 80
