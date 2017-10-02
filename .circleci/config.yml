@@ -1,52 +1,154 @@
 version: 2
 
-jobs:
-  build:
+references:
+
+  defaults: &defaults
+    working_directory: ~/infra
     docker:
       - image: hashicorp/terraform:0.10.6
         environment:
           TF_IN_AUTOMATION: 1
 
-    working_directory: ~/infra
+  tf_init: &tf_init terraform init -input=false
+  tf_plan: &tf_plan terraform plan -input=false -out=tfplan
+  tf_apply: &tf_apply terraform apply -input=false tfplan
+
+
+jobs:
+  plan:
+    <<: *defaults
 
     steps:
       - checkout
 
       - run:
-          name: Terraform init
-          working_directory: terraform
-          command: |
-            export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
-
-            for cfg in global staging prod; do
-              cd ${cfg}
-              terraform init
-              cd -
-            done
+          name: Init (global)
+          working_directory: terraform/global
+          command: *tf_init
+      - run:
+          name: Init (staging)
+          working_directory: terraform/staging
+          command: *tf_init
+      - run:
+          name: Init (prod)
+          working_directory: terraform/prod
+          command: *tf_init
 
       - run:
-          name: Terraform plan
-          working_directory: terraform
-          command: |
-            export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+          name: Plan (global)
+          working_directory: terraform/global
+          command: *tf_plan
+      - run:
+          name: Plan (staging)
+          working_directory: terraform/staging
+          command: *tf_plan
+      - run:
+          name: Plan (prod)
+          working_directory: terraform/prod
+          command: *tf_plan
 
-            for cfg in global staging prod; do
-              cd ${cfg}
-              terraform plan
-              cd -
-            done
+      - persist_to_workspace:
+          root: terraform/
+          paths:
+            - "**/tfplan"
 
+
+  apply_global:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: terraform/
+      
+      - run:
+          name: Init (global)
+          working_directory: terraform/global
+          command: *tf_init
 
       - deploy:
-          name: Terraform apply
-          working_directory: terraform
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              export GOOGLE_CREDENTIALS=$(echo ${GOOGLE_CREDENTIALS_BASE64} | base64 -d)
+          name: Apply (global)
+          working_directory: terraform/global
+          command: *tf_apply
 
-              for cfg in global staging prod; do
-                cd ${cfg}
-                terraform apply
-                cd -
-              done
-            fi
+
+  apply_staging:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: terraform/
+
+      - run:
+          name: Init (staging)
+          working_directory: terraform/staging
+          command: *tf_init
+
+      - deploy:
+          name: Apply (staging)
+          working_directory: terraform/staging
+          command: *tf_apply
+
+
+  apply_prod:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: terraform/
+      
+      - run:
+          name: Init (prod)
+          working_directory: terraform/prod
+          command: *tf_init
+
+      - deploy:
+          name: Apply (prod)
+          working_directory: terraform/prod
+          command: *tf_apply
+
+
+workflows:
+  version: 2
+
+  plan_and_apply:
+    jobs:
+      - plan
+ 
+      # No approval needed for staging - triggered by merge to develop
+
+      - apply_staging:
+          requires:
+            - plan
+          filters:
+            branches:
+              only: develop
+
+      # Approval needed for prod - triggered by merge to master
+
+      - hold:
+          type: approval
+          requires:
+            - plan
+          filters:
+            branches:
+              only: master
+
+      - apply_global:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: master
+
+      - apply_prod:
+          requires:
+            - apply_global
+          filters:
+            branches:
+              only: master
