@@ -98,6 +98,7 @@ resource "google_container_node_pool" "worker" {
     initial_node_count  = "${var.worker_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
+        preemptible     = true
         service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
     }
