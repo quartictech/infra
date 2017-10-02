@@ -58,7 +58,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: howl
-          image: eu.gcr.io/quartictech/howl:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/howl:{{cluster.platform_version}}
           ports:
             - containerPort: 8120
             - containerPort: 8121

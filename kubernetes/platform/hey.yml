@@ -32,7 +32,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: hey
-          image: eu.gcr.io/quartictech/hey:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/hey:{{cluster.platform_version}}
           ports:
             - containerPort: 80
           env:

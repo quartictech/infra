@@ -52,7 +52,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: registry
-          image: eu.gcr.io/quartictech/registry:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/registry:{{cluster.platform_version}}
           ports:
             - containerPort: 8190
             - containerPort: 8191

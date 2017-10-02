@@ -29,7 +29,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: docs
-          image: eu.gcr.io/quartictech/docs:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/docs:{{cluster.platform_version}}
           ports:
             - containerPort: 80
           resources:

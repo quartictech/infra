@@ -10,7 +10,6 @@ variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
 variable "cluster_core_node_count"      {}
 variable "cluster_worker_node_count"    {}
-variable "cluster_subdomains"           { default = ["*.", ""] }    # TODO - remove this hack
 
 
 data "terraform_remote_state" "global" {
@@ -72,7 +71,6 @@ module "cluster" {
     worker_node_count           = "${var.cluster_worker_node_count}"
 }
 
-# TODO - Need something that adds an NS record to the global project
 module "dns" {
     source                      = "../dns"
 
@@ -81,7 +79,6 @@ module "dns" {
     domain_name                 = "${var.domain_name}"
     ttl                         = "${var.dns_ttl}"
     cluster_address             = "${module.cluster.address}"
-    cluster_subdomains          = "${var.cluster_subdomains}"  # TODO - remove this hack
 }
 
 
@@ -90,7 +87,3 @@ output "cluster_ip"                     { value = "${module.cluster.address}" }
 output "cluster_zone"                   { value = "${module.cluster.zone}" }
 output "cluster_name"                   { value = "${var.cluster_name}" }
 output "cluster_service_account_email"  { value = "${module.iam.cluster_service_account_email}" }
-
-# TODO - remove these
-output "global_project_id"              { value = "${data.terraform_remote_state.global.project_id}" }
-output "global_zone_name"               { value = "${data.terraform_remote_state.global.zone_name}" }

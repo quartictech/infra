@@ -69,11 +69,11 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: home-frontend
-          image: eu.gcr.io/quartictech/home-frontend:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/home-frontend:{{cluster.platform_version}}
           ports:
             - containerPort: 80
         - name: home
-          image: eu.gcr.io/quartictech/home:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/home:{{cluster.platform_version}}
           ports:
             - containerPort: 8100
             - containerPort: 8101

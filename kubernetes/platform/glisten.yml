@@ -50,7 +50,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: glisten
-          image: eu.gcr.io/quartictech/glisten:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/glisten:{{cluster.platform_version}}
           ports:
             - containerPort: 8170
             - containerPort: 8171

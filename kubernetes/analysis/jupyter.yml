@@ -39,7 +39,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: jupyter
-          image: eu.gcr.io/quartictech/jupyter:{{cluster.jupyter.version}}
+          image: {{cluster.gcloud.docker_repository}}/jupyter:{{cluster.jupyter.version}}
           ports:
             - containerPort: 8888
           resources:

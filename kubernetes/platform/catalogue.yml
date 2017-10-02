@@ -52,7 +52,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: catalogue
-          image: eu.gcr.io/quartictech/catalogue:{{cluster.platform_version}}
+          image: {{cluster.gcloud.docker_repository}}/catalogue:{{cluster.platform_version}}
           ports:
             - containerPort: 8090
             - containerPort: 8091
