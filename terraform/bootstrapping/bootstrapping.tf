@@ -16,6 +16,7 @@ terraform {
 }
 
 provider "google" {
+    version             = "~> 1.0.1"
     region              = "${var.region}"
 }
 
@@ -78,14 +79,15 @@ resource "google_storage_bucket" "admin" {
     name                = "${var.bucket_name}"
     location            = "${var.region}"
     storage_class       = "REGIONAL"
-    # TDOO - how do we enable versioning?
+    versioning {
+        enabled         = true
+    }
 }
 
 
 # Used by finaliser script
 output "org_id"                     { value = "${var.org_id}" }
 output "project_id"                 { value = "${google_project.admin.project_id}" }
-output "bucket_name"                { value = "${var.bucket_name}" }
 output "service_account_email"      { value = "${google_service_account.terraform.email}" }
 
 
