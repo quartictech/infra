@@ -159,3 +159,4 @@ experimental:
     branches:
       only:
         - develop
+        - master
