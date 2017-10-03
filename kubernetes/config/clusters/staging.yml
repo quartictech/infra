@@ -10,7 +10,7 @@ gcloud:
 
 www:
   basic_auth_enabled: true
-  default_website_tag: develop
+  default_website_tag: staging
   formistry_version: 17
 
 platform_version: 2853

@@ -10,7 +10,7 @@ gcloud:
 
 www:
   basic_auth_enabled: false
-  default_website_tag: master
+  default_website_tag: prod
   formistry_version: 17
 
 platform_version: 2853
