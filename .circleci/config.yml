@@ -152,3 +152,9 @@ workflows:
           filters:
             branches:
               only: master
+
+
+notify:
+  branches:
+    only:
+      - develop
