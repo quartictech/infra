@@ -23,7 +23,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: master
-          image: {{cluster.gcloud.docker_repository}}/backer-upper:46
+          image: {{cluster.gcloud.docker_repository}}/backer-upper:48
           env:
             - name: VERSION
               value: xxx      # TODO: Pipe VERSION from somewhere useful
@@ -39,6 +39,10 @@ spec:
               value: postgres
             - name: TEMP_POSTGRES_USER
               value: postgres
+            - name: SLACK_HOOK_URL
+              value: https://hooks.slack.com/services/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
+            - name: SLACK_CHANNEL
+              value: product-infra
           volumeMounts:
             - name: scripts
               mountPath: /scripts
