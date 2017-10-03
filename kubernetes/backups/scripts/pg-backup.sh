@@ -32,7 +32,7 @@ echo "Downloading from ${GCS_URL} ..."
 gsutil cp ${GCS_URL} ${RESTORE_FILE}
 
 # This ensures that the DROP statements in the output of pg_dumpall will succeed
-echo "Creating databases"
+echo "Creating databases (ERRORs here are OK)"
 set +e
 for db in "${DATABASES[@]}"
 do
