@@ -15,6 +15,7 @@ www:
 
 platform_version: 2853
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
+
 jupyter:
   version: 100
 

@@ -15,8 +15,10 @@ www:
 
 platform_version: 2853
 quartic_python_version: 0.6.0 #"$QUARTIC_PYTHON_VERSION"
+
 jupyter:
   version: 100
+  analysis_bucket: analysis.prod.quartic.io
 
 postgres:
   version: 9.6.5
@@ -100,12 +102,6 @@ customers:
       external_id_encrypted: 1$b97a16fd8607a30b63113d87$b90cbc9b560ea987233ed6469331a35cd89f70fdb9e9c6124acb0861cfd919591e2db9b8$d68e9ed2a7387a3b1b827df77d28f009
 
   dilectic:
-    howl: |
-      type: gcs
-      bucket: demo.prod.quartic.io
-      credentials:
-        type: application_default
-
     registry: |
       - id: 114
         name: Dilectic
@@ -114,6 +110,12 @@ customers:
         github_org_id: 999
         github_repo_id: 999
         github_installation_id: 999
+
+    howl: |
+      type: gcs
+      bucket: demo.prod.quartic.io
+      credentials:
+        type: application_default
 
 
 #-----------------------------------------------------------------------------#
