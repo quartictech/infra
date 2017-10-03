@@ -8,6 +8,9 @@ gcloud:
   domain_name: staging.quartic.io
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
+backups:
+  bucket_name: backups
+
 www:
   basic_auth_enabled: true
   default_website_tag: develop
