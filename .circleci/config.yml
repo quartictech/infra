@@ -154,7 +154,8 @@ workflows:
               only: master
 
 
-notify:
-  branches:
-    only:
-      - develop
+experimental:
+  notify:
+    branches:
+      only:
+        - develop
