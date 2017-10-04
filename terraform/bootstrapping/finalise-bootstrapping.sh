@@ -11,7 +11,6 @@ CIRCLECI_API_TOKEN=${1}
 ORG_ID=$(terraform output org_id)
 PROJECT_ID=$(terraform output project_id)
 SERVICE_ACCOUNT_EMAIL=$(terraform output service_account_email)
-BUCKET_NAME=$(terraform output bucket_name)
 
 
 #-----------------------------------------------------------#
@@ -23,12 +22,6 @@ gcloud organizations add-iam-policy-binding ${ORG_ID} \
 gcloud organizations add-iam-policy-binding ${ORG_ID} \
   --member serviceAccount:${SERVICE_ACCOUNT_EMAIL} \
   --role roles/billing.user
-
-
-#-----------------------------------------------------------#
-# Enable versioning on GCS bucket
-#-----------------------------------------------------------#
-gsutil versioning set on gs://${BUCKET_NAME}
 
 
 #-----------------------------------------------------------#

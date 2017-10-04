@@ -2,7 +2,7 @@
 
 This is the Terraform for all of our GCloud infrastructure.  The arrangement is summarised in the image below.
 
-![Project layout](https://github.com/quartictech/infra/blob/feature/cleanup/diagrams/infra-layout.png)
+![Project layout](../diagrams/infra-layout.png)
 
 
 ## Project layout

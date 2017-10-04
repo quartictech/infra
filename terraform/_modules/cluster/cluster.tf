@@ -82,10 +82,6 @@ resource "google_container_node_pool" "core" {
         service_account = "${var.service_account_email}"
         oauth_scopes    = "${concat(var.basic_gke_oauth_scopes, var.core_node_pool_extra_scopes)}"
     }
-
-    lifecycle {
-        create_before_destroy = true
-    }
 }
 
 
@@ -98,12 +94,9 @@ resource "google_container_node_pool" "worker" {
     initial_node_count  = "${var.worker_node_count}"
     node_config {
         machine_type    = "n1-standard-2"
+        preemptible     = true
         service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
-    }
-
-    lifecycle {
-        create_before_destroy = true
     }
 }
 

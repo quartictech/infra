@@ -7,8 +7,8 @@ data:
   pg-backup.sh: |
     {{ from("scripts/pg-backup.sh") | indent(4) }}
 ---
-kind: Job
-apiVersion: batch/v1
+kind: Deployment
+apiVersion: extensions/v1beta1
 metadata:
   name: pg-backup
   namespace: backups
@@ -18,16 +18,17 @@ spec:
       labels:
         component: pg-backup
     spec:
-      restartPolicy: Never
+      restartPolicy: Always
+      nodeSelector:
+        cloud.google.com/gke-nodepool: core
       containers:
         - name: master
-          image: {{cluster.gcloud.docker_repository}}/backer-upper:10
-          command: ["bash", "/scripts/pg-backup.sh"]
+          image: {{cluster.gcloud.docker_repository}}/backer-upper:48
           env:
             - name: VERSION
               value: xxx      # TODO: Pipe VERSION from somewhere useful
             - name: GCS_BUCKET
-              value: backups.quartic.io
+              value: {{cluster.backups.bucket_name}}.{{cluster.gcloud.domain_name}}
             - name: SOURCE_POSTGRES_HOST
               value: postgres.platform
             - name: SOURCE_POSTGRES_USER
@@ -38,6 +39,10 @@ spec:
               value: postgres
             - name: TEMP_POSTGRES_USER
               value: postgres
+            - name: SLACK_HOOK_URL
+              value: https://hooks.slack.com/services/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
+            - name: SLACK_CHANNEL
+              value: product-infra
           volumeMounts:
             - name: scripts
               mountPath: /scripts

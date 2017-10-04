@@ -16,6 +16,7 @@ terraform {
 }
 
 provider "google" {
+    version                     = "~> 1.0.1"
     region                      = "${var.region}"
 }
 
