@@ -3,7 +3,9 @@ variable "region"                   {}
 variable "zones"                    { type = "list" }
 variable "name"                     {}
 variable "service_account_email"    {}
+variable "core_node_type"           {}
 variable "core_node_count"          {}
+variable "worker_node_type"         {}
 variable "worker_node_count"        {}
 
 # TODO - alpha/network-policy
@@ -78,7 +80,7 @@ resource "google_container_node_pool" "core" {
 
     initial_node_count  = "${var.core_node_count}"
     node_config {
-        machine_type    = "n1-standard-2"
+        machine_type    = "${var.core_node_type}"
         service_account = "${var.service_account_email}"
         oauth_scopes    = "${concat(var.basic_gke_oauth_scopes, var.core_node_pool_extra_scopes)}"
     }
@@ -93,7 +95,7 @@ resource "google_container_node_pool" "worker" {
 
     initial_node_count  = "${var.worker_node_count}"
     node_config {
-        machine_type    = "n1-standard-2"
+        machine_type    = "${var.worker_node_type}"
         preemptible     = true
         service_account = "${var.service_account_email}"
         oauth_scopes    = "${var.basic_gke_oauth_scopes}"
