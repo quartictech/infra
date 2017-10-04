@@ -2,7 +2,7 @@ project_name                = "Quartic - Production env"
 project_id_prefix           = "quartic-prod"
 region                      = "europe-west1"
 domain_name                 = "quartic.io."
-dns_ttl                     = 60
+dns_ttl                     = 3600
 
 cluster_name                = "prod"
 cluster_core_node_type      = "n1-standard-4"
