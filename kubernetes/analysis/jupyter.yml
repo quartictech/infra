@@ -48,7 +48,7 @@ spec:
               memory: 1Gi
           env:
             - name: JUPYTER_GOOGLE_CLOUD_BUCKET
-              value: quartictech/jupyter
+              value: {{cluster.jupyter.analysis_bucket}}
           volumeMounts:
             - name: config-volume
               mountPath: /setup
