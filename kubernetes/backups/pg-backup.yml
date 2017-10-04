@@ -28,7 +28,7 @@ spec:
             - name: VERSION
               value: xxx      # TODO: Pipe VERSION from somewhere useful
             - name: GCS_BUCKET
-              value: {{cluster.backups.bucket_name}}.{{cluster.gcloud.domain_name}}
+              value: {{cluster.backups.bucket_name}}
             - name: SOURCE_POSTGRES_HOST
               value: postgres.platform
             - name: SOURCE_POSTGRES_USER
