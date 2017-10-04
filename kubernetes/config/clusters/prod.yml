@@ -9,7 +9,7 @@ gcloud:
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
 backups:
-  bucket_name: backups
+  bucket_name: backups.prod.quartic.io
 
 www:
   basic_auth_enabled: false

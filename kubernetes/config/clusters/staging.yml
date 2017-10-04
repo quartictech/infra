@@ -9,7 +9,7 @@ gcloud:
   docker_repository: eu.gcr.io/quartic-global-c39fc822
 
 backups:
-  bucket_name: backups
+  bucket_name: backups.staging.quartic.io
 
 www:
   basic_auth_enabled: true
@@ -21,6 +21,7 @@ quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
   version: 100
+  analysis_bucket: analysis.staging.quartic.io
 
 postgres:
   version: 9.6.5
