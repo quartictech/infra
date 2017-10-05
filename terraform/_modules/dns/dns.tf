@@ -3,7 +3,7 @@ variable "global_zone_name"     {}
 variable "domain_name"          {}
 variable "ttl"                  {}
 variable "cluster_address"      {}
-variable "cluster_subdomains"   { default = ["*.", ""] }
+variable "cluster_subdomains"   { default = ["*.", "", "www."] } # TODO - shouldn't need "www" here, but something weird happening with GCloud DNS
 
 
 # NOTE: We set these in global DNS
