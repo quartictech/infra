@@ -20,7 +20,7 @@ platform_version: 2853
 quartic_python_version: 0.6.0 #"$QUARTIC_PYTHON_VERSION"
 
 jupyter:
-  version: 100
+  version: 110
   analysis_bucket: analysis.prod.quartic.io
 
 postgres:

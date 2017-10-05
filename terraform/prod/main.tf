@@ -8,7 +8,9 @@ variable "container_developer_group"    {}
 variable "domain_name"                  {}
 variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
+variable "cluster_core_node_type"       {}
 variable "cluster_core_node_count"      {}
+variable "cluster_worker_node_type"     {}
 variable "cluster_worker_node_count"    {}
 
 
@@ -37,7 +39,9 @@ module "env" {
     domain_name                 = "${var.domain_name}"
     dns_ttl                     = "${var.dns_ttl}"
     cluster_name                = "${var.cluster_name}"
+    cluster_core_node_type      = "${var.cluster_core_node_type}"
     cluster_core_node_count     = "${var.cluster_core_node_count}"
+    cluster_worker_node_type    = "${var.cluster_worker_node_type}"
     cluster_worker_node_count   = "${var.cluster_worker_node_count}"
 }
 
