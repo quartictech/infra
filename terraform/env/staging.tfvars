@@ -1,11 +1,11 @@
-project_name                = "Quartic - Production env"
-project_id_prefix           = "quartic-prod"
+project_name                = "Quartic - Staging"
+project_id_prefix           = "quartic-staging"
 region                      = "europe-west1"
-domain_name                 = "quartic.io."
+domain_name                 = "staging.quartic.io."
 dns_ttl                     = 3600
 
-cluster_name                = "prod"
-cluster_core_node_type      = "n1-standard-4"
+cluster_name                = "staging"
+cluster_core_node_type      = "n1-standard-2"
 cluster_core_node_count     = 1
 cluster_worker_node_type    = "n1-standard-2"
 cluster_worker_node_count   = 1
