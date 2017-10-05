@@ -46,7 +46,7 @@ jobs:
       - persist_to_workspace:
           root: terraform/
           paths:
-            - "**/tfplan"
+            - "**/*.tfplan"
 
 
   apply_global:
