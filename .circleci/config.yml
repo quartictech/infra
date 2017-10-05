@@ -63,7 +63,6 @@ jobs:
           working_directory: terraform/global
           environment: { ENV: "global" }
           command: *tf_apply
-          
 
 
   apply_staging:
