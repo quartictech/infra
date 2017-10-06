@@ -23,7 +23,7 @@ data "terraform_remote_state" "global" {
 }
 
 module "project" {
-    source                      = "../project"
+    source                      = "../../_modules/project"
 
     org_id                      = "${var.org_id}"
     billing_account             = "${var.billing_account}"
