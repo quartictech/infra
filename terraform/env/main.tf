@@ -25,6 +25,7 @@ provider "google" {
     region                      = "${var.region}"
 }
 
+# TODO - get rid of this indirection
 module "env" {
     source                      = "_modules/env"
 
