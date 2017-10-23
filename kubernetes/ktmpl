@@ -60,8 +60,12 @@ def read_from_file(template_path, relative_path):
         return file.read()
 
 
-def run_jsonnet(path):
-    process = subprocess.Popen(["jsonnet", path], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+def run_jsonnet(path, config_path):
+    process = subprocess.Popen(
+        ["jsonnet", path, "--tla-code-file", "config=%s" % config_path],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE
+    )
     out, err = process.communicate()
     rc = process.poll()
     if rc != 0:
@@ -71,11 +75,11 @@ def run_jsonnet(path):
 
 def run_kubectl(dry_run, operation, stdin):
     if (dry_run):
-        print(rendered)
+        print(stdin)
     else:
         rc = run_command(
             ["kubectl", operation, "-f", "-"],
-            env={"KUBECONFIG": CONFIG_PATH}
+            env={"KUBECONFIG": CONFIG_PATH},
             stdin=stdin
         )
         if rc != 0:
@@ -93,8 +97,8 @@ def run_from_template(operation, dry_run, template_path, config):
     run_kubectl(dry_run, operation, rendered)
 
 
-def run_from_jsonnet(operation, dry_run, template_path):
-    rendered = json.dumps(run_jsonnet(template_path), indent=2)
+def run_from_jsonnet(operation, dry_run, template_path, config_path):
+    rendered = json.dumps(run_jsonnet(template_path, config_path), indent=2)
     run_kubectl(dry_run, operation, rendered)
 
 
@@ -171,6 +175,9 @@ if __name__ == "__main__":
     if not args.operation:
         sys.exit(1)
 
+    yml_config_path = os.path.join("config", "clusters", args.cluster + ".yml")
+    json_config_path = os.path.join("config", "clusters", args.cluster + ".jsonnet")
+
     cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
     environment = extract_environment_map(args.environment)
 
@@ -185,4 +192,4 @@ if __name__ == "__main__":
                 run_from_template(operation, args.dry_run, template_path, 
                                   {"cluster": cluster_config, "environment": environment})
             else:
-                run_from_jsonnet(operation, args.dry_run, template_path)
+                run_from_jsonnet(operation, args.dry_run, template_path, json_config_path)

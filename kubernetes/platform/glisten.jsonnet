@@ -1,7 +1,6 @@
-local config = import "../config/clusters/prod.jsonnet";
-local quarticService = import "../_jsonnet/utils/quartic-service.jsonnet";
+local quarticService = import "../_jsonnet/utils/quartic-service.libsonnet";
 
-quarticService + {
+function (config) quarticService + {
     config: config,
 
     name: "glisten",
@@ -10,6 +9,6 @@ quarticService + {
 
     dropwizardConfig: {
         eval_url: "http://eval:8210/api",
-        webhook_secret_encrypted: $.config.github.webhook_secret
+        webhook_secret_encrypted: $.config.github.webhook_secret_encrypted
     }
 }

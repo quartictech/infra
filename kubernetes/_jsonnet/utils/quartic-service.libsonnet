@@ -6,7 +6,6 @@
     version:: error "version must be specified",
     port:: error "port must be specified",
     dropwizardConfig:: {},
-    javaOpts:: [],
 
     local configMap = {
         apiVersion: "v1",
@@ -59,7 +58,7 @@
 
     local container = {
         name: $.name,
-        image: "eu.gcr.io/quartictech/" + $.name + ":" + $.config.platform_version,
+        image: $.config.docker_repository + "/" + $.name + ":" + $.config.platform_version,
         ports: [
             { containerPort: $.port },
             { containerPort: $.port + 1 }
@@ -74,14 +73,10 @@
                     },
                 }
             },
-            {
-                name: "JAVA_OPTS",
-                value: std.join(" ", $.javaOpts)
-            },
         ],
         resources: {
             requests: {
-                cpu: "100m"
+                cpu: "100m"     # TODO - parameterise
             },
         },
     },

@@ -1,7 +1,6 @@
-local config = import "../config/clusters/prod.jsonnet";
-local quarticService = import "../_jsonnet/utils/quartic-service.jsonnet";
+local quarticService = import "../_jsonnet/utils/quartic-service.libsonnet";
 
-quarticService + {
+function (config) quarticService + {
     config: config,
 
     name: "catalogue",
@@ -9,10 +8,11 @@ quarticService + {
     port: 8090,
 
     dropwizardConfig: {
-        backend: {
-            type: "google_datastore",
-            projectId: "quartictech",
-            namespace: $.config.datastore_namespace_prefix + "-catalogue"
+        database: {
+            host_name: "postgres",
+            database_name: "catalogue",
+            user: "postgres",
+            password: $.config.postgres.password_encrypted
         },
     },
 }
