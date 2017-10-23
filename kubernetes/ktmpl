@@ -3,6 +3,7 @@
 import argparse
 import base64
 import json
+import _jsonnet
 import os
 import subprocess
 import sys
@@ -42,10 +43,8 @@ def get_filenames(path):
         return [path]
 
 
-def load_config(path):
-    with open(path, "r", encoding='utf-8') as stream:
-        config = yaml.load(stream)
-    return config
+def load_cluster_config(path):
+    return json.loads(_jsonnet.evaluate_file(path))
 
 
 def get_operations(operation):
@@ -175,10 +174,8 @@ if __name__ == "__main__":
     if not args.operation:
         sys.exit(1)
 
-    yml_config_path = os.path.join("config", "clusters", args.cluster + ".yml")
-    json_config_path = os.path.join("config", "clusters", args.cluster + ".jsonnet")
-
-    cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
+    jsonnet_config_path = os.path.join("config", "clusters", args.cluster + ".jsonnet")
+    cluster_config = load_cluster_config(jsonnet_config_path)
     environment = extract_environment_map(args.environment)
 
     maybe_get_confirmation(args.dry_run, cluster_config["require_confirmation"])
@@ -192,4 +189,4 @@ if __name__ == "__main__":
                 run_from_template(operation, args.dry_run, template_path, 
                                   {"cluster": cluster_config, "environment": environment})
             else:
-                run_from_jsonnet(operation, args.dry_run, template_path, json_config_path)
+                run_from_jsonnet(operation, args.dry_run, template_path, jsonnet_config_path)

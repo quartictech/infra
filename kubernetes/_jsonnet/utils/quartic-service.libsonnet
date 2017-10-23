@@ -58,7 +58,7 @@
 
     local container = {
         name: $.name,
-        image: $.config.docker_repository + "/" + $.name + ":" + $.config.platform_version,
+        image: $.config.gcloud.docker_repository + "/" + $.name + ":" + $.config.platform_version,
         ports: [
             { containerPort: $.port },
             { containerPort: $.port + 1 }
