@@ -21,7 +21,7 @@
         formistry_version: 17,
     },
 
-    platform_version: 2853,
+    platform_version: 2886,
     quartic_python_version: "$QUARTIC_PYTHON_VERSION",
 
     jupyter: {
@@ -37,7 +37,7 @@
 
     aws: {
         region: "eu-west-2",
-        access_key_id: "AKIAI63H3LDIHH6HFUXQ",
+        access_key_id: "AKIAI63H3LDIHH6HFUXQ",  # Associated with the platform-staging user
         secret_access_key_encrypted: "1$f8eb7b26c71799eb8bf88c28$c7257a5fe7c3d9c1135344f1e93cd7ec084e3e40b69c59ce468b0a05015c51b27e77d9a959296314$54fe3470e3923f89054181f643f4db14"
     },
 
@@ -56,6 +56,7 @@
     },
 
     token_signing_key_encrypted: "1$8cb8d49e9ab56a56954b406a$8fcf6405f06b5c962602fdccf9c2c00b2f6ae0161c4e4d3ce8155d46fb01f16b1eab5d1446f823ac2dbd74f80ae9f557cb64e43a1c6b9a8b82748005a04ae56a2b10d09b0a503ca81ea01906f119dab079649429dfa54257$e55515f4392896321dd6ecca03dd05d6",
+
 
     #-----------------------------------------------------------------------------#
     # Customers
@@ -101,6 +102,7 @@
             },
         },
     },
+
 
     #-----------------------------------------------------------------------------#
     # Fringe configuration

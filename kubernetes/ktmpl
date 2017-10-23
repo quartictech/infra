@@ -7,7 +7,6 @@ import _jsonnet
 import os
 import subprocess
 import sys
-import yaml
 
 from jinja2 import Environment, Template, StrictUndefined
 
@@ -59,19 +58,6 @@ def read_from_file(template_path, relative_path):
         return file.read()
 
 
-def run_jsonnet(path, config_path):
-    process = subprocess.Popen(
-        ["jsonnet", path, "--tla-code-file", "config=%s" % config_path],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE
-    )
-    out, err = process.communicate()
-    rc = process.poll()
-    if rc != 0:
-        raise EnvironmentError("jsonnet failed")
-    return json.loads(out.decode())
-
-
 def run_kubectl(dry_run, operation, stdin):
     if (dry_run):
         print(stdin)
@@ -96,8 +82,8 @@ def run_from_template(operation, dry_run, template_path, config):
     run_kubectl(dry_run, operation, rendered)
 
 
-def run_from_jsonnet(operation, dry_run, template_path, config_path):
-    rendered = json.dumps(run_jsonnet(template_path, config_path), indent=2)
+def run_from_jsonnet(operation, dry_run, path, config):
+    rendered = _jsonnet.evaluate_file(path, tla_codes={ "config": json.dumps(config) })
     run_kubectl(dry_run, operation, rendered)
 
 
@@ -189,4 +175,4 @@ if __name__ == "__main__":
                 run_from_template(operation, args.dry_run, template_path, 
                                   {"cluster": cluster_config, "environment": environment})
             else:
-                run_from_jsonnet(operation, args.dry_run, template_path, jsonnet_config_path)
+                run_from_jsonnet(operation, args.dry_run, template_path, cluster_config)

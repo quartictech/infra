@@ -12,14 +12,14 @@
         kind: "ConfigMap",
         metadata: {
             name: $.name,
-            namespace: $.namespace
+            namespace: $.namespace,
         },
         data: {
             "config.yml": std.manifestJson($.dropwizardConfig + {
                 url: {
-                    port: $.port
+                    port: $.port,
                 },
-            })
+            }),
         },
     },
 
@@ -30,7 +30,7 @@
             name: $.name,
             namespace: $.namespace,
             labels: {
-                component: $.name
+                component: $.name,
             },
             annotations: {
                 "quartic.io/healthcheck_path": "/healthcheck",
@@ -42,17 +42,17 @@
                 {
                     port: $.port,
                     protocol: "TCP",
-                    name: "default"
+                    name: "default",
                 },
                 {
                     port: $.port + 1,
                     protocol: "TCP",
-                    name: "admin"
+                    name: "admin",
                 }
             ],
             selector: {
-                component: $.name
-            }
+                component: $.name,
+            },
         }
     },
 
@@ -61,7 +61,7 @@
         image: $.config.gcloud.docker_repository + "/" + $.name + ":" + $.config.platform_version,
         ports: [
             { containerPort: $.port },
-            { containerPort: $.port + 1 }
+            { containerPort: $.port + 1 },
         ],
         env: [
             {
@@ -69,16 +69,19 @@
                 valueFrom: {
                     secretKeyRef: {
                         name: "secrets",
-                        key: "master_key_base64"
+                        key: "master_key_base64",
                     },
                 }
             },
         ],
-        resources: {
-            requests: {
-                cpu: "100m"     # TODO - parameterise
+        volumeMounts: [
+            {
+                name: "config",
+                mountPath: "/service/config.yml",
+                subPath: "config.yml",
             },
-        },
+        ],
+        resources: $.resources,
     },
 
     local deployment = {
@@ -86,18 +89,29 @@
         kind: "Deployment",
         metadata: {
             name: $.name,
-            namespace: $.namespace
+            namespace: $.namespace,
         },
         spec: {
             replicas: 1,
             template: {
                 metadata: {
                     labels: {
-                        component: $.name
+                        component: $.name,
                     },
                 },
                 spec: {
-                    containers: [container]
+                    nodeSelector: {
+                        "cloud.google.com/gke-nodepool": "core",
+                    },
+                    containers: [container],
+                    volumes: [
+                        {
+                            name: "config",
+                            configMap: {
+                                name: $.name,
+                            },
+                        },
+                    ],
                 },
             }
         }
@@ -105,5 +119,5 @@
 
     apiVersion: "v1",
     kind: "List",
-    items: [configMap, service, deployment]
+    items: [configMap, service, deployment],
 }

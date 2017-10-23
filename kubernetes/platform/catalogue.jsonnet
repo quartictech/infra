@@ -7,6 +7,12 @@ function (config) quarticService + {
     namespace: "platform",
     port: 8090,
 
+    resources: {
+        requests: {
+            cpu: "100m",
+        },
+    },
+
     dropwizardConfig: {
         database: {
             host_name: "postgres",

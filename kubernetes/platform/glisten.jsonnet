@@ -7,6 +7,12 @@ function (config) quarticService + {
     namespace: "platform",
     port: 8170,
 
+    resources: {
+        requests: {
+            cpu: "100m",
+        },
+    },
+
     dropwizardConfig: {
         eval_url: "http://eval:8210/api",
         webhook_secret_encrypted: $.config.github.webhook_secret_encrypted
