@@ -6,7 +6,7 @@ local k8s = import "./k8s.libsonnet";
     local _container(name, ports, cpuRequest, config) = k8s.container(
         name,
         "%s/%s:%d" % [config.gcloud.docker_repository, name, config.platform_version],
-        std.map(function (p) p.port, ports)
+        [ p.port for p in ports ]
     ) + {
         resources: {
             requests: {
@@ -39,6 +39,7 @@ local k8s = import "./k8s.libsonnet";
         extraPorts:: [],
         dropwizardConfig:: {},
         cpuRequest:: defaultCpuRequest,
+        env:: {},
 
         local allPorts = bs.extraPorts + [
             { port: port,     name: "default" },
@@ -63,7 +64,9 @@ local k8s = import "./k8s.libsonnet";
         },
 
         local container = _container(name, allPorts, bs.cpuRequest, config) + {
-            env: [ self.envVarFromSecret("MASTER_KEY_BASE64", "secrets", "master_key_base64") ],
+            env:
+                [ self.envVarFromSecret("MASTER_KEY_BASE64", "secrets", "master_key_base64") ] +
+                [ { name: k, value: bs.env[k] } for k in std.objectFields(bs.env) ],
             volumeMounts: [
                 {
                     name: "config",
