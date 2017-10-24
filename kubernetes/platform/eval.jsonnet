@@ -1,6 +1,6 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.backendService("eval", "platform", 8210, config) + {
+function (config) q.backendService("eval", "platform", 8210, config) {
     dropwizardConfig: {
         registry_url: "http://registry:8190/api",
         catalogue_url: "http://catalogue:8090/api",

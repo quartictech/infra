@@ -172,9 +172,9 @@
                     },
                 },
 
-                auth_secrets: [
-                    "admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1",
-                ],
+                auth_secret: |||
+                    admin:$apr1$gH1mEO/e$WVAD6tU4dfzzzaxFOpaoz1
+                |||,
             },
 
             eurovia: {
@@ -203,15 +203,15 @@
                     }
                 },
 
-                auth_secrets: [
-                    "admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.",
-                    "yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.",
-                    "sebastien.magat:$apr1$MCsVbqHi$.FYsHBJUUZUCr7HmmRhBh/",
-                    "tim.hurley:$apr1$O7bJA1J.$egy3al/ZO4XlFk62qa33g.",
-                    "satbir.gill:$apr1$WNioQJc9$R0hvgqArHZw1d93PDgJxF.",
-                    "damon.pass:$apr1$/UwftpFh$RKz05KyJ8ieTe2AvE5bKO1",
-                    "karim.hamza:$apr1$Bj/Xo6Sw$WncEeXg4MMkPsQgbq.VUO1",
-                ],
+                auth_secret: |||
+                    admin:$apr1$uLBPrnGd$LygxsA2JyhS8f.jxJt10E.
+                    yogesh.patel:$apr1$KmvOtgmJ$5iTqLSCTmbzvzlHnMGR/a.
+                    sebastien.magat:$apr1$MCsVbqHi$.FYsHBJUUZUCr7HmmRhBh/
+                    tim.hurley:$apr1$O7bJA1J.$egy3al/ZO4XlFk62qa33g.
+                    satbir.gill:$apr1$WNioQJc9$R0hvgqArHZw1d93PDgJxF.
+                    damon.pass:$apr1$/UwftpFh$RKz05KyJ8ieTe2AvE5bKO1
+                    karim.hamza:$apr1$Bj/Xo6Sw$WncEeXg4MMkPsQgbq.VUO1
+                |||,
             },
         }
     },

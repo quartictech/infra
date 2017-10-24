@@ -117,7 +117,7 @@
             annotations: svc.annotations,
         },
         spec: {
-            ports: std.map(function (p) p + { protocol: "TCP" }, ports),
+            ports: std.map(function (p) p { protocol: "TCP" }, ports),
             selector: {
                 component: name,
             },

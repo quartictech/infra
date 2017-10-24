@@ -1,6 +1,6 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.backendService("catalogue", "platform", 8090, config) + {
+function (config) q.backendService("catalogue", "platform", 8090, config) {
     dropwizardConfig: {
         database: {
             host_name: "postgres",

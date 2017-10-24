@@ -2,7 +2,7 @@ local k = import "../_jsonnet/k8s.libsonnet";
 local q = import "../_jsonnet/quartic.libsonnet";
 
 function (config) k.list([
-    q.backendService("home", "platform", 8100, config) + {
+    q.backendService("home", "platform", 8100, config) {
         dropwizardConfig: {
             catalogue_url: "http://catalogue:8090/api",
             howl_url: "http://howl:8120/api",
