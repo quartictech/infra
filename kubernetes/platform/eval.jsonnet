@@ -1,17 +1,7 @@
-local quarticService = import "../_jsonnet/utils/quartic-service.libsonnet";
+local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) quarticService + {
-    config: config,
-
-    name: "eval",
-    namespace: "platform",
-    port: 8210,
-
-    resources: {
-        requests: {
-            cpu: "100m",
-        },
-    },
+function (config) q.backendService("eval", "platform", 8210, config) + {
+    cpuRequest: "100m",
 
     dropwizardConfig: {
         registry_url: "http://registry:8190/api",
@@ -26,7 +16,7 @@ function (config) quarticService + {
                 containers: [
                     {
                         name: "quarty",
-                        image: "%s/jupyter:%d" % [$.config.gcloud.docker_repository, $.config.jupyter.version],
+                        image: "%s/jupyter:%d" % [config.gcloud.docker_repository, config.jupyter.version],
                         command: [
                             "sudo",
                             "-E",
@@ -40,7 +30,7 @@ function (config) quarticService + {
                                 pip install --upgrade git+git://github.com/quartictech/quartic-python.git@%s
                                 pip install http://qube.platform:8200/api/backchannel/runner
                                 python -u -m quarty.server
-                            ||| % [$.config.quartic_python_version],
+                            ||| % [config.quartic_python_version],
                         ],
                         port: 8080,
                         env: {                        
@@ -60,16 +50,16 @@ function (config) quarticService + {
         },
 
         github: {
-            app_id: $.config.github.app_id,
+            app_id: config.github.app_id,
             api_root_url: "https://api.github.com", # TODO - make this a config default
-            private_key_encrypted: $.config.github.private_key_encrypted,
+            private_key_encrypted: config.github.private_key_encrypted,
         },
 
         database: {
             host_name: "postgres",
             database_name: "eval",
             user: "postgres",
-            password: $.config.postgres.password_encrypted,
+            password: config.postgres.password_encrypted,
         },
     },
 }

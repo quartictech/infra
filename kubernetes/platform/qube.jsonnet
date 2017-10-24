@@ -1,18 +1,8 @@
-local quarticService = import "../_jsonnet/utils/quartic-service.libsonnet";
+local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) quarticService + {
-    config: config,
-
-    name: "qube",
-    namespace: "platform",
-    port: 8200,
+function (config) q.backendService("qube", "platform", 8200, config) + {
     extraPorts: [{ port: 8202, name: "websocket" }],
-
-    resources: {
-        requests: {
-            cpu: "100m",
-        },
-    },
+    cpuRequest: "100m",
 
     dropwizardConfig: {
         kubernetes: {
@@ -37,7 +27,7 @@ function (config) quarticService + {
             host_name: "postgres",
             database_name: "qube",
             user: "postgres",
-            password: $.config.postgres.password_encrypted,
+            password: config.postgres.password_encrypted,
         },
 
         websocket_port: 8202,

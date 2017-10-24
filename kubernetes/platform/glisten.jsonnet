@@ -1,20 +1,10 @@
-local quarticService = import "../_jsonnet/utils/quartic-service.libsonnet";
+local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) quarticService + {
-    config: config,
-
-    name: "glisten",
-    namespace: "platform",
-    port: 8170,
-
-    resources: {
-        requests: {
-            cpu: "100m",
-        },
-    },
+function (config) q.backendService("glisten", "platform", 8170, config) + {
+    cpuRequest: "100m",
 
     dropwizardConfig: {
         eval_url: "http://eval:8210/api",
-        webhook_secret_encrypted: $.config.github.webhook_secret_encrypted
+        webhook_secret_encrypted: config.github.webhook_secret_encrypted
     }
 }

@@ -1,17 +1,7 @@
-local quarticService = import "../_jsonnet/utils/quartic-service.libsonnet";
+local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) quarticService + {
-    config: config,
-
-    name: "registry",
-    namespace: "platform",
-    port: 8190,
-
-    resources: {
-        requests: {
-            cpu: "100m",
-        },
-    },
+function (config) q.backendService("registry", "platform", 8190, config) + {
+    cpuRequest: "100m",
 
     dropwizardConfig: {
         customers: std.map(function (c) c.registry, config.customers),  # TODO: this is obviously nonsense in the long run

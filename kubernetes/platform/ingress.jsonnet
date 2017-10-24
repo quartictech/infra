@@ -1,10 +1,6 @@
-local utils = import "../_jsonnet/utils/utils.libsonnet";
+local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) utils.ingress + {
-    name: "ingress",
-    namespace: "platform",
-    domain: config.gcloud.domain_name,
-
+function (config) q.backendService("ingress", "platform", config.gcloud.domain_name) + {
     local subdomains = std.map(function(c) c.registry.subdomain, config.customers),
 
     certs: [
