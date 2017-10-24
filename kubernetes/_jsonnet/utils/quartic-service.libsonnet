@@ -5,6 +5,7 @@
     namespace:: error "namespace must be specified",
     version:: error "version must be specified",
     port:: error "port must be specified",
+    extraPorts:: [],
     dropwizardConfig:: {},
 
     local configMap = {
@@ -49,7 +50,14 @@
                     protocol: "TCP",
                     name: "admin",
                 }
-            ],
+            ] + std.map(
+                function (p) {
+                    port: p.port,
+                    protocol: "TCP",
+                    name: p.name,
+                },
+                $.extraPorts
+            ),
             selector: {
                 component: $.name,
             },
@@ -62,7 +70,7 @@
         ports: [
             { containerPort: $.port },
             { containerPort: $.port + 1 },
-        ],
+        ] + std.map(function (p) { containerPort: p.port }, $.extraPorts),
         env: [
             {
                 name: "MASTER_KEY_BASE64",
