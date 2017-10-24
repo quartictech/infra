@@ -61,8 +61,8 @@
     #-----------------------------------------------------------------------------#
     # Customers
     #-----------------------------------------------------------------------------#
-    customers: {
-        hammer: {
+    customers: [
+        {
             registry: {
                 id: 222,
                 name: "Hammer",
@@ -82,7 +82,7 @@
             },
         },
 
-        "quartic-python": {
+        {
             registry: {
                 id: 223,
                 name: "Quartic-Python",
@@ -101,7 +101,7 @@
                 external_id_encrypted: "1$cb710ce9b2dd6cda46dde55d$f47f79577a8d8194ca556d4ee57e9cb34dda29c4f8222c6f2df9f85f0455ebb1462a84c927a9ccdfc01b6893c75a6b0fd3e1c1b438f1885cdf8ab9669e9ceb67c565c9a8cf4d9184b1fed5d9308fd63505c1860815257803c3f5e551c8d4fad69b6325eb50e8bc2dc295b875b29bf28acc74c72f2e1455c7ef5cf78a1104ae91eff161e1fdb928000e5ff0efc6d9181e803849db2d412d943451c8b32101aceb87f1318ee74aad93$936bc7200943e41ba4557977f4f2be49",
             },
         },
-    },
+    ],
 
 
     #-----------------------------------------------------------------------------#
