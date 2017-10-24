@@ -1,6 +1,6 @@
 local utils = import "../_jsonnet/utils/utils.libsonnet";
 
-local sudomains(customers) = std.map(function(c) c.registry.subdomain, customers);
+local subdomains(customers) = std.map(function(c) c.registry.subdomain, customers);
 
 function (config) utils.ingress + {
     name: "ingress",
@@ -10,7 +10,7 @@ function (config) utils.ingress + {
     certs: [
         $.cert("api"),
         $.cert("docs"),
-    ] + std.map(function (d) $.cert(d), sudomains(config.customers)),
+    ] + std.map(function (d) $.cert(d), subdomains(config.customers)),
 
     rules: [
         $.rule("api", [
@@ -25,6 +25,6 @@ function (config) utils.ingress + {
             $.path("/",                      "home",     80),
             $.path("/api",                   "home",     8100),
         ]),
-        sudomains(config.customers)
+        subdomains(config.customers)
     ),
 }
