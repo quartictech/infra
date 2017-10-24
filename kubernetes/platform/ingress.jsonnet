@@ -1,16 +1,16 @@
 local utils = import "../_jsonnet/utils/utils.libsonnet";
 
-local subdomains(customers) = std.map(function(c) c.registry.subdomain, customers);
-
 function (config) utils.ingress + {
     name: "ingress",
     namespace: "platform",
     domain: config.gcloud.domain_name,
 
+    local subdomains = std.map(function(c) c.registry.subdomain, config.customers),
+
     certs: [
         $.cert("api"),
         $.cert("docs"),
-    ] + std.map(function (d) $.cert(d), subdomains(config.customers)),
+    ] + std.map(function (d) $.cert(d), subdomains),
 
     rules: [
         $.rule("api", [
@@ -25,6 +25,6 @@ function (config) utils.ingress + {
             $.path("/",                      "home",     80),
             $.path("/api",                   "home",     8100),
         ]),
-        subdomains(config.customers)
+        subdomains
     ),
 }
