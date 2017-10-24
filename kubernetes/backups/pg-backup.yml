@@ -23,7 +23,7 @@ spec:
         cloud.google.com/gke-nodepool: core
       containers:
         - name: master
-          image: {{cluster.gcloud.docker_repository}}/backer-upper:48
+          image: {{cluster.gcloud.docker_repository}}/backer-upper:54
           env:
             - name: VERSION
               value: xxx      # TODO: Pipe VERSION from somewhere useful

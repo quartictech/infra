@@ -16,7 +16,7 @@ www:
   default_website_tag: prod
   formistry_version: 17
 
-platform_version: 2853
+platform_version: 2886
 quartic_python_version: 0.6.0 #"$QUARTIC_PYTHON_VERSION"
 
 jupyter:
@@ -59,7 +59,7 @@ customers:
         subdomain: cs
         namespace: cs
         slack_channel: "#kiwi"
-        github_org_id: 22931189
+        github_org_id: 32568268
         github_repo_id: 102881471
         github_installation_id: 40737
 

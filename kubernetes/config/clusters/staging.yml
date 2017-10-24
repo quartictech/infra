@@ -16,7 +16,7 @@ www:
   default_website_tag: staging
   formistry_version: 17
 
-platform_version: 2853
+platform_version: 2886
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
