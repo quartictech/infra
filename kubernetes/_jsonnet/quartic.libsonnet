@@ -1,6 +1,8 @@
 local k8s = import "./k8s.libsonnet";
 
 {
+    local defaultCpuRequest = "100m",
+
     local _container(name, ports, cpuRequest, config) = k8s.container(
         name,
         "%s/%s:%d" % [config.gcloud.docker_repository, name, config.platform_version],
@@ -16,7 +18,7 @@ local k8s = import "./k8s.libsonnet";
 
     frontendService(name, namespace, config):: {
         local fs = self,
-        cpuRequest:: "1",
+        cpuRequest:: defaultCpuRequest,
 
         local allPorts = [
             { port: 80, name: "default" },
@@ -36,7 +38,7 @@ local k8s = import "./k8s.libsonnet";
         local bs = self,
         extraPorts:: [],
         dropwizardConfig:: {},
-        cpuRequest:: "1",
+        cpuRequest:: defaultCpuRequest,
 
         local allPorts = bs.extraPorts + [
             { port: port,     name: "default" },

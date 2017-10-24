@@ -2,7 +2,6 @@ local q = import "../_jsonnet/quartic.libsonnet";
 
 function (config) q.backendService("qube", "platform", 8200, config) + {
     extraPorts: [{ port: 8202, name: "websocket" }],
-    cpuRequest: "100m",
 
     dropwizardConfig: {
         kubernetes: {

@@ -1,8 +1,10 @@
 {
     list(items):: {
+        local _maybeUnpackList(x) = if (x.kind == "List") then x.items else [x],
+
         apiVersion: "v1",
         kind: "List",
-        items: items,
+        items: std.flattenArrays(std.map(_maybeUnpackList, items)),
     },
 
 
