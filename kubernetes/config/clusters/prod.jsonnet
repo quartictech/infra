@@ -69,7 +69,7 @@
                 subdomain: "cs",
                 namespace: "cs",
                 slack_channel: "#kiwi",
-                github_org_id: 22931189,
+                github_org_id: 32568268,
                 github_repo_id: 102881471,
                 github_installation_id: 40737,
             },
