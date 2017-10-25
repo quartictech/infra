@@ -133,4 +133,15 @@
             namespace: namespace,
         },
     },
+
+
+    secret(name, namespace):: {
+        apiVersion: "v1",
+        kind: "Secret",
+        type: "Opaque",
+        metadata: {
+            name: name,
+            namespace: namespace,
+        },
+    },
 }

@@ -18,14 +18,14 @@
     www: {
         basic_auth_enabled: false,
         default_website_tag: "prod",
-        formistry_version: 17,
+        formistry_version: "17",
     },
     
-    platform_version: 2886,
+    platform_version: "2886",
     quartic_python_version: "0.6.0", #"$QUARTIC_PYTHON_VERSION"
 
     jupyter: {
-        version: 110,
+        version: "110",
         analysis_bucket: "analysis.prod.quartic.io",
     },
 

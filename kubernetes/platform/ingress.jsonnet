@@ -1,7 +1,7 @@
 local k = import "../_jsonnet/k8s.libsonnet";
 
-function (config) k.ingress("ingress", "platform", config.gcloud.domain_name) {
-    local subdomains = std.map(function(c) c.registry.subdomain, config.customers),
+function (cluster) k.ingress("ingress", "platform", cluster.gcloud.domain_name) {
+    local subdomains = std.map(function(c) c.registry.subdomain, cluster.customers),
 
     certs: [
         $.cert("api"),

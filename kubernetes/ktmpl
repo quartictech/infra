@@ -83,7 +83,7 @@ def run_from_template(operation, dry_run, template_path, config):
 
 
 def run_from_jsonnet(operation, dry_run, path, config):
-    rendered = _jsonnet.evaluate_file(path, tla_codes={ "config": json.dumps(config) })
+    rendered = _jsonnet.evaluate_file(path, tla_codes={ "cluster": json.dumps(config) })
     run_kubectl(dry_run, operation, rendered)
 
 

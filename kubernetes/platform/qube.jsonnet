@@ -1,6 +1,6 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.backendService("qube", "platform", 8200, config) {
+function (cluster) q.backendService("qube", "platform", 8200, cluster) {
     extraPorts: [{ port: 8202, name: "websocket" }],
 
     dropwizardConfig: {
@@ -26,7 +26,7 @@ function (config) q.backendService("qube", "platform", 8200, config) {
             host_name: "postgres",
             database_name: "qube",
             user: "postgres",
-            password: config.postgres.password_encrypted,
+            password: cluster.postgres.password_encrypted,
         },
 
         websocket_port: 8202,

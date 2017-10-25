@@ -3,9 +3,9 @@ local k8s = import "./k8s.libsonnet";
 {
     local defaultCpuRequest = "100m",
 
-    local _container(name, image, ports, cpuRequest, config) = k8s.container(
+    local _container(name, imageName, imageTag, ports, cpuRequest, cluster) = k8s.container(
         name,
-        "%s/%s:%d" % [config.gcloud.docker_repository, image, config.platform_version],
+        "%s/%s:%s" % [cluster.gcloud.docker_repository, imageName, imageTag],
         [ p.port for p in ports ]
     ) {
         resources: {
@@ -16,9 +16,10 @@ local k8s = import "./k8s.libsonnet";
     },
 
 
-    frontendService(name, namespace, config):: {
+    frontendService(name, namespace, cluster):: {
         local fs = self,
-        image:: name,
+        imageName:: name,
+        imageTag:: cluster.platform_version,
         cpuRequest:: defaultCpuRequest,
 
         local allPorts = [
@@ -26,7 +27,7 @@ local k8s = import "./k8s.libsonnet";
         ],
         local service = k8s.service(name, namespace, allPorts),
         local deployment = k8s.deployment(name, namespace) {
-            containers: [_container(name, fs.image, allPorts, fs.cpuRequest, config)],
+            containers: [_container(name, fs.imageName, fs.imageTag, allPorts, fs.cpuRequest, cluster)],
         },
 
         apiVersion: "v1",
@@ -35,9 +36,10 @@ local k8s = import "./k8s.libsonnet";
     },
 
 
-    backendService(name, namespace, port, config):: {
+    backendService(name, namespace, port, cluster):: {
         local bs = self,
-        image:: name,
+        imageName:: name,
+        imageTag:: cluster.platform_version,
         extraPorts:: [],
         dropwizardConfig:: {},
         cpuRequest:: defaultCpuRequest,
@@ -65,7 +67,7 @@ local k8s = import "./k8s.libsonnet";
             },
         },
 
-        local container = _container(name, bs.image, allPorts, bs.cpuRequest, config) {
+        local container = _container(name, bs.imageName, bs.imageTag, allPorts, bs.cpuRequest, cluster) {
             env:
                 [ self.envVarFromSecret("MASTER_KEY_BASE64", "secrets", "master_key_base64") ] +
                 [ { name: k, value: bs.env[k] } for k in std.objectFields(bs.env) ],

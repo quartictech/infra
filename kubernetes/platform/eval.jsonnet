@@ -1,6 +1,6 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.backendService("eval", "platform", 8210, config) {
+function (cluster) q.backendService("eval", "platform", 8210, cluster) {
     dropwizardConfig: {
         registry_url: "http://registry:8190/api",
         catalogue_url: "http://catalogue:8090/api",
@@ -14,7 +14,7 @@ function (config) q.backendService("eval", "platform", 8210, config) {
                 containers: [
                     {
                         name: "quarty",
-                        image: "%s/jupyter:%d" % [config.gcloud.docker_repository, config.jupyter.version],
+                        image: "%s/jupyter:%s" % [cluster.gcloud.docker_repository, cluster.jupyter.version],
                         command: [
                             "sudo",
                             "-E",
@@ -28,7 +28,7 @@ function (config) q.backendService("eval", "platform", 8210, config) {
                                 pip install --upgrade git+git://github.com/quartictech/quartic-python.git@%s
                                 pip install http://qube.platform:8200/api/backchannel/runner
                                 python -u -m quarty.server
-                            ||| % [config.quartic_python_version],
+                            ||| % [cluster.quartic_python_version],
                         ],
                         port: 8080,
                         env: {                        
@@ -48,16 +48,16 @@ function (config) q.backendService("eval", "platform", 8210, config) {
         },
 
         github: {
-            app_id: config.github.app_id,
+            app_id: cluster.github.app_id,
             api_root_url: "https://api.github.com", # TODO - make this a config default
-            private_key_encrypted: config.github.private_key_encrypted,
+            private_key_encrypted: cluster.github.private_key_encrypted,
         },
 
         database: {
             host_name: "postgres",
             database_name: "eval",
             user: "postgres",
-            password: config.postgres.password_encrypted,
+            password: cluster.postgres.password_encrypted,
         },
     },
 }

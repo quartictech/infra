@@ -1,10 +1,10 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.backendService("hey", "platform", 80, config) {
+function (cluster) q.backendService("hey", "platform", 80, cluster) {
     env: {
         DEV_MODE: "false",
-        SLACK_TOKEN_ENCRYPTED: config.slack.token_encrypted,
-        SLACK_USERNAME: config.slack.username,
-        DEFAULT_SLACK_CHANNEL: config.slack.default_channel,
+        SLACK_TOKEN_ENCRYPTED: cluster.slack.token_encrypted,
+        SLACK_USERNAME: cluster.slack.username,
+        DEFAULT_SLACK_CHANNEL: cluster.slack.default_channel,
     },
 }

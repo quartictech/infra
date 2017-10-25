@@ -1,3 +1,3 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.frontendService("docs", "platform", config)
+function (cluster) q.frontendService("docs", "platform", cluster)

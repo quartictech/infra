@@ -18,14 +18,14 @@
     www: {
         basic_auth_enabled: true,
         default_website_tag: "staging",
-        formistry_version: 17,
+        formistry_version: "17",
     },
 
-    platform_version: 2886,
+    platform_version: "2886",
     quartic_python_version: "$QUARTIC_PYTHON_VERSION",
 
     jupyter: {
-        version: 100,
+        version: "100",
         analysis_bucket: "analysis.staging.quartic.io"
     },
 
