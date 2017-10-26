@@ -10,13 +10,10 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     pip install -r requirements.txt
     ```
 
+
 # Bootstrap
 
-1. Create a Container Engine cluster and persistent disk:
-
-    ```
-    ./scripts/create-cluster.sh ${CLUSTER} ${NUM_NODES}
-    ```
+1. Create a Container Engine cluster via Terraform.
 
 2. Deploy the master keys:
 
@@ -24,6 +21,32 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     kubectl create secret generic -n platform secrets --from-file=master_key_base64=master-key-platform
     kubectl create secret generic -n fringe secrets --from-file=master_key_base64=master-key-fringe
     ```
+
+3. [Enable network-policy enforcement][1] (**note:** this won't be required once we can do this via Terraform).
+
+    - Give yourself the **Container Engine Cluster Admin** role via GCloud console (or CLI).
+
+    - Add the `NetworkPolicy` add-on (this will add Calico stuff to the cluster):
+
+        ```
+        gcloud beta container clusters update ${CLUSTER} \
+            --project ${PROJECT_ID} --zone ${ZONE} \
+            --update-addons NetworkPolicy=ENABLED
+        ```
+
+    - Enable enforcement (this will recreate the node pools):
+
+        ```
+        gcloud beta container clusters update ${CLUSTER} \
+            --project ${PROJECT_ID} --zone ${ZONE} \
+            --enable-network-policy
+        ```
+
+    - Remove the **Container Engine Cluster Admin** role.
+
+
+[1]: https://cloud.google.com/container-engine/docs/network-policy#enabling_network_policy_enforcement
+
 
 # Starting the cluster
 
@@ -36,13 +59,6 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 ./ktmpl -c ${CLUSTER} apply -f fringe
 ```
 
-# Dilectic hydration and imports
-
-```
-./ktmpl -c ${CLUSTER} apply -f dilectic/deploy-key-secret.yml
-./ktmpl -c ${CLUSTER} apply -f dilectic/hydration.yml
-./ktmpl -c ${CLUSTER} apply -f dilectic/import.yml
-```
 
 # Creating basic-auth passwords
 
@@ -61,7 +77,8 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     htpasswd -n "${USERNAME}"
     ```
 
-4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `config/stacks/`).
+4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `config/clusters/`).
+
 
 # Starting a private Python container
 
@@ -84,6 +101,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 ssh -p 9022 jovyan@localhost
 ```
 
+
 ## Pushing and pulling from GitHub
 
 To push and pull from Git, set up `ssh-agent` with forwarding by modifying `~/.ssh/config` like so:
@@ -92,6 +110,7 @@ To push and pull from Git, set up `ssh-agent` with forwarding by modifying `~/.s
 Host localhost
   ForwardAgent yes
 ```
+
 
 ## Mounting container directory to local filesystem
 
