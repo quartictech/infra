@@ -55,7 +55,7 @@ function (config) q.backendService("eval", "platform", 8210, config) {
 
         auth: {
             time_to_live_seconds: 3600,
-            signing_key_encrypted_base64: config.token_signing_key_encrypted
+            signing_key_encrypted_base64: config.internal_token_signing_key_encrypted
         },
 
         database: {
