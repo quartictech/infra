@@ -1,10 +1,23 @@
 {
     list(items):: {
+        # kubectl can't handle nested lists, so unpack and flatten
         local _maybeUnpackList(x) = if (x.kind == "List") then x.items else [x],
 
         apiVersion: "v1",
         kind: "List",
         items: std.flattenArrays(std.map(_maybeUnpackList, items)),
+    },
+
+
+    namespace(namespaceName):: {
+        apiVersion: "v1",
+        kind: "Namespace",
+        metadata: {
+            name: namespaceName,
+            labels: {
+                name: namespaceName,    # Our convention that allows network policies to select specific namespaces
+            },
+        },
     },
 
 
@@ -132,5 +145,16 @@
             name: name,
             namespace: namespace,
         },
+    },
+
+
+    networkPolicy(name, namespace):: {
+        apiVersion: "networking.k8s.io/v1",
+        kind: "NetworkPolicy",
+        metadata: {
+            name: name,
+            namespace: namespace,
+        },
+        policyTypes: ["Ingress"],   # Once we have egress policies, this will need to change!
     },
 }
