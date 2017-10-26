@@ -5,6 +5,7 @@ variable "project_name"                 {}
 variable "project_id_prefix"            {}
 variable "viewer_group"                 {}
 variable "container_developer_group"    {}
+variable "container_full_access"        { default=false }
 variable "domain_name"                  {}
 variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
@@ -36,6 +37,7 @@ module "env" {
     project_id_prefix           = "${var.project_id_prefix}"
     viewer_group                = "${var.viewer_group}"
     container_developer_group   = "${var.container_developer_group}"
+    container_full_access       = "${var.container_full_access}"
     domain_name                 = "${var.domain_name}"
     dns_ttl                     = "${var.dns_ttl}"
     cluster_name                = "${var.cluster_name}"
