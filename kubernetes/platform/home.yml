@@ -16,10 +16,7 @@ data:
     cookies:
       secure: true
       max_age_seconds: 2592000 # 30 days
-
-    auth:
-      type: token
-      key_encrypted_base64: {{cluster.token_signing_key_encrypted}}
+      signing_key_encrypted_base64: {{cluster.token_signing_key_encrypted}}
 
     url:
       port: 8100

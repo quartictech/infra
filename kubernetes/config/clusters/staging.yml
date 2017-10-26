@@ -16,7 +16,7 @@ www:
   default_website_tag: staging
   formistry_version: 17
 
-platform_version: 2886
+platform_version: 2919
 quartic_python_version: "$QUARTIC_PYTHON_VERSION"
 
 jupyter:
@@ -77,6 +77,7 @@ customers:
         github_org_id: 22931189
         github_repo_id: 100040858
         github_installation_id: 54057
+        execute_on_push: true
 
     howl: |
       type: s3
