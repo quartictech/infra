@@ -21,7 +21,7 @@
         formistry_version: 17,
     },
 
-    platform_version: 2886,
+    platform_version: 2928,
     quartic_python_version: "$QUARTIC_PYTHON_VERSION",
 
     jupyter: {
@@ -91,14 +91,15 @@
                 github_org_id: 22931189,
                 github_repo_id: 100040858,
                 github_installation_id: 54057,
+                execute_on_push: true,
             },
 
             howl: {
                 type: "s3",
                 region: "eu-west-2",
-                bucket_encrypted: "1$3c100570122ef131e12ad379$e78a2e6076e97375f3051f023aa0082255a2d946e45a1cdac4$81e094796c40bdb10c54e3e9f9c0d270",
-                role_arn_encrypted: "1$f994aa1fcc4d348b39a9dee5$a626f1bfea0e962f147bbd2c4df44db59c1080ac29e618b70385c458b4854853ca4eccbe1b8c3458596b608ea1894e1a39edeca2ed46$47966e061e3bd85f739e96cc8bd2476d",
-                external_id_encrypted: "1$cb710ce9b2dd6cda46dde55d$f47f79577a8d8194ca556d4ee57e9cb34dda29c4f8222c6f2df9f85f0455ebb1462a84c927a9ccdfc01b6893c75a6b0fd3e1c1b438f1885cdf8ab9669e9ceb67c565c9a8cf4d9184b1fed5d9308fd63505c1860815257803c3f5e551c8d4fad69b6325eb50e8bc2dc295b875b29bf28acc74c72f2e1455c7ef5cf78a1104ae91eff161e1fdb928000e5ff0efc6d9181e803849db2d412d943451c8b32101aceb87f1318ee74aad93$936bc7200943e41ba4557977f4f2be49",
+                bucket_encrypted: "1$d6dbb1201bde4c2023d1d97b$d1e59a8fff88aea45c279864ecc3d3553f05135b1ac1b06588$4a8e7115df660b1d3d35e567e7edc7eb",
+                role_arn_encrypted: "1$6ed082e1e30e3a2508bb96a9$cfc763154d8bc8a3463efc5c493044e6daea01980669bc65e8d52ca08abcba84410449a8e11885b314d40d62037bf6d4623775cbe752ab3f13$07fe50e9880c6fd887af744f61a544ca",
+                external_id_encrypted: "1$c63edcbf01b01b1f5b799456$a77037e47cee37579579e869cd4f22a379710fa563148fe6dcc7427fec573c042d2ff4ed$e139fe08d859629afd56f93666aa2780"
             },
         },
     ],

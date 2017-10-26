@@ -53,6 +53,11 @@ function (config) q.backendService("eval", "platform", 8210, config) {
             private_key_encrypted: config.github.private_key_encrypted,
         },
 
+        auth: {
+            time_to_live_seconds: 3600,
+            signing_key_encrypted_base64: config.token_signing_key_encrypted
+        },
+
         database: {
             host_name: "postgres",
             database_name: "eval",

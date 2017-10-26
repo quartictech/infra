@@ -23,8 +23,7 @@ function (config) k.list([
             },
 
             auth: {
-                type: "token",
-                key_encrypted_base64: config.token_signing_key_encrypted,
+                signing_key_encrypted_base64: config.token_signing_key_encrypted,
             },
         }
     },
