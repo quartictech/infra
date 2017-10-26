@@ -12,6 +12,7 @@ variable "cluster_core_node_type"       {}
 variable "cluster_core_node_count"      {}
 variable "cluster_worker_node_type"     {}
 variable "cluster_worker_node_count"    {}
+variable "cluster_full_access"          { default=false }
 
 
 terraform {
@@ -43,6 +44,7 @@ module "env" {
     cluster_core_node_count     = "${var.cluster_core_node_count}"
     cluster_worker_node_type    = "${var.cluster_worker_node_type}"
     cluster_worker_node_count   = "${var.cluster_worker_node_count}"
+    cluster_full_access         = "${var.cluster_full_access}"
 }
 
 
