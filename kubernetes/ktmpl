@@ -2,10 +2,11 @@
 
 import argparse
 import base64
+import json
+import _jsonnet
 import os
 import subprocess
 import sys
-import yaml
 
 from jinja2 import Environment, Template, StrictUndefined
 
@@ -41,10 +42,8 @@ def get_filenames(path):
         return [path]
 
 
-def load_config(path):
-    with open(path, "r", encoding='utf-8') as stream:
-        config = yaml.load(stream)
-    return config
+def load_cluster_config(path):
+    return json.loads(_jsonnet.evaluate_file(path))
 
 
 def get_operations(operation):
@@ -59,28 +58,33 @@ def read_from_file(template_path, relative_path):
         return file.read()
 
 
+def run_kubectl(dry_run, operation, stdin):
+    if (dry_run):
+        print(stdin)
+    else:
+        rc = run_command(
+            ["kubectl", operation, "-f", "-"],
+            env={"KUBECONFIG": CONFIG_PATH},
+            stdin=stdin
+        )
+        if rc != 0:
+            raise EnvironmentError("kubectl failed")
+
+
 def run_from_template(operation, dry_run, template_path, config):
     env = Environment(undefined=StrictUndefined)
     env.filters["b64encode"] = lambda s: base64.b64encode(s.encode()).decode("utf-8")
     with open(template_path, "rt") as file:
         template = env.from_string(file.read())
-
-    print("--- {} [{}] ---".format(operation.upper(), template_path))
-
     config["from"] = lambda relative_path: read_from_file(template_path, relative_path)
     
     rendered = template.render(config)
+    run_kubectl(dry_run, operation, rendered)
 
-    if (dry_run):
-        print(rendered)
-    else:
-        rc = run_command(
-            ["kubectl", operation, "-f", "-"],
-            env={"KUBECONFIG": CONFIG_PATH},
-            stdin=rendered
-        )
-        if rc != 0:
-            raise EnvironmentError("kubectl failed")
+
+def run_from_jsonnet(operation, dry_run, path, config):
+    rendered = _jsonnet.evaluate_file(path, tla_codes={ "config": json.dumps(config) })
+    run_kubectl(dry_run, operation, rendered)
 
 
 def switch_context(dry_run, gcloud):
@@ -156,7 +160,8 @@ if __name__ == "__main__":
     if not args.operation:
         sys.exit(1)
 
-    cluster_config = load_config(os.path.join("config", "clusters", args.cluster + ".yml"))
+    jsonnet_config_path = os.path.join("config", "clusters", args.cluster + ".jsonnet")
+    cluster_config = load_cluster_config(jsonnet_config_path)
     environment = extract_environment_map(args.environment)
 
     maybe_get_confirmation(args.dry_run, cluster_config["require_confirmation"])
@@ -165,5 +170,9 @@ if __name__ == "__main__":
         
     for operation in get_operations(args.operation):
         for template_path in get_filenames(args.filename):
-            run_from_template(operation, args.dry_run, template_path, 
-                              {"cluster": cluster_config, "environment": environment})
+            print("--- {} [{}] ---".format(operation.upper(), template_path))
+            if template_path.endswith(".yml"):
+                run_from_template(operation, args.dry_run, template_path, 
+                                  {"cluster": cluster_config, "environment": environment})
+            else:
+                run_from_jsonnet(operation, args.dry_run, template_path, cluster_config)
