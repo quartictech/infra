@@ -20,7 +20,7 @@ resource "google_project_iam_member" "viewer" {
 resource "google_project_iam_member" "container_developer" {
     count               = "${length(var.container_developer_members)}"
     project             = "${var.project_id}"
-    role                = "roles/${var.cluster_full_access ? "container.clusterAdmin" : "container.developer"}"
+    role                = "roles/${var.cluster_full_access ? "container.admin" : "container.developer"}"
     member              = "${element(var.container_developer_members, count.index)}"
 }
 
