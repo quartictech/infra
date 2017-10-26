@@ -77,7 +77,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
     htpasswd -n "${USERNAME}"
     ```
 
-4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `config/clusters/`).
+4. Append the output line to the `auth_secret` section of the relevant stack configuration file (in `_config/clusters/`).
 
 
 # Starting a private Python container

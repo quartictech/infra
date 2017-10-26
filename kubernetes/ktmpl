@@ -128,7 +128,7 @@ def extract_environment_map(from_args):
 def parse_args():
     parser = argparse.ArgumentParser(description="Deploy Kubernetes stuff with templatisation.")
     parser.add_argument("-c", "--cluster", required=True,
-                           help="Cluster name (should match prefix of a file in clusters/ dir)")
+                           help="Cluster name (should match prefix of a file in _config/clusters/ dir)")
 
     subparsers = parser.add_subparsers(help="sub-command help", dest="operation")
     subparsers.required = True
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     if not args.operation:
         sys.exit(1)
 
-    jsonnet_config_path = os.path.join("config", "clusters", args.cluster + ".jsonnet")
+    jsonnet_config_path = os.path.join("_config", "clusters", args.cluster + ".jsonnet")
     cluster_config = load_cluster_config(jsonnet_config_path)
     environment = extract_environment_map(args.environment)
 
