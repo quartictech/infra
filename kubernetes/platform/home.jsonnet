@@ -20,11 +20,7 @@ function (config) k.list([
             cookies: {
                 secure: true,
                 max_age_seconds: 30 * 24 * 3600,
-            },
-
-            auth: {
-                type: "token",
-                key_encrypted_base64: config.token_signing_key_encrypted,
+                signing_key_encrypted_base64: config.token_signing_key_encrypted,
             },
         }
     },
