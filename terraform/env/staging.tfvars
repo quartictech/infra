@@ -6,7 +6,7 @@ dns_ttl                     = 3600
 
 cluster_name                = "staging"
 cluster_core_node_type      = "n1-standard-2"
-cluster_core_node_count     = 1
+cluster_core_node_count     = 2
 cluster_worker_node_type    = "n1-standard-2"
 cluster_worker_node_count   = 1
 
