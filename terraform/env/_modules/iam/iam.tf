@@ -1,7 +1,7 @@
 variable "project_id"                       {}
 variable "global_project_id"                {}
 variable "viewer_member"                    {}
-variable "container_full_access"            {}
+variable "cluster_full_access"              {}
 variable "container_developer_members"      { type = "list" }
 
 
@@ -20,7 +20,7 @@ resource "google_project_iam_member" "viewer" {
 resource "google_project_iam_member" "container_developer" {
     count               = "${length(var.container_developer_members)}"
     project             = "${var.project_id}"
-    role                = "roles/${var.container_full_access ? "container.clusterAdmin" : "container.developer"}"
+    role                = "roles/${var.cluster_full_access ? "container.clusterAdmin" : "container.developer"}"
     member              = "${element(var.container_developer_members, count.index)}"
 }
 
