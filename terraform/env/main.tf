@@ -10,8 +10,10 @@ variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
 variable "cluster_core_node_type"       {}
 variable "cluster_core_node_count"      {}
+variable "cluster_core_preemptible"     {}
 variable "cluster_worker_node_type"     {}
 variable "cluster_worker_node_count"    {}
+variable "cluster_worker_preemptible"   {}
 variable "cluster_full_access"          { default=false }
 
 
@@ -42,8 +44,10 @@ module "env" {
     cluster_name                = "${var.cluster_name}"
     cluster_core_node_type      = "${var.cluster_core_node_type}"
     cluster_core_node_count     = "${var.cluster_core_node_count}"
+    cluster_core_preemptible    = "${var.cluster_core_preemptible}"
     cluster_worker_node_type    = "${var.cluster_worker_node_type}"
     cluster_worker_node_count   = "${var.cluster_worker_node_count}"
+    cluster_worker_preemptible  = "${var.cluster_worker_preemptible}"
     cluster_full_access         = "${var.cluster_full_access}"
 }
 
