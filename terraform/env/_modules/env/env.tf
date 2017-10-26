@@ -10,8 +10,10 @@ variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
 variable "cluster_core_node_type"       {}
 variable "cluster_core_node_count"      {}
+variable "cluster_core_preemptible"     {}
 variable "cluster_worker_node_type"     {}
 variable "cluster_worker_node_count"    {}
+variable "cluster_worker_preemptible"   {}
 variable "cluster_full_access"          {}
 
 
@@ -71,10 +73,14 @@ module "cluster" {
     zones                       = "${data.google_compute_zones.available.names}"
     name                        = "${var.cluster_name}"
     service_account_email       = "${module.iam.cluster_service_account_email}"
+
     core_node_type              = "${var.cluster_core_node_type}"
     core_node_count             = "${var.cluster_core_node_count}"
+    core_preemptible            = "${var.cluster_core_preemptible}"
+
     worker_node_type            = "${var.cluster_worker_node_type}"
     worker_node_count           = "${var.cluster_worker_node_count}"
+    worker_preemptible          = "${var.cluster_worker_preemptible}"
 }
 
 module "dns" {
