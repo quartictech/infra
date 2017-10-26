@@ -5,7 +5,6 @@ variable "project_name"                 {}
 variable "project_id_prefix"            {}
 variable "viewer_group"                 {}
 variable "container_developer_group"    {}
-variable "container_full_access"        {}
 variable "domain_name"                  {}
 variable "dns_ttl"                      {}
 variable "cluster_name"                 {}
@@ -13,6 +12,7 @@ variable "cluster_core_node_type"       {}
 variable "cluster_core_node_count"      {}
 variable "cluster_worker_node_type"     {}
 variable "cluster_worker_node_count"    {}
+variable "cluster_full_access"          {}
 
 
 data "terraform_remote_state" "global" {
@@ -52,7 +52,7 @@ module "iam" {
     project_id                  = "${module.project.id}"
     global_project_id           = "${data.terraform_remote_state.global.project_id}"
     viewer_member               = "group:${var.viewer_group}"
-    container_full_access       = "${var.container_full_access}"
+    cluster_full_access         = "${var.cluster_full_access}"
     container_developer_members = [
         "group:${var.container_developer_group}",
         "serviceAccount:${data.terraform_remote_state.global.circleci_service_account_email}",  // In order to deploy website
