@@ -30,13 +30,19 @@ jobs:
           working_directory: terraform/global
           environment: { ENV: "global" }
           command: *tf_plan
-          
+
+      - run:
+          name: Plan - Dev
+          working_directory: terraform/env
+          environment: { ENV: "dev" }
+          command: *tf_plan
+
       - run:
           name: Plan - Staging
           working_directory: terraform/env
           environment: { ENV: "staging" }
           command: *tf_plan
-          
+
       - run:
           name: Plan - Prod
           working_directory: terraform/env
@@ -57,11 +63,27 @@ jobs:
 
       - attach_workspace:
           at: terraform/
-      
+
       - deploy:
           name: Apply - Global
           working_directory: terraform/global
           environment: { ENV: "global" }
+          command: *tf_apply
+
+
+  apply_dev:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - attach_workspace:
+          at: terraform/
+
+      - deploy:
+          name: Apply - Dev
+          working_directory: terraform/env
+          environment: { ENV: "dev" }
           command: *tf_apply
 
 
@@ -89,7 +111,7 @@ jobs:
 
       - attach_workspace:
           at: terraform/
-      
+
       - deploy:
           name: Apply - Prod
           working_directory: terraform/env
@@ -103,8 +125,15 @@ workflows:
   plan_and_apply:
     jobs:
       - plan
- 
-      # No approval needed for staging
+
+      # No approval needed for dev / staging
+
+      - apply_dev:
+          requires:
+            - plan
+          filters:
+            branches:
+              only: develop
 
       - apply_staging:
           requires:

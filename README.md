@@ -15,9 +15,9 @@ This is the Terraform for all of our GCloud infrastructure.  The arrangement is 
 
 ### Project layout
 
-There are three main projects:
+There are four main projects:
 
-- **Staging** and **Prod** each host a K8S cluster, with an associated static external IP.
+- **Dev**, **Staging**, and **Prod** each host a K8S cluster, with an associated static external IP.
 - **Global** hosts DNS (with A records for the clusters, along with all the other records we need), which Namecheap's
   NS records are set to point to.  It also hosts our canonical Docker container registry, and a `circleci` service
   account intended for CircleCI builds.
@@ -42,7 +42,7 @@ registry.
 
 Terraform is executed on CircleCI via the `terraform` service account, and stores its state in the associated GCS
 bucket.  Each of the three main projects is deployed via a separate Terraform configuration with separate state, to
-avoid [issues][1] where modifying **Staging** nukes **Prod**.
+avoid [issues][1] where, for example, modifying **Staging** nukes **Prod**.
 
 The **Global** configuration is run first, as the other configurations rely on it as a [data source][2] and also
 modify its DNS and IAM configurations.
