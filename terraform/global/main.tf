@@ -11,7 +11,6 @@ variable "dns_ttl"                          {}
 terraform {
     backend "gcs" {
         bucket                  = "administration.quartic.io"
-        path                    = "global/terraform.tfstate"
     }
 }
 

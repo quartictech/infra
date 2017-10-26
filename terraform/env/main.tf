@@ -17,7 +17,6 @@ variable "cluster_worker_node_count"    {}
 terraform {
     backend "gcs" {
         bucket                  = "administration.quartic.io"
-        path                    = "staging/terraform.tfstate"
     }
 }
 
@@ -26,8 +25,9 @@ provider "google" {
     region                      = "${var.region}"
 }
 
+# TODO - get rid of this indirection
 module "env" {
-    source                      = "../_modules/env"
+    source                      = "_modules/env"
 
     org_id                      = "${var.org_id}"
     billing_account             = "${var.billing_account}"

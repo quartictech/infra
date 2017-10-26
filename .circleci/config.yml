@@ -9,9 +9,13 @@ references:
         environment:
           TF_IN_AUTOMATION: 1
 
-  tf_init: &tf_init terraform init -input=false
-  tf_plan: &tf_plan terraform plan -input=false -out=tfplan
-  tf_apply: &tf_apply terraform apply -input=false tfplan
+  tf_plan: &tf_plan |
+    terraform init -input=false -reconfigure -backend-config="path=${ENV}/terraform.tfstate" 
+    terraform plan -input=false -var-file=${ENV}.tfvars -out=${ENV}.tfplan
+
+  tf_apply: &tf_apply |
+    terraform init -input=false -reconfigure -backend-config="path=${ENV}/terraform.tfstate" 
+    terraform apply -input=false ${ENV}.tfplan 
 
 
 jobs:
@@ -22,35 +26,27 @@ jobs:
       - checkout
 
       - run:
-          name: Init (global)
+          name: Plan - Global
           working_directory: terraform/global
-          command: *tf_init
-      - run:
-          name: Init (staging)
-          working_directory: terraform/staging
-          command: *tf_init
-      - run:
-          name: Init (prod)
-          working_directory: terraform/prod
-          command: *tf_init
-
-      - run:
-          name: Plan (global)
-          working_directory: terraform/global
+          environment: { ENV: "global" }
           command: *tf_plan
+          
       - run:
-          name: Plan (staging)
-          working_directory: terraform/staging
+          name: Plan - Staging
+          working_directory: terraform/env
+          environment: { ENV: "staging" }
           command: *tf_plan
+          
       - run:
-          name: Plan (prod)
-          working_directory: terraform/prod
+          name: Plan - Prod
+          working_directory: terraform/env
+          environment: { ENV: "prod" }
           command: *tf_plan
 
       - persist_to_workspace:
           root: terraform/
           paths:
-            - "**/tfplan"
+            - "**/*.tfplan"
 
 
   apply_global:
@@ -62,14 +58,10 @@ jobs:
       - attach_workspace:
           at: terraform/
       
-      - run:
-          name: Init (global)
-          working_directory: terraform/global
-          command: *tf_init
-
       - deploy:
-          name: Apply (global)
+          name: Apply - Global
           working_directory: terraform/global
+          environment: { ENV: "global" }
           command: *tf_apply
 
 
@@ -82,14 +74,10 @@ jobs:
       - attach_workspace:
           at: terraform/
 
-      - run:
-          name: Init (staging)
-          working_directory: terraform/staging
-          command: *tf_init
-
       - deploy:
-          name: Apply (staging)
-          working_directory: terraform/staging
+          name: Apply - Staging
+          working_directory: terraform/env
+          environment: { ENV: "staging" }
           command: *tf_apply
 
 
@@ -102,14 +90,10 @@ jobs:
       - attach_workspace:
           at: terraform/
       
-      - run:
-          name: Init (prod)
-          working_directory: terraform/prod
-          command: *tf_init
-
       - deploy:
-          name: Apply (prod)
-          working_directory: terraform/prod
+          name: Apply - Prod
+          working_directory: terraform/env
+          environment: { ENV: "prod" }
           command: *tf_apply
 
 
