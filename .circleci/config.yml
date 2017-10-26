@@ -15,7 +15,7 @@ references:
 
   tf_apply: &tf_apply |
     terraform init -input=false -reconfigure -backend-config="path=${ENV}/terraform.tfstate" 
-    terraform apply -input=false -var-file=${ENV}.tfvars ${ENV}.tfplan 
+    terraform apply -input=false ${ENV}.tfplan 
 
 
 jobs:
