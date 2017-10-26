@@ -68,6 +68,7 @@ local k8s = import "./k8s.libsonnet";
         local container = _container(name, bs.image, allPorts, bs.cpuRequest, config) {
             env:
                 [ self.envVarFromSecret("MASTER_KEY_BASE64", "secrets", "master_key_base64") ] +
+                [ { name: "DEV_MODE", value: std.toString(config.dev_cluster) } ] +
                 [ { name: k, value: bs.env[k] } for k in std.objectFields(bs.env) ],
             volumeMounts: [
                 {

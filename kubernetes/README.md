@@ -24,9 +24,9 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 
 3. [Enable network-policy enforcement][1] (**note:** this won't be required once we can do this via Terraform).
 
-    - Give yourself the **Container Engine Cluster Admin** role via GCloud console (or CLI).
+    - Give yourself the **Container Engine Admin** role via GCloud console (or CLI).
 
-    - Add the `NetworkPolicy` add-on (this will add Calico stuff to the cluster):
+    - Add the `NetworkPolicy` add-on:
 
         ```
         gcloud beta container clusters update ${CLUSTER} \
@@ -34,7 +34,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
             --update-addons NetworkPolicy=ENABLED
         ```
 
-    - Enable enforcement (this will recreate the node pools):
+    - Enable enforcement:
 
         ```
         gcloud beta container clusters update ${CLUSTER} \
@@ -42,7 +42,7 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
             --enable-network-policy
         ```
 
-    - Remove the **Container Engine Cluster Admin** role.
+    - Remove the **Container Engine Admin** role.
 
 
 [1]: https://cloud.google.com/container-engine/docs/network-policy#enabling_network_policy_enforcement
@@ -53,7 +53,6 @@ In the following instructions, `${CLUSTER}` is the cluster name (`dev`, `prod`, 
 ```
 ./ktmpl -c ${CLUSTER} apply -f namespaces
 ./ktmpl -c ${CLUSTER} apply -f core
-./ktmpl -c ${CLUSTER} apply -f dilectic
 ./ktmpl -c ${CLUSTER} apply -f analysis
 ./ktmpl -c ${CLUSTER} apply -f platform
 ./ktmpl -c ${CLUSTER} apply -f fringe

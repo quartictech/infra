@@ -1,8 +1,8 @@
 local k = import "../_jsonnet/k8s.libsonnet";
 
 {
-    allPods:: { podSelector: {} },
-    noPods:: { podSelector: { matchLabels: {} } },
+    allPods:: { podSelector: { matchLabels: {} } },
+    noPods:: null, //{ podSelector: { matchLabels: {} } },
     labelSelector(key, value):: { matchLabels: { [key]: value } },
     podsWithLabel(key, value):: { podSelector: $.labelSelector(key, value) },
     namespacesWithLabel(key, value):: { namespaceSelector: $.labelSelector(key, value) },
@@ -10,13 +10,14 @@ local k = import "../_jsonnet/k8s.libsonnet";
 
     allow(policyName, source, target):: {
         policyName: policyName,
-        spec: target {
-            ingress: [
-                {
-                    from: [source],
-                },
-            ],
-        },
+        spec: target +
+            if (source != null) then {
+                ingress: [
+                    {
+                        from: [source],
+                    },
+                ],
+            } else {},
     },
 
     defaultDenyAll:: $.allow(

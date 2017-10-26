@@ -155,6 +155,5 @@
             name: name,
             namespace: namespace,
         },
-        policyTypes: ["Ingress"],   # Once we have egress policies, this will need to change!
     },
 }

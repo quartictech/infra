@@ -22,10 +22,11 @@ local allowSandbox = np.allow(
 np.policySet(
     namespace = "platform",
     policies = [
-        np.allowIntraNamespace,         # TODO - this should only apply to particular pods
-        np.allowIngress,
-        allowBackups,
-        allowAnalysis,
-        allowSandbox,
+        // np.allowIntraNamespace,         # TODO - this should only apply to particular pods
+        // np.allowIngress,
+        // allowBackups,
+        // allowAnalysis,
+        // allowSandbox,
+        # TODO - allow Qube
     ],
 )

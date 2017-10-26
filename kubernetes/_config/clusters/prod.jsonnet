@@ -1,6 +1,7 @@
 # TODO - switch back to camelCase once we eliminate all the YAML dependents
 {
     require_confirmation: true,
+    dev_cluster: false,
 
     gcloud: {
         project_id: "quartic-prod-5df2e1f7",
