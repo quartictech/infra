@@ -1,3 +1,5 @@
 local q = import "../_jsonnet/quartic.libsonnet";
 
-function (config) q.frontendService("docs", "platform", config)
+function (config)
+    q.frontendService("docs", "platform", config) +
+    q.mixin.requiresIngress

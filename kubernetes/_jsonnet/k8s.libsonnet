@@ -22,7 +22,7 @@
 
 
     ingress(name, namespace, domain):: {
-        local ing = self,
+        local me = self,
         certs:: [],
         rules:: [],
 
@@ -57,17 +57,18 @@
             },
         },
         spec: {
-            tls: ing.certs,
-            rules: ing.rules,
+            tls: me.certs,
+            rules: me.rules,
         },
     },
 
 
     deployment(name, namespace):: {
-        local deploy = self,
+        local me = self,
         nodePool:: "core",
         containers:: [],
         volumes:: [],
+        labels:: { component: name },
 
         apiVersion: "extensions/v1beta1",
         kind: "Deployment",
@@ -79,19 +80,75 @@
             replicas: 1,
             template: {
                 metadata: {
-                    labels: {
-                        component: name,
-                    },
+                    labels: me.labels,
                 },
                 spec: {
                     nodeSelector: {
-                        "cloud.google.com/gke-nodepool": deploy.nodePool,
+                        "cloud.google.com/gke-nodepool": me.nodePool,
                     },
-                    containers: deploy.containers,
-                    volumes: deploy.volumes,
+                    containers: me.containers,
+                    volumes: me.volumes,
                 },
             }
         }
+    },
+
+
+    # TODO - this is very similar to deployment, perhaps we can unify?
+    statefulSet:: {
+        new(name, namespace):: {
+            local me = self,
+            serviceName:: me.name,
+            nodePool:: "core",
+            containers:: [],
+            volumeClaimTemplates:: [],
+            labels:: { component: name },
+
+            apiVersion: "apps/v1beta1",
+            kind: "StatefulSet",
+            metadata: {
+                name: name,
+                namespace: namespace,
+            },
+            spec: {
+                serviceName: me.serviceName,
+                replicas: 1,
+                template: {
+                    metadata: {
+                        labels: me.labels,
+                    },
+                    spec: {
+                        nodeSelector: {
+                            "cloud.google.com/gke-nodepool": me.nodePool,
+                        },
+                        containers: me.containers,
+                    },
+                },
+                volumeClaimTemplates: me.volumeClaimTemplates,
+            },
+        },
+
+
+        mixin:: {
+            volumeClaimTemplate(name, storageClass, size):: {
+                volumeClaimTemplates+:: [{
+                    metadata: {
+                        name: name,
+                        annotations: {
+                            "volume.beta.kubernetes.io/storage-class": storageClass,
+                        },
+                    },
+                    spec: {
+                        accessModes: [ "ReadWriteOnce" ],
+                        resources: {
+                            requests: {
+                                storage: size,
+                            },
+                        },
+                    },
+                }],
+            },
+        },
     },
 
 
@@ -116,7 +173,7 @@
 
 
     service(name, namespace, ports):: {
-        local svc = self,
+        local me = self,
         annotations:: {},
 
         apiVersion: "v1",
@@ -127,7 +184,7 @@
             labels: {
                 component: name,
             },
-            annotations: svc.annotations,
+            annotations: me.annotations,
         },
         spec: {
             ports: std.map(function (p) p { protocol: "TCP" }, ports),
@@ -137,7 +194,7 @@
         }
     },
 
-    
+
     configMap(name, namespace):: {
         apiVersion: "v1",
         kind: "ConfigMap",

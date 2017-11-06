@@ -21,7 +21,7 @@
         formistry_version: 17,
     },
 
-    platform_version: 2886,
+    platform_version: 2928,
     quartic_python_version: "$QUARTIC_PYTHON_VERSION",
 
     jupyter: {

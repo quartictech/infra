@@ -15,10 +15,17 @@ local k8s = import "./k8s.libsonnet";
         },
     },
 
+    mixin:: {
+        deploymentLabel(key, value):: { deploymentLabels+:: { [key]: value }, },
+        requiresIngress:: $.mixin.deploymentLabel("requires-ingress", "true"),
+        apiTrust(level):: $.mixin.deploymentLabel("api-trust", level),
+    },
+
 
     frontendService(name, namespace, config):: {
-        local fs = self,
+        local me = self,
         image:: name,
+        deploymentLabels:: {},
         cpuRequest:: defaultCpuRequest,
 
         local allPorts = [
@@ -26,8 +33,8 @@ local k8s = import "./k8s.libsonnet";
         ],
         local service = k8s.service(name, namespace, allPorts),
         local deployment = k8s.deployment(name, namespace) {
-            containers: [_container(name, fs.image, allPorts, fs.cpuRequest, config)],
-        },
+            containers: [_container(name, me.image, allPorts, me.cpuRequest, config)],
+        } + { labels+:: me.deploymentLabels },
 
         apiVersion: "v1",
         kind: "List",
@@ -36,10 +43,11 @@ local k8s = import "./k8s.libsonnet";
 
 
     backendService(name, namespace, port, config):: {
-        local bs = self,
+        local me = self,
         image:: name,
         extraPorts:: [],
         dropwizardConfig:: {},
+        deploymentLabels:: {},
         cpuRequest:: defaultCpuRequest,
         env:: {},
 
@@ -50,7 +58,7 @@ local k8s = import "./k8s.libsonnet";
 
         local configMap = k8s.configMap(name, namespace) {
             data: {
-                "config.yml": std.manifestJson(bs.dropwizardConfig {
+                "config.yml": std.manifestJson(me.dropwizardConfig {
                     url: {
                         port: port,
                     },
@@ -65,11 +73,11 @@ local k8s = import "./k8s.libsonnet";
             },
         },
 
-        local container = _container(name, bs.image, allPorts, bs.cpuRequest, config) {
+        local container = _container(name, me.image, allPorts, me.cpuRequest, config) {
             env:
                 [ self.envVarFromSecret("MASTER_KEY_BASE64", "secrets", "master_key_base64") ] +
                 [ { name: "DEV_MODE", value: std.toString(config.dev_cluster) } ] +
-                [ { name: k, value: bs.env[k] } for k in std.objectFields(bs.env) ],
+                [ { name: k, value: bs.env[k] } for k in std.objectFields(me.env) ],
             volumeMounts: [
                 {
                     name: "config",
@@ -89,7 +97,7 @@ local k8s = import "./k8s.libsonnet";
                     },
                 },
             ],
-        },
+        } + { labels+:: me.deploymentLabels },
 
         apiVersion: "v1",
         kind: "List",

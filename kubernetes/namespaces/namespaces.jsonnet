@@ -6,5 +6,6 @@ k.list([
     k.namespace("core"),
     k.namespace("fringe"),
     k.namespace("platform"),
+    k.namespace("sandbox"),
     k.namespace("www"),
 ])

@@ -2,7 +2,7 @@ local k = import "../_jsonnet/k8s.libsonnet";
 
 {
     allPods:: { podSelector: { matchLabels: {} } },
-    noPods:: null, //{ podSelector: { matchLabels: {} } },
+    noPods:: null,
     labelSelector(key, value):: { matchLabels: { [key]: value } },
     podsWithLabel(key, value):: { podSelector: $.labelSelector(key, value) },
     namespacesWithLabel(key, value):: { namespaceSelector: $.labelSelector(key, value) },

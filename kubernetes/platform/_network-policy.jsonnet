@@ -6,27 +6,33 @@ local allowBackups = np.allow(
     target = np.podsWithLabel("requires-backup", "true"),
 );
 
-local allowAnalysis = np.allow(
-    policyName = "analysis",
-    source = np.namespaceWithName("analysis"),
-    target = np.podsWithLabel("api-trust", "high"),
-);
-
 local allowSandbox = np.allow(
     policyName = "sandbox",
     source = np.namespaceWithName("sandbox"),
     target = np.podsWithLabel("api-trust", "low"),
 );
 
+local allowFringe = np.allow(
+    policyName = "fringe",
+    source = np.namespaceWithName("fringe"),
+    target = np.podsWithLabel("api-trust", "high"),
+);
+
+local allowAnalysis = np.allow(
+    policyName = "analysis",
+    source = np.namespaceWithName("analysis"),
+    target = np.podsWithLabel("api-trust", "high"),
+);
+
 # TODO - add port restrictions
 np.policySet(
     namespace = "platform",
     policies = [
-        // np.allowIntraNamespace,         # TODO - this should only apply to particular pods
-        // np.allowIngress,
-        // allowBackups,
-        // allowAnalysis,
-        // allowSandbox,
-        # TODO - allow Qube
+        np.allowIntraNamespace,         # TODO - this should only apply to particular pods
+        np.allowIngress,
+        // allowBackups,                # TODO
+        allowSandbox,
+        allowFringe,
+        allowAnalysis,
     ],
 )

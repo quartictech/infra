@@ -3,6 +3,7 @@ local q = import "../_jsonnet/quartic.libsonnet";
 
 function (config) k.list([
     q.backendService("home", "platform", 8100, config) {
+        requiresIngress: true,
         dropwizardConfig: {
             catalogue_url: "http://catalogue:8090/api",
             howl_url: "http://howl:8120/api",
@@ -23,6 +24,7 @@ function (config) k.list([
                 signing_key_encrypted_base64: config.token_signing_key_encrypted,
             },
         }
-    },
-    q.frontendService("home-frontend", "platform", config),
+    } + q.mixin.requiresIngress,
+    q.frontendService("home-frontend", "platform", config) +
+        q.mixin.requiresIngress,
 ])

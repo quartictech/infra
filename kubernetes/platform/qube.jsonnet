@@ -6,7 +6,7 @@ function (config) q.backendService("qube", "platform", 8200, config) {
     dropwizardConfig: {
         kubernetes: {
             enable: true,
-            namespace: "qube",
+            namespace: "sandbox",
             num_concurrent_jobs: 4,
             job_timeout_seconds: 3600,
             pod_template: {
