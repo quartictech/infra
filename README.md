@@ -115,3 +115,8 @@ gcloud projects create quartic-bottom-turtle --name "Quartic - Bottom turtle" --
 gsutil mb -p quartic-bottom-turtle -c regional -l europe-west2 gs://bottom-turtle.quartic.io
 gsutil versioning set on gs://bottom-turtle.quartic.io
 ```
+
+
+## License
+
+This project is made available under [BSD License 2.0](https://github.com/quartictech/infra/blob/develop/LICENSE).
