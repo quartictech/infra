@@ -33,7 +33,7 @@ jobs:
           name: Plan - Global
           working_directory: terraform/global
           environment: { ENV: "global" }
-          command: *tf_plan_destroy     # DESTROY!!!
+          command: *tf_plan
 
       - run:
           name: Plan - Dev
